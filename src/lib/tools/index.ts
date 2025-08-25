@@ -4,15 +4,20 @@ import { aasTool } from './aas';
 import { abcdeMelanomaTool } from './abcdeMelanoma';
 import { absisTool } from './absis';
 import { acneQolTool } from './acneQol';
+import { alt70Tool } from './alt70';
+import { behcetCriteriaTool } from './behcetCriteria';
 import { bilagSkinTool } from './bilagSkin';
 import { bpdaiTool } from './bpdai';
+import { bradenScaleTool } from './bradenScale';
 import { bvasSkinTool } from './bvasSkin';
 import { bwatTool } from './bwat';
+import { casparCriteriaTool } from './casparCriteria';
 import { cdasiTool } from './cdasi';
 import { cdlqiTool } from './cdlqi';
 import { ceaRosaceaTool } from './ceaRosacea';
 import { clasiTool } from './clasi';
 import { ctcaeSkinTool } from './ctcaeSkin';
+import { dapsaTool } from './dapsa';
 import { dasiTool } from './dasi';
 import { dlqiTool } from './dlqi';
 import { dssiTool } from './dssi';
@@ -35,10 +40,13 @@ import { masiMmasiTool } from './masiMmasi';
 import { melasqolTool } from './melasqol';
 import { mfgScoreTool } from './mfgScore';
 import { mrssTool } from './mrss';
+import { msiTool } from './msi';
 import { mssHsTool } from './mssHs';
 import { mswatTool } from './mswat';
+import { nappaClinTool } from './nappaClin';
 import { napsiTool } from './napsi';
 import { nrsPruritusTool } from './nrsPruritus';
+import { parklandFormulaTool } from './parklandFormula';
 import { pasiTool } from './pasi';
 import { pdaiTool } from './pdai';
 import { pedisClassificationTool } from './pedisClassification';
@@ -59,6 +67,7 @@ import { scqoli10Tool } from './scqoli10';
 import { sevenPointChecklistTool } from './sevenPointChecklist';
 import { sinbadScoreTool } from './sinbadScore';
 import { skindex29Tool } from './skindex29';
+import { sliccCriteriaTool } from './sliccCriteria';
 import { sledaiSkinTool } from './sledaiSkin';
 import { uas7Tool } from './uas7';
 import { uctTool } from './uct';
@@ -75,15 +84,20 @@ export const toolData: Tool[] = [
   abcdeMelanomaTool,
   absisTool,
   acneQolTool,
+  alt70Tool,
+  behcetCriteriaTool,
   bilagSkinTool,
   bpdaiTool,
+  bradenScaleTool,
   bvasSkinTool,
   bwatTool,
+  casparCriteriaTool,
   cdasiTool,
   cdlqiTool,
   ceaRosaceaTool,
   clasiTool,
   ctcaeSkinTool,
+  dapsaTool,
   dasiTool,
   dlqiTool,
   dssiTool,
@@ -106,10 +120,13 @@ export const toolData: Tool[] = [
   melasqolTool,
   mfgScoreTool,
   mrssTool,
+  msiTool,
   mssHsTool,
   mswatTool,
+  nappaClinTool,
   napsiTool,
   nrsPruritusTool,
+  parklandFormulaTool,
   pasiTool,
   pdaiTool,
   pedisClassificationTool,
@@ -130,6 +147,7 @@ export const toolData: Tool[] = [
   sevenPointChecklistTool,
   sinbadScoreTool,
   skindex29Tool,
+  sliccCriteriaTool,
   sledaiSkinTool,
   uas7Tool,
   uctTool,
