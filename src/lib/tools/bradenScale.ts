@@ -60,7 +60,7 @@ export const bradenScaleTool: Tool = {
     else if (score >= 10) riskLevel = "High Risk";
     else riskLevel = "Very High Risk";
 
-    const interpretation = `Total Braden Score: ${score} (Range: 6-23). Risk Level: ${riskLevel}. Lower scores indicate a higher risk for developing pressure ulcers.`;
+    const interpretation = `Total Braden Score: ${score} (Range: 6-23). Risk Level: ${riskLevel}.\nRisk Categories: ≤9 Very High; 10-12 High; 13-14 Moderate; 15-18 Mild; ≥19 No Risk.\nLower scores indicate a higher risk for developing pressure ulcers.`;
     
     return {
       score,

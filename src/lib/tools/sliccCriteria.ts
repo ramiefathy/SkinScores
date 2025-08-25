@@ -11,23 +11,23 @@ const sliccOptions: InputOption[] = [
 const sliccClinicalCriteria: InputConfig[] = [
   { id: 'acute_cutaneous_lupus', label: 'Acute Cutaneous Lupus', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'chronic_cutaneous_lupus', label: 'Chronic Cutaneous Lupus', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'oral_ulcers', label: 'Oral Ulcers', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'oral_ulcers', label: 'Oral or Nasal Ulcers', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'nonscarring_alopecia', label: 'Nonscarring Alopecia', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'synovitis', label: 'Synovitis', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'synovitis', label: 'Synovitis involving ≥2 joints', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'serositis', label: 'Serositis', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'renal', label: 'Renal', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'neurologic', label: 'Neurologic', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'renal', label: 'Renal (Urine protein/creatinine ratio or RBC casts)', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'neurologic', label: 'Neurologic (Seizures, psychosis, etc.)', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'hemolytic_anemia', label: 'Hemolytic Anemia', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'leukopenia', label: 'Leukopenia', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'leukopenia', label: 'Leukopenia or Lymphopenia', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'thrombocytopenia', label: 'Thrombocytopenia', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
 ];
 
 const sliccImmunologicCriteria: InputConfig[] = [
-  { id: 'ana', label: 'ANA', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'anti_dsdna', label: 'Anti-dsDNA', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'ana', label: 'ANA level above lab reference range', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'anti_dsdna', label: 'Anti-dsDNA antibody level above lab reference range', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'anti_sm', label: 'Anti-Sm', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'antiphospholipid_antibody', label: 'Antiphospholipid Antibody', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
-  { id: 'low_complement', label: 'Low Complement (C3, C4, CH50)', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'antiphospholipid_antibody', label: 'Antiphospholipid Antibody positive', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
+  { id: 'low_complement', label: 'Low Complement (C3, C4, or CH50)', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
   { id: 'direct_coombs', label: 'Direct Coombs\' Test (in absence of hemolytic anemia)', type: 'checkbox', defaultValue: false, validation: getValidationSchema('checkbox') },
 ];
 
@@ -51,13 +51,13 @@ export const sliccCriteriaTool: Tool = {
     },
     {
       id: 'slicc_clinical_group',
-      title: 'Clinical Criteria',
+      title: 'Clinical Criteria (Select all that apply)',
       gridCols: 1,
       inputs: sliccClinicalCriteria
     },
     {
       id: 'slicc_immunologic_group',
-      title: 'Immunologic Criteria',
+      title: 'Immunologic Criteria (Select all that apply)',
       gridCols: 1,
       inputs: sliccImmunologicCriteria
     }
@@ -81,7 +81,7 @@ export const sliccCriteriaTool: Tool = {
         interpretation += `Classification via criteria count: ${totalCriteria} total criteria met (Clinical: ${clinicalCount}, Immunologic: ${immunologicCount}).\n`;
         interpretation += `Requires >= 4 total, with >= 1 clinical AND >= 1 immunologic.`;
     }
-    interpretation += ` (Sensitivity ~97%, Specificity ~84%).`
+    interpretation += `\nPerformance: Sensitivity ~97%, Specificity ~84%.`;
 
     return {
       score,

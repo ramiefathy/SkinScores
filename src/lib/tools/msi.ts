@@ -9,8 +9,8 @@ const msiFormSections: FormSectionConfig[] = [
       title: 'Left Face (Multiplier: 0.4)',
       gridCols: 2,
       inputs: [
-        { id: "left_area", label: "Area (a)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
-        { id: "left_pigmentation", label: "Pigmentation (p)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
+        { id: "left_area", label: "Area (a) (0-6)", type: 'number', min: 0, max: 6, defaultValue: 0, validation: getValidationSchema('number', [], 0, 6) },
+        { id: "left_pigmentation", label: "Pigmentation (p) (0-4)", type: 'number', min: 0, max: 4, defaultValue: 0, validation: getValidationSchema('number', [], 0, 4) },
       ]
     },
     {
@@ -18,8 +18,8 @@ const msiFormSections: FormSectionConfig[] = [
       title: 'Right Face (Multiplier: 0.4)',
       gridCols: 2,
       inputs: [
-        { id: "right_area", label: "Area (a)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
-        { id: "right_pigmentation", label: "Pigmentation (p)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
+        { id: "right_area", label: "Area (a) (0-6)", type: 'number', min: 0, max: 6, defaultValue: 0, validation: getValidationSchema('number', [], 0, 6) },
+        { id: "right_pigmentation", label: "Pigmentation (p) (0-4)", type: 'number', min: 0, max: 4, defaultValue: 0, validation: getValidationSchema('number', [], 0, 4) },
       ]
     },
     {
@@ -27,8 +27,8 @@ const msiFormSections: FormSectionConfig[] = [
       title: 'Nose (Multiplier: 0.2)',
       gridCols: 2,
       inputs: [
-        { id: "nose_area", label: "Area (a)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
-        { id: "nose_pigmentation", label: "Pigmentation (p)", type: 'number', min: 0, defaultValue: 0, validation: getValidationSchema('number', [], 0) },
+        { id: "nose_area", label: "Area (a) (0-6)", type: 'number', min: 0, max: 6, defaultValue: 0, validation: getValidationSchema('number', [], 0, 6) },
+        { id: "nose_pigmentation", label: "Pigmentation (p) (0-4)", type: 'number', min: 0, max: 4, defaultValue: 0, validation: getValidationSchema('number', [], 0, 4) },
       ]
     }
 ];
@@ -37,7 +37,7 @@ export const msiTool: Tool = {
   id: "msi",
   name: "Melasma Severity Index",
   acronym: "MSI",
-  description: "Designed as a simpler, more practical office-based tool to assess severity and monitor treatment response in melasma. The formula is: MSI = 0.4·(a x p²)L + 0.4·(a x p²)R + 0.2·(a x p²)Nose, where a = area and p = pigmentation.",
+  description: "Designed as a simpler, more practical office-based tool to assess severity and monitor treatment response in melasma. The formula is: MSI = 0.4·(a x p²)L + 0.4·(a x p²)R + 0.2·(a x p²)Nose, where a = area (0-6) and p = pigmentation (0-4).",
   condition: "Melasma",
   keywords: ["msi", "melasma", "severity", "pigmentation"],
   sourceType: 'Research',
@@ -58,7 +58,7 @@ export const msiTool: Tool = {
     const totalScore = leftScore + rightScore + noseScore;
     const score = parseFloat(totalScore.toFixed(2));
 
-    const interpretation = `Total MSI Score: ${score}. Higher scores indicate greater melasma severity.`;
+    const interpretation = `Total MSI Score: ${score}. Higher scores indicate greater melasma severity. This tool is a simpler office-based alternative to the MASI.`;
     
     return {
       score,
@@ -72,6 +72,6 @@ export const msiTool: Tool = {
     };
   },
   references: [
-    "Puri N, Puri A. A study to propose and validate a new melasma severity index: Melasma severity index (MSI). J Cosmet Dermatol. 2019;18(5):1433-1439."
+    "Lakshmi C. Proposing a melasma severity index (MSI). Indian J Dermatol. 2010;55(4):381-2. doi: 10.4103/0019-5154.74569. PMID: 21220892."
   ]
 };

@@ -10,7 +10,7 @@ const parklandFormSections: FormSectionConfig[] = [
     gridCols: 1,
     inputs: [
       { id: "weight_kg", label: "Patient Weight (kg)", type: 'number', min: 0, defaultValue: 70, validation: getValidationSchema('number', [], 0) },
-      { id: "tbsa", label: "Total Body Surface Area Burned (%)", type: 'number', min: 0, max: 100, defaultValue: 20, description: "Only include partial- and full-thickness burns.", validation: getValidationSchema('number', [], 0, 100) }
+      { id: "tbsa", label: "Total Body Surface Area Burned (%)", type: 'number', min: 0, max: 100, defaultValue: 20, description: "Only include partial- (2nd degree) and full-thickness (3rd degree) burns.", validation: getValidationSchema('number', [], 0, 100) }
     ]
   }
 ];
@@ -38,9 +38,9 @@ export const parklandFormulaTool: Tool = {
     const score = parseFloat(totalFluidMl.toFixed(1)); // Use total fluid as the primary 'score'
 
     const interpretation = `Total fluid required in first 24 hours: ${totalFluidMl.toFixed(1)} mL.\n` +
-                         `First 8 hours (from time of injury): ${first8hFluid.toFixed(1)} mL (at ${first8hRate.toFixed(1)} mL/hr).\n` +
+                         `First 8 hours (from time of injury, NOT admission): ${first8hFluid.toFixed(1)} mL (at ${first8hRate.toFixed(1)} mL/hr).\n` +
                          `Next 16 hours: ${next16hFluid.toFixed(1)} mL (at ${next16hRate.toFixed(1)} mL/hr).\n` +
-                         `This is an estimate; fluid resuscitation should be titrated based on clinical response (e.g., urine output).`;
+                         `This is an estimate; fluid resuscitation should be titrated based on clinical response (e.g., urine output ~0.5-1 mL/kg/h in adults).`;
 
     return {
       score,

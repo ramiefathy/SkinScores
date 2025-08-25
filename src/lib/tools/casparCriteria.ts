@@ -3,38 +3,32 @@ import type { Tool, InputConfig, InputOption, FormSectionConfig, InputGroupConfi
 import { ListChecks } from 'lucide-react';
 import { getValidationSchema } from '../toolValidation';
 
-const casparOptions: InputOption[] = [
+const yesNoOptions: InputOption[] = [
   { value: 1, label: "Yes" },
   { value: 0, label: "No" }
 ];
-
-const casparPsoriasisOptions: InputOption[] = [
-  { value: 2, label: "Yes (Current Psoriasis)" },
-  { value: 1, label: "Yes (Personal History)" },
-  { value: 1, label: "Yes (Family History)" },
-  { value: 0, label: "No" }
-];
-
 
 const casparFormSections: FormSectionConfig[] = [
   {
     id: 'caspar_entry',
     label: 'Does the patient have inflammatory articular disease (joint, spine, or entheseal)?',
     type: 'select',
-    options: casparOptions,
+    options: yesNoOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select', casparOptions)
+    validation: getValidationSchema('select', yesNoOptions)
   },
   {
     id: 'caspar_criteria_group',
     title: "CASPAR Criteria (score >= 3 needed)",
     gridCols: 1,
     inputs: [
-      { id: "psoriasis", label: "Psoriasis (Current, Personal Hx, or Family Hx)", type: 'select', options: casparPsoriasisOptions, defaultValue: 0, validation: getValidationSchema('select', casparPsoriasisOptions) },
-      { id: "nail_lesions", label: "Nail lesions (onycholysis, pitting, hyperkeratosis) (1 point)", type: 'select', options: casparOptions, defaultValue: 0, validation: getValidationSchema('select', casparOptions) },
-      { id: "rf_negative", label: "Negative rheumatoid factor (1 point)", type: 'select', options: casparOptions, defaultValue: 0, validation: getValidationSchema('select', casparOptions) },
-      { id: "dactylitis", label: "Dactylitis (current or past) (1 point)", type: 'select', options: casparOptions, defaultValue: 0, validation: getValidationSchema('select', casparOptions) },
-      { id: "radiological_evidence", label: "Radiological evidence of juxta-articular new bone formation (1 point)", type: 'select', options: casparOptions, defaultValue: 0, validation: getValidationSchema('select', casparOptions) }
+      { id: "current_psoriasis", label: "Current Psoriasis (2 points)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "personal_hx_psoriasis", label: "Personal History of Psoriasis (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "family_hx_psoriasis", label: "Family History of Psoriasis (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "nail_lesions", label: "Nail lesions (onycholysis, pitting, hyperkeratosis) (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "rf_negative", label: "Negative rheumatoid factor (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "dactylitis", label: "Dactylitis (current or past) (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) },
+      { id: "radiological_evidence", label: "Radiological evidence of juxta-articular new bone formation (1 point)", type: 'select', options: yesNoOptions, defaultValue: 0, validation: getValidationSchema('select', yesNoOptions) }
     ]
   }
 ];
@@ -53,7 +47,13 @@ export const casparCriteriaTool: Tool = {
   calculationLogic: (inputs) => {
     const entryCriterion = Number(inputs.caspar_entry) === 1;
 
-    const psoriasisScore = Number(inputs.psoriasis) || 0;
+    let psoriasisScore = 0;
+    if (Number(inputs.current_psoriasis)) {
+        psoriasisScore = 2;
+    } else if (Number(inputs.personal_hx_psoriasis) || Number(inputs.family_hx_psoriasis)) {
+        psoriasisScore = 1;
+    }
+    
     const nailScore = Number(inputs.nail_lesions) || 0;
     const rfScore = Number(inputs.rf_negative) || 0;
     const dactylitisScore = Number(inputs.dactylitis) || 0;
@@ -67,7 +67,7 @@ export const casparCriteriaTool: Tool = {
     interpretation += `Entry criterion (inflammatory articular disease) is ${entryCriterion ? 'MET' : 'NOT MET'}.\n`;
     interpretation += `Score from other criteria: ${totalScore} (Requires ≥3).\n`;
     if (meetsCriteria) {
-      interpretation += "The criteria for Psoriatic Arthritis are met (Sensitivity ~91%, Specificity ~99%).";
+      interpretation += "The criteria for Psoriatic Arthritis are met (Sensitivity ~91.4%, Specificity ~98.7%).";
     } else {
       interpretation += "The criteria for Psoriatic Arthritis are not met.";
     }
