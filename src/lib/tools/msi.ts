@@ -1,3 +1,4 @@
+
 import type { Tool, InputConfig, InputOption, FormSectionConfig } from '../types';
 import { Palette } from 'lucide-react';
 import { getValidationSchema } from '../toolValidation';

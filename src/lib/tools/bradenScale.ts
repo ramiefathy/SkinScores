@@ -1,3 +1,4 @@
+
 import type { Tool, InputConfig, InputOption, FormSectionConfig, InputGroupConfig } from '../types';
 import { Activity } from 'lucide-react';
 import { getValidationSchema } from '../toolValidation';

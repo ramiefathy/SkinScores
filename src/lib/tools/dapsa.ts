@@ -1,3 +1,4 @@
+
 import type { Tool, InputConfig, InputOption, FormSectionConfig } from '../types';
 import { HeartPulse } from 'lucide-react';
 import { getValidationSchema } from '../toolValidation';
