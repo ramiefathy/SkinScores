@@ -121,16 +121,20 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <Link href="/" passHref>
               <SidebarMenuButton isActive={pathname === '/'} asChild>
-                <span><Home /></span>
-                <span>Home</span>
+                <span>
+                  <Home />
+                  <span>Home</span>
+                </span>
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <Link href="/tools" passHref>
               <SidebarMenuButton isActive={pathname === '/tools'} asChild>
-                <span><Book /></span>
-                <span>Browse All Tools</span>
+                <span>
+                  <Book />
+                  <span>Browse All Tools</span>
+                </span>
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
@@ -145,8 +149,8 @@ export function AppSidebar() {
                         <Link href={`/?toolId=${tool.id}`} passHref>
                             <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
                                 <span>
-                                <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
-                                <span className="truncate">{tool.name}</span>
+                                    <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
+                                    <span className="truncate">{tool.name}</span>
                                 </span>
                             </SidebarMenuSubButton>
                         </Link>
@@ -167,8 +171,8 @@ export function AppSidebar() {
                                 <Link href={`/?toolId=${tool.id}`} passHref>
                                 <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
                                     <span>
-                                    <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
-                                    <span className="truncate">{tool.name}</span>
+                                        <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
+                                        <span className="truncate">{tool.name}</span>
                                     </span>
                                 </SidebarMenuSubButton>
                                 </Link>
@@ -186,8 +190,10 @@ export function AppSidebar() {
         <div className="p-2 space-y-1">
             <SidebarMenuButton asChild>
                 <Link href="#">
+                  <span>
                     <Settings />
                     <span>Settings</span>
+                  </span>
                 </Link>
             </SidebarMenuButton>
         </div>
