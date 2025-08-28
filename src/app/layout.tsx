@@ -1,13 +1,8 @@
 
-import type { Metadata } from 'next';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
+import { Providers } from '@/components/layout/Providers';
 import Script from 'next/script';
-
-export const metadata: Metadata = {
-  title: 'SkinScores - Clinical Scoring Tools',
-  description: 'A collection of dermatological scoring tools with local calculation.',
-};
+import React from 'react';
 
 export default function RootLayout({
   children,
@@ -29,8 +24,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        {children}
-        <Toaster />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
