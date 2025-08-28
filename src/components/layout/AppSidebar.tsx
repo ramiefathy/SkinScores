@@ -27,6 +27,7 @@ import {
 import { toolData } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
 import { Input } from '../ui/input';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const RECENT_TOOLS_STORAGE_KEY = 'skinscore_recently_used_tools';
 
@@ -91,7 +92,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
             <div className="group-data-[collapsible=icon]:hidden">
-                <h1 className="text-2xl font-bold text-sidebar-primary">SkinScores</h1>
+                <h1 className="text-3xl font-bold text-sidebar-primary">SkinScores</h1>
                 <p className="text-xs text-sidebar-foreground/70">Clinical Scoring Tools</p>
             </div>
         </div>
@@ -113,7 +114,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link href="/" passHref>
-              <SidebarMenuButton isActive={pathname === '/'} asChild>
+              <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
                 <span>
                   <span>Home</span>
                 </span>
@@ -139,7 +140,7 @@ export function AppSidebar() {
                         <SidebarMenuItem key={tool.id}>
                         <Link href={`/?toolId=${tool.id}`} passHref>
                             <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                <span className="truncate">{tool.name}</span>
+                                <span>{tool.name}</span>
                             </SidebarMenuSubButton>
                         </Link>
                         </SidebarMenuItem>
@@ -148,25 +149,32 @@ export function AppSidebar() {
                 </SidebarGroupContent>
             </SidebarGroup>
         )}
+        
+        <div className="px-2">
+            <Accordion type="multiple" className="w-full">
+                {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
+                    <AccordionItem value={condition} key={condition} className="border-none">
+                        <AccordionTrigger className="py-2 px-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline">
+                            {condition}
+                        </AccordionTrigger>
+                        <AccordionContent className="pl-4 pt-1 pb-1">
+                             <SidebarMenuSub>
+                                {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
+                                    <SidebarMenuItem key={tool.id}>
+                                        <Link href={`/?toolId=${tool.id}`} passHref>
+                                            <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
+                                                <span className="truncate">{tool.name}</span>
+                                            </SidebarMenuSubButton>
+                                        </Link>
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenuSub>
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </div>
 
-        {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
-            <SidebarGroup key={condition}>
-                <SidebarGroupLabel>{condition}</SidebarGroupLabel>
-                <SidebarGroupContent>
-                    <SidebarMenuSub>
-                        {tools.map(tool => (
-                            <SidebarMenuItem key={tool.id}>
-                                <Link href={`/?toolId=${tool.id}`} passHref>
-                                <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                    <span className="truncate">{tool.name}</span>
-                                </SidebarMenuSubButton>
-                                </Link>
-                            </SidebarMenuItem>
-                        ))}
-                    </SidebarMenuSub>
-                </SidebarGroupContent>
-            </SidebarGroup>
-        ))}
 
         </SidebarMenu>
       </SidebarContent>
