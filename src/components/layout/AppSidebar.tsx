@@ -114,19 +114,15 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link href="/" passHref>
-              <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
-                <span>
-                  <span>Home</span>
-                </span>
+              <SidebarMenuButton isActive={pathname === '/' && !selectedToolId}>
+                Home
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <Link href="/tools" passHref>
-              <SidebarMenuButton isActive={pathname === '/tools'} asChild>
-                <span>
-                  <span>Browse All Tools</span>
-                </span>
+              <SidebarMenuButton isActive={pathname === '/tools'}>
+                Browse All Tools
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
@@ -139,8 +135,8 @@ export function AppSidebar() {
                     {recentToolDetails.map((tool) => (
                         <SidebarMenuItem key={tool.id}>
                         <Link href={`/?toolId=${tool.id}`} passHref>
-                            <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                <span>{tool.name}</span>
+                            <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
+                                {tool.name}
                             </SidebarMenuSubButton>
                         </Link>
                         </SidebarMenuItem>
@@ -162,8 +158,8 @@ export function AppSidebar() {
                                 {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
                                     <SidebarMenuItem key={tool.id}>
                                         <Link href={`/?toolId=${tool.id}`} passHref>
-                                            <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                                <span className="truncate">{tool.name}</span>
+                                            <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
+                                                {tool.name}
                                             </SidebarMenuSubButton>
                                         </Link>
                                     </SidebarMenuItem>
@@ -181,13 +177,11 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="p-2 space-y-1">
-            <SidebarMenuButton asChild>
-                <Link href="#">
-                  <span>
-                    <span>Settings</span>
-                  </span>
-                </Link>
-            </SidebarMenuButton>
+            <Link href="#">
+              <SidebarMenuButton>
+                <span>Settings</span>
+              </SidebarMenuButton>
+            </Link>
         </div>
       </SidebarFooter>
     </>
