@@ -1,4 +1,5 @@
-
+// This component is no longer used and its contents have been moved to the new sidebar.
+// It can be safely deleted in a future step.
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';

@@ -1,8 +1,7 @@
 
 "use client";
 
-import React, { useState, useMemo, useCallback } from 'react';
-import Link from 'next/link';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { toolData } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
@@ -10,8 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from '@/components/ui/input';
-import { ScrollText, FileQuestion, Link as LinkIcon, Stethoscope, Search, LayoutGrid } from 'lucide-react';
+import { FileQuestion, ExternalLink, Stethoscope, Search } from 'lucide-react';
 import { AdBanner } from '@/components/AdBanner';
+import { PageWrapper } from '@/components/layout/PageWrapper';
 
 export default function AllToolsPage() {
   const router = useRouter();
@@ -49,34 +49,15 @@ export default function AllToolsPage() {
     return Object.entries(groupedToolsForList).sort((a, b) => a[0].localeCompare(b[0]));
   }, [groupedToolsForList]);
 
-  const currentYear = useMemo(() => new Date().getFullYear().toString(), []);
-
-
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="bg-card border-b p-4 shadow-md sticky top-0 z-50">
-        <div className="container mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <LayoutGrid className="text-primary h-8 w-8"/>
-            <div>
-              <h1 className="text-3xl font-headline text-primary">SkinScores</h1>
-              <p className="text-xs text-muted-foreground">Clinical Scoring Tools</p>
-            </div>
-          </Link>
-           <Button variant="outline" asChild>
-            <Link href="/">Back to Calculator</Link>
-          </Button>
-        </div>
-      </header>
-
-      <main className="container mx-auto p-6 md:p-8 flex-grow">
-        <Card className="shadow-xl border mb-8">
+    <PageWrapper
+      title="All Scoring Tools"
+      description="Browse, search, and learn more about each available clinical scoring instrument."
+    >
+        <Card className="shadow-xl border">
           <CardHeader>
-            <CardTitle className="text-2xl font-headline flex items-center gap-2">
-              <ScrollText className="text-primary h-7 w-7" />All Available Scoring Tools
-            </CardTitle>
             <CardDescription>
-              Browse, search, and learn more about each scoring tool. Click "Use this Tool" to navigate to its calculator page.
+              Use the search bar to filter by name, condition, or keyword. Click on any tool to learn more or select "Use this Tool" to go directly to its calculator page.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -84,7 +65,7 @@ export default function AllToolsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search tools by name, acronym, condition, or keyword..."
+                placeholder="Search tools..."
                 className="pl-10 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -120,7 +101,7 @@ export default function AllToolsPage() {
                                             <li key={index}>
                                               {ref.startsWith('http') ?
                                                 <a href={ref} target="_blank" rel="noopener noreferrer" className="text-primary/90 hover:underline inline-flex items-center gap-1 break-all">
-                                                  {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <LinkIcon size={12}/>
+                                                  {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <ExternalLink size={12}/>
                                                 </a>
                                                 : <span className="break-all">{ref.length > 100 ? ref.substring(0,97) + '...' : ref}</span>
                                               }
@@ -166,7 +147,7 @@ export default function AllToolsPage() {
                                           <li key={index}>
                                             {ref.startsWith('http') ?
                                               <a href={ref} target="_blank" rel="noopener noreferrer" className="text-primary/90 hover:underline inline-flex items-center gap-1 break-all">
-                                                {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <LinkIcon size={12}/>
+                                                {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <ExternalLink size={12}/>
                                               </a>
                                               : <span className="break-all">{ref.length > 100 ? ref.substring(0,97) + '...' : ref}</span>
                                             }
@@ -188,12 +169,6 @@ export default function AllToolsPage() {
           </CardContent>
         </Card>
         <AdBanner />
-      </main>
-      <footer className="text-center p-6 border-t mt-auto">
-        <p className="text-sm text-muted-foreground">
-          SkinScores &copy; {currentYear}. For educational and informational purposes only. Consult a healthcare professional for medical advice.
-        </p>
-      </footer>
-    </div>
+    </PageWrapper>
   );
 }
