@@ -113,18 +113,14 @@ export function AppSidebar() {
 
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/" passHref>
-              <SidebarMenuButton isActive={pathname === '/' && !selectedToolId}>
-                Home
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton isActive={pathname === '/' && !selectedToolId}>
+              <Link href="/">Home</Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/tools" passHref>
-              <SidebarMenuButton isActive={pathname === '/tools'}>
-                Browse All Tools
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton isActive={pathname === '/tools'}>
+                <Link href="/tools">Browse All Tools</Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
 
         {recentToolDetails.length > 0 && !searchTerm && (
@@ -134,11 +130,9 @@ export function AppSidebar() {
                     <SidebarMenuSub>
                     {recentToolDetails.map((tool) => (
                         <SidebarMenuItem key={tool.id}>
-                        <Link href={`/?toolId=${tool.id}`} passHref>
                             <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
-                                {tool.name}
+                                <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
                             </SidebarMenuSubButton>
-                        </Link>
                         </SidebarMenuItem>
                     ))}
                     </SidebarMenuSub>
@@ -157,11 +151,9 @@ export function AppSidebar() {
                              <SidebarMenuSub>
                                 {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
                                     <SidebarMenuItem key={tool.id}>
-                                        <Link href={`/?toolId=${tool.id}`} passHref>
-                                            <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
-                                                {tool.name}
-                                            </SidebarMenuSubButton>
-                                        </Link>
+                                        <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
+                                            <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
+                                        </SidebarMenuSubButton>
                                     </SidebarMenuItem>
                                 ))}
                             </SidebarMenuSub>
@@ -177,11 +169,9 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="p-2 space-y-1">
-            <Link href="#">
-              <SidebarMenuButton>
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton>
+                <Link href="#">Settings</Link>
+            </SidebarMenuButton>
         </div>
       </SidebarFooter>
     </>
