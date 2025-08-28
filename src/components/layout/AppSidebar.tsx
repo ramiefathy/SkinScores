@@ -90,9 +90,8 @@ export function AppSidebar() {
     <>
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
-            <LayoutGrid className="size-8 text-sidebar-primary" />
             <div className="group-data-[collapsible=icon]:hidden">
-                <h1 className="text-xl font-bold text-sidebar-primary">SkinScores</h1>
+                <h1 className="text-2xl font-bold text-sidebar-primary">SkinScores</h1>
                 <p className="text-xs text-sidebar-foreground/70">Clinical Scoring Tools</p>
             </div>
         </div>
