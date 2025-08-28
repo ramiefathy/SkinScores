@@ -22,13 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutGrid,
-  Home,
   Search,
-  Book,
-  Clock,
-  Settings,
-  FolderKanban,
-  FileQuestion,
 } from 'lucide-react';
 import { toolData } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
@@ -122,7 +116,6 @@ export function AppSidebar() {
             <Link href="/" passHref>
               <SidebarMenuButton isActive={pathname === '/'} asChild>
                 <span>
-                  <Home />
                   <span>Home</span>
                 </span>
               </SidebarMenuButton>
@@ -132,7 +125,6 @@ export function AppSidebar() {
             <Link href="/tools" passHref>
               <SidebarMenuButton isActive={pathname === '/tools'} asChild>
                 <span>
-                  <Book />
                   <span>Browse All Tools</span>
                 </span>
               </SidebarMenuButton>
@@ -141,17 +133,14 @@ export function AppSidebar() {
 
         {recentToolDetails.length > 0 && !searchTerm && (
             <SidebarGroup>
-                <SidebarGroupLabel className="flex items-center"><Clock className="mr-2" /> Recently Used</SidebarGroupLabel>
+                <SidebarGroupLabel>Recently Used</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenuSub>
                     {recentToolDetails.map((tool) => (
                         <SidebarMenuItem key={tool.id}>
                         <Link href={`/?toolId=${tool.id}`} passHref>
                             <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                <span>
-                                    <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
-                                    <span className="truncate">{tool.name}</span>
-                                </span>
+                                <span className="truncate">{tool.name}</span>
                             </SidebarMenuSubButton>
                         </Link>
                         </SidebarMenuItem>
@@ -163,17 +152,14 @@ export function AppSidebar() {
 
         {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
             <SidebarGroup key={condition}>
-                <SidebarGroupLabel className="flex items-center"><FolderKanban className="mr-2"/>{condition}</SidebarGroupLabel>
+                <SidebarGroupLabel>{condition}</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenuSub>
                         {tools.map(tool => (
                             <SidebarMenuItem key={tool.id}>
                                 <Link href={`/?toolId=${tool.id}`} passHref>
                                 <SidebarMenuSubButton asChild isActive={selectedToolId === tool.id}>
-                                    <span>
-                                        <span data-slot="icon">{tool.icon ? <tool.icon/> : <FileQuestion/>}</span>
-                                        <span className="truncate">{tool.name}</span>
-                                    </span>
+                                    <span className="truncate">{tool.name}</span>
                                 </SidebarMenuSubButton>
                                 </Link>
                             </SidebarMenuItem>
@@ -191,7 +177,6 @@ export function AppSidebar() {
             <SidebarMenuButton asChild>
                 <Link href="#">
                   <span>
-                    <Settings />
                     <span>Settings</span>
                   </span>
                 </Link>
