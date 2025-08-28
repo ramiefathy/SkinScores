@@ -21,7 +21,6 @@ import {
   SidebarMenuSubButton,
 } from '@/components/ui/sidebar';
 import {
-  LayoutGrid,
   Search,
 } from 'lucide-react';
 import { toolData } from '@/lib/tools';
@@ -113,12 +112,12 @@ export function AppSidebar() {
 
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname === '/' && !selectedToolId}>
-              <Link href="/">Home</Link>
+            <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
+                <Link href="/">Home</Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname === '/tools'}>
+            <SidebarMenuButton isActive={pathname === '/tools'} asChild>
                 <Link href="/tools">Browse All Tools</Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -130,7 +129,7 @@ export function AppSidebar() {
                     <SidebarMenuSub>
                     {recentToolDetails.map((tool) => (
                         <SidebarMenuItem key={tool.id}>
-                            <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
+                            <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
                                 <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
                             </SidebarMenuSubButton>
                         </SidebarMenuItem>
@@ -151,7 +150,7 @@ export function AppSidebar() {
                              <SidebarMenuSub>
                                 {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
                                     <SidebarMenuItem key={tool.id}>
-                                        <SidebarMenuSubButton isActive={selectedToolId === tool.id}>
+                                        <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
                                             <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
                                         </SidebarMenuSubButton>
                                     </SidebarMenuItem>
@@ -169,7 +168,7 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="p-2 space-y-1">
-            <SidebarMenuButton>
+            <SidebarMenuButton asChild>
                 <Link href="#">Settings</Link>
             </SidebarMenuButton>
         </div>
