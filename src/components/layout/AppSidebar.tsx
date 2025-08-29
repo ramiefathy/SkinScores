@@ -23,75 +23,42 @@ import {
 import {
   Search,
 } from 'lucide-react';
-import { toolData } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
 import { Input } from '../ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-
-const RECENT_TOOLS_STORAGE_KEY = 'skinscore_recently_used_tools';
+import { useToolContext } from '@/hooks/useToolContext';
 
 export function AppSidebar() {
   const { isMobile } = useSidebar();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [recentlyUsed, setRecentlyUsed] = React.useState<string[]>([]);
-  const [isClient, setIsClient] = React.useState(false);
-  
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
 
+  const { groupedTools, recentToolDetails, isClient } = useToolContext();
+  
   const selectedToolId = React.useMemo(() => {
     return searchParams.get('toolId');
   }, [searchParams]);
 
-  React.useEffect(() => {
-    if (isClient) {
-      const getRecentTools = () => {
-        const stored = localStorage.getItem(RECENT_TOOLS_STORAGE_KEY);
-        if (stored) {
-          setRecentlyUsed(JSON.parse(stored));
-        }
-      };
-      getRecentTools();
-  
-      // Listen for storage changes from other tabs/windows
-      window.addEventListener('storage', getRecentTools);
-  
-      return () => {
-        window.removeEventListener('storage', getRecentTools);
-      };
+  const filteredTools = React.useMemo(() => {
+    if (!searchTerm) {
+      return groupedTools;
     }
-  }, [isClient]);
-
-
-  const groupedTools = React.useMemo(() => {
-    let tools = toolData;
-    if (searchTerm) {
-        const lowerSearchTerm = searchTerm.toLowerCase();
-        tools = toolData.filter(tool =>
-            tool.name.toLowerCase().includes(lowerSearchTerm) ||
-            (tool.acronym && tool.acronym.toLowerCase().includes(lowerSearchTerm)) ||
-            tool.condition.toLowerCase().includes(lowerSearchTerm) ||
-            (tool.keywords && tool.keywords.some(keyword => keyword.toLowerCase().includes(lowerSearchTerm)))
-        );
-    }
-
-    return tools.reduce((acc, tool) => {
-      const condition = tool.condition || 'Other';
-      if (!acc[condition]) {
-        acc[condition] = [];
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    const filtered: Record<string, Tool[]> = {};
+    for (const condition in groupedTools) {
+      const matchingTools = groupedTools[condition].filter(tool =>
+        tool.name.toLowerCase().includes(lowerSearchTerm) ||
+        (tool.acronym && tool.acronym.toLowerCase().includes(lowerSearchTerm)) ||
+        tool.condition.toLowerCase().includes(lowerSearchTerm) ||
+        (tool.keywords && tool.keywords.some(keyword => keyword.toLowerCase().includes(lowerSearchTerm)))
+      );
+      if (matchingTools.length > 0) {
+        filtered[condition] = matchingTools;
       }
-      acc[condition].push(tool);
-      return acc;
-    }, {} as Record<string, Tool[]>);
-  }, [searchTerm]);
-
-  const recentToolDetails = React.useMemo(() => {
-    if (!isClient) return [];
-    return recentlyUsed.map(id => toolData.find(t => t.id === id)).filter(Boolean) as Tool[];
-  }, [recentlyUsed, isClient]);
+    }
+    return filtered;
+  }, [searchTerm, groupedTools]);
 
 
   return (
@@ -121,9 +88,9 @@ export function AppSidebar() {
         <SidebarMenu>
           {!isClient ? (
             <>
-              <li className="group/menu-item relative"><SidebarMenuSkeleton showIcon={false} /></li>
-              <li className="group/menu-item relative"><SidebarMenuSkeleton showIcon={false} /></li>
-              <li className="group/menu-item relative"><SidebarMenuSkeleton showIcon={false} /></li>
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
             </>
            ) : (
             <>
@@ -157,7 +124,7 @@ export function AppSidebar() {
             
             <div className="px-2">
                 <Accordion type="multiple" className="w-full">
-                    {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
+                    {Object.entries(filteredTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
                         <AccordionItem value={condition} key={condition} className="border-none">
                             <AccordionTrigger className="py-2 px-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline">
                                 {condition}

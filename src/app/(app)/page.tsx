@@ -1,23 +1,22 @@
 
 "use client";
 
-import React, { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { toolData } from '@/lib/tools';
-import type { Tool, CalculationResult, InputConfig } from '@/lib/types';
+import React, { useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useToolContext } from '@/hooks/useToolContext';
 import { ToolForm } from '@/components/dermscore/ToolForm';
 import { ResultsDisplay } from '@/components/dermscore/ResultsDisplay';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { FileText, Info, CheckSquare, Zap, ScrollText, List, ExternalLink } from 'lucide-react';
+import { Info, CheckSquare, List, ExternalLink, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { AdBanner } from '@/components/AdBanner';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-
-const RECENT_TOOLS_STORAGE_KEY = 'skinscore_recently_used_tools';
+import type { Tool, CalculationResult, InputConfig } from '@/lib/types';
+import { toolData } from '@/lib/tools';
 
 
 const getSourceTypeBadgeProps = (sourceType: Tool['sourceType']): { variant?: "default" | "secondary" | "destructive" | "outline", className?: string } => {
@@ -34,69 +33,31 @@ const getSourceTypeBadgeProps = (sourceType: Tool['sourceType']): { variant?: "d
 };
 
 function SkinScorePageContent() {
-  const router = useRouter();
+  const { 
+    selectedTool, 
+    calculationResult,
+    setCalculationResult, 
+    handleToolSelect, 
+    popularTools,
+    isClient,
+    setSelectedTool,
+  } = useToolContext();
   const searchParams = useSearchParams();
 
-  const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
-  const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const selectedTool = useMemo(() => {
-    return toolData.find(tool => tool.id === selectedToolId) || null;
-  }, [selectedToolId]);
-
-  const handleToolSelect = useCallback((toolId: string | null) => {
-    const currentUrl = new URL(window.location.href);
-    if (toolId) {
-      setSelectedToolId(toolId);
-      setCalculationResult(null);
-
-      // Update recently used tools in localStorage
-      if (typeof window !== 'undefined') {
-        const storedRecent = localStorage.getItem(RECENT_TOOLS_STORAGE_KEY);
-        const recentlyUsedTools = storedRecent ? JSON.parse(storedRecent) : [];
-        const updatedRecent = [toolId, ...recentlyUsedTools.filter((id: string) => id !== toolId)].slice(0, 5);
-        localStorage.setItem(RECENT_TOOLS_STORAGE_KEY, JSON.stringify(updatedRecent));
-        // Dispatch a storage event to notify the sidebar
-        window.dispatchEvent(new Event('storage'));
-      }
-      
-      currentUrl.searchParams.set('toolId', toolId);
-    } else {
-      setSelectedToolId(null);
-      setCalculationResult(null);
-      currentUrl.searchParams.delete('toolId');
-    }
-    router.replace(currentUrl.toString(), { scroll: false });
-    
-    // Scroll to top of content area
-    document.querySelector('[data-id="page-wrapper-content"]')?.scrollTo(0, 0);
-
-  }, [router]);
-  
-  useEffect(() => {
-    if (isClient) {
+    if(isClient) {
       const toolIdFromQuery = searchParams.get('toolId');
-      if (toolIdFromQuery && toolIdFromQuery !== selectedToolId) {
-        const toolExists = toolData.some(tool => tool.id === toolIdFromQuery);
-        if (toolExists) {
-            handleToolSelect(toolIdFromQuery);
-        } else {
-           const newUrl = new URL(window.location.href);
-           newUrl.searchParams.delete('toolId');
-           router.replace(newUrl.toString(), { scroll: false });
+      if (toolIdFromQuery) {
+        if (toolIdFromQuery !== selectedTool?.id) {
+            const tool = toolData.find(t => t.id === toolIdFromQuery);
+            setSelectedTool(tool || null);
         }
-      } else if (!toolIdFromQuery && selectedToolId) {
-        // This case handles when the user navigates from a tool page back to the home page (e.g. by clicking the "Home" button in the sidebar)
-        // We deselect the tool.
-        handleToolSelect(null);
+      } else {
+        setSelectedTool(null);
       }
     }
-  }, [isClient, searchParams, selectedToolId, handleToolSelect, router]);
+  }, [isClient, searchParams, selectedTool, setSelectedTool]);
+
 
   const handleCalculate = (inputs: Record<string, any>) => {
     if (selectedTool && selectedTool.calculationLogic && selectedTool.displayType !== 'staticList') {
@@ -109,18 +70,10 @@ function SkinScorePageContent() {
     }
   };
 
-  const popularTools: Tool[] = useMemo(() => {
-    const popularIds = ['pasi', 'dlqi', 'abcde_melanoma', 'easi', 'scorad'];
-    return toolData.filter(tool => popularIds.includes(tool.id));
-  }, []);
-
   const badgeProps = selectedTool ? getSourceTypeBadgeProps(selectedTool.sourceType) : {};
 
   return (
-    <PageWrapper
-        title={selectedTool ? selectedTool.name : "SkinScores Home"}
-        description={selectedTool ? selectedTool.condition : "Select a clinical scoring tool from the sidebar to begin."}
-    >
+    <PageWrapper>
       <div className="space-y-8">
         {!selectedTool && (
           <Card className="shadow-xl border">
@@ -129,13 +82,14 @@ function SkinScorePageContent() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground text-base leading-relaxed">
-                Use the sidebar to navigate through categories and select a clinical scoring tool. All calculations are performed locally in your browser, ensuring data privacy.
+                Use the header dropdowns or the sidebar to navigate through categories and select a clinical scoring tool. All calculations are performed locally in your browser, ensuring data privacy.
               </p>
               <Separator />
               <div>
                 <h3 className="text-lg font-semibold mb-3 text-foreground/90">Popular Tools</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {popularTools.map(tool => {
+                     const ToolIcon = tool.icon || Zap;
                     return (
                       <Button
                         key={tool.id}
@@ -143,6 +97,7 @@ function SkinScorePageContent() {
                         className="w-full justify-start h-auto py-3 px-4 text-left"
                         onClick={() => handleToolSelect(tool.id)}
                       >
+                         <ToolIcon className="h-5 w-5 mr-3 shrink-0 text-primary/80" />
                         <div className="min-w-0 flex-1">
                           <div className="font-medium text-foreground whitespace-normal break-words">{tool.name}</div>
                           <div className="text-xs text-muted-foreground whitespace-normal break-words">{tool.condition}</div>
@@ -281,9 +236,9 @@ function SkinScorePageContent() {
 }
 
 export default function SkinScorePage() {
-  return (
-    <Suspense>
-      <SkinScorePageContent />
-    </Suspense>
-  );
-}
+    return (
+      <Suspense>
+        <SkinScorePageContent />
+      </Suspense>
+    );
+  }
