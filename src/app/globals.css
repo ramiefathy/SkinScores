@@ -36,7 +36,7 @@ body {
     --radius: 0.5rem;
 
     /* Sidebar Colors - Light Theme */
-    --sidebar-background: 197 45% 96%;
+    --sidebar-background: 197 40% 95%;
     --sidebar-foreground: 197 20% 25%;
     --sidebar-primary: 188 42% 60%;
     --sidebar-primary-foreground: 188 100% 10%;
@@ -73,7 +73,7 @@ body {
     --chart-5: 340 75% 55%;
 
     /* Sidebar Colors - Dark Theme */
-    --sidebar-background: 197 15% 14%;
+    --sidebar-background: 197 15% 12%;
     --sidebar-foreground: 197 50% 88%;
     --sidebar-primary: 188 42% 65%;
     --sidebar-primary-foreground: 188 100% 10%;

@@ -41,7 +41,7 @@ export function AppHeader({ isMobile }: { isMobile: boolean }) {
     const description = selectedTool ? selectedTool.condition : "Select a clinical scoring tool to begin.";
 
     return (
-        <header className="sticky top-0 z-20 flex h-auto min-h-[4rem] items-start gap-2 bg-sidebar px-4 pt-2 pb-2 backdrop-blur-sm sm:h-16 sm:items-center sm:px-6 sm:pb-2">
+        <header className="sticky top-0 z-20 flex h-auto min-h-[4rem] items-start gap-2 bg-sidebar px-4 pt-2 pb-2 sm:h-16 sm:items-center sm:px-6 sm:pb-2">
             <div className="flex items-center gap-2">
                 {isMobile && <SidebarTrigger />}
                 <div className="flex-1">
