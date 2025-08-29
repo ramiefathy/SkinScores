@@ -121,9 +121,9 @@ export function AppSidebar() {
         <SidebarMenu>
           {!isClient ? (
             <>
-              <SidebarMenuSkeleton showIcon={false} />
-              <SidebarMenuSkeleton showIcon={false} />
-              <SidebarMenuSkeleton showIcon={false} />
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
             </>
            ) : (
             <>
