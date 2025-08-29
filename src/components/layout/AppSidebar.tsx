@@ -12,7 +12,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarFooter,
-  SidebarTrigger,
   useSidebar,
   SidebarGroup,
   SidebarGroupLabel,
