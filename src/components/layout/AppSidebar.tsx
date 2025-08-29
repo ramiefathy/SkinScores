@@ -18,6 +18,7 @@ import {
   SidebarGroupContent,
   SidebarMenuSub,
   SidebarMenuSubButton,
+  SidebarMenuSkeleton,
 } from '@/components/ui/sidebar';
 import {
   Search,
@@ -35,27 +36,34 @@ export function AppSidebar() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [recentlyUsed, setRecentlyUsed] = React.useState<string[]>([]);
+  const [isClient, setIsClient] = React.useState(false);
   
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const selectedToolId = React.useMemo(() => {
     return searchParams.get('toolId');
   }, [searchParams]);
 
   React.useEffect(() => {
-    const getRecentTools = () => {
-      const stored = localStorage.getItem(RECENT_TOOLS_STORAGE_KEY);
-      if (stored) {
-        setRecentlyUsed(JSON.parse(stored));
-      }
-    };
-    getRecentTools();
-
-    // Listen for storage changes from other tabs/windows
-    window.addEventListener('storage', getRecentTools);
-
-    return () => {
-      window.removeEventListener('storage', getRecentTools);
-    };
-  }, []);
+    if (isClient) {
+      const getRecentTools = () => {
+        const stored = localStorage.getItem(RECENT_TOOLS_STORAGE_KEY);
+        if (stored) {
+          setRecentlyUsed(JSON.parse(stored));
+        }
+      };
+      getRecentTools();
+  
+      // Listen for storage changes from other tabs/windows
+      window.addEventListener('storage', getRecentTools);
+  
+      return () => {
+        window.removeEventListener('storage', getRecentTools);
+      };
+    }
+  }, [isClient]);
 
 
   const groupedTools = React.useMemo(() => {
@@ -81,8 +89,9 @@ export function AppSidebar() {
   }, [searchTerm]);
 
   const recentToolDetails = React.useMemo(() => {
+    if (!isClient) return [];
     return recentlyUsed.map(id => toolData.find(t => t.id === id)).filter(Boolean) as Tool[];
-  }, [recentlyUsed]);
+  }, [recentlyUsed, isClient]);
 
 
   return (
@@ -110,58 +119,66 @@ export function AppSidebar() {
         </div>
 
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
-                <Link href="/">Home</Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton isActive={pathname === '/tools'} asChild>
-                <Link href="/tools">Browse All Tools</Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-        {recentToolDetails.length > 0 && !searchTerm && (
-            <SidebarGroup>
-                <SidebarGroupLabel>Recently Used</SidebarGroupLabel>
-                <SidebarGroupContent>
-                    <SidebarMenuSub>
-                    {recentToolDetails.map((tool) => (
-                        <SidebarMenuItem key={tool.id}>
-                            <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
-                                <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
-                            </SidebarMenuSubButton>
-                        </SidebarMenuItem>
+          {!isClient ? (
+            <>
+              <SidebarMenuSkeleton showIcon={false} />
+              <SidebarMenuSkeleton showIcon={false} />
+              <SidebarMenuSkeleton showIcon={false} />
+            </>
+           ) : (
+            <>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
+                    <Link href="/">Home</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/tools'} asChild>
+                    <Link href="/tools">Browse All Tools</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+    
+            {recentToolDetails.length > 0 && !searchTerm && (
+                <SidebarGroup>
+                    <SidebarGroupLabel>Recently Used</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenuSub>
+                        {recentToolDetails.map((tool) => (
+                            <SidebarMenuItem key={tool.id}>
+                                <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
+                                    <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
+                                </SidebarMenuSubButton>
+                            </SidebarMenuItem>
+                        ))}
+                        </SidebarMenuSub>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            )}
+            
+            <div className="px-2">
+                <Accordion type="multiple" className="w-full">
+                    {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
+                        <AccordionItem value={condition} key={condition} className="border-none">
+                            <AccordionTrigger className="py-2 px-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline">
+                                {condition}
+                            </AccordionTrigger>
+                            <AccordionContent className="pl-4 pt-1 pb-1">
+                                 <SidebarMenuSub>
+                                    {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
+                                        <SidebarMenuItem key={tool.id}>
+                                            <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
+                                                <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
+                                            </SidebarMenuSubButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenuSub>
+                            </AccordionContent>
+                        </AccordionItem>
                     ))}
-                    </SidebarMenuSub>
-                </SidebarGroupContent>
-            </SidebarGroup>
-        )}
-        
-        <div className="px-2">
-            <Accordion type="multiple" className="w-full">
-                {Object.entries(groupedTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
-                    <AccordionItem value={condition} key={condition} className="border-none">
-                        <AccordionTrigger className="py-2 px-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline">
-                            {condition}
-                        </AccordionTrigger>
-                        <AccordionContent className="pl-4 pt-1 pb-1">
-                             <SidebarMenuSub>
-                                {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
-                                    <SidebarMenuItem key={tool.id}>
-                                        <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
-                                            <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
-                                        </SidebarMenuSubButton>
-                                    </SidebarMenuItem>
-                                ))}
-                            </SidebarMenuSub>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </div>
-
-
+                </Accordion>
+            </div>
+          </>
+          )}
         </SidebarMenu>
       </SidebarContent>
 
