@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useMemo, useEffect, useCallback, Suspense } from 'react';
@@ -135,7 +136,6 @@ function SkinScorePageContent() {
                 <h3 className="text-lg font-semibold mb-3 text-foreground/90">Popular Tools</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {popularTools.map(tool => {
-                    const ToolIcon = tool.icon || Zap;
                     return (
                       <Button
                         key={tool.id}
@@ -143,7 +143,6 @@ function SkinScorePageContent() {
                         className="w-full justify-start h-auto py-3 px-4 text-left"
                         onClick={() => handleToolSelect(tool.id)}
                       >
-                        <ToolIcon className="h-5 w-5 mr-3 shrink-0 text-primary/80" />
                         <div className="min-w-0 flex-1">
                           <div className="font-medium text-foreground whitespace-normal break-words">{tool.name}</div>
                           <div className="text-xs text-muted-foreground whitespace-normal break-words">{tool.condition}</div>
