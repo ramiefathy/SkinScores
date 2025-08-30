@@ -11,7 +11,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ToolProvider>
       <SidebarProvider>
-        <Sidebar>
+        <Sidebar collapsible="icon">
           <AppSidebar />
         </Sidebar>
         <SidebarInset>

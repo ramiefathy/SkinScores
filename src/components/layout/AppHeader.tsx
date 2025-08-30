@@ -43,7 +43,7 @@ export function AppHeader({ isMobile }: { isMobile: boolean }) {
     return (
         <header className="sticky top-0 z-20 flex h-auto min-h-[4rem] items-start gap-2 bg-sidebar px-4 pt-2 pb-2 sm:h-16 sm:items-center sm:px-6 sm:pb-2">
             <div className="flex items-center gap-2">
-                {isMobile && <SidebarTrigger />}
+                <SidebarTrigger />
                 <div className="flex-1">
                     <h1 className="text-lg font-semibold tracking-tight truncate pr-4">{title}</h1>
                     <p className="text-xs text-muted-foreground truncate pr-4 hidden sm:block">{description}</p>
