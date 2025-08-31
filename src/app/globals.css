@@ -9,7 +9,7 @@ body {
 
 @layer base {
   :root {
-    --background: 197 56% 94%; /* Light Desaturated Blue */
+    --background: 0 0% 100%; /* White */
     --foreground: 197 20% 20%; /* Darker Blue/Gray for text on light blue bg */
     --card: 0 0% 100%;
     --card-foreground: 197 20% 20%;
