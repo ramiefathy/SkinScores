@@ -34,7 +34,7 @@ export function AppSidebar() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = React.useState('');
 
-  const { groupedTools, recentToolDetails, isClient } = useToolContext();
+  const { groupedTools, recentToolDetails } = useToolContext();
   
   const selectedToolId = React.useMemo(() => {
     return searchParams.get('toolId');
@@ -86,14 +86,6 @@ export function AppSidebar() {
         </div>
 
         <SidebarMenu>
-          {!isClient ? (
-            <>
-              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
-              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
-              <SidebarMenuItem><SidebarMenuSkeleton showIcon={false} /></SidebarMenuItem>
-            </>
-           ) : (
-            <>
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={pathname === '/' && !selectedToolId} asChild>
                     <Link href="/">Home</Link>
@@ -145,7 +137,6 @@ export function AppSidebar() {
                 </Accordion>
             </div>
           </>
-          )}
         </SidebarMenu>
       </SidebarContent>
 

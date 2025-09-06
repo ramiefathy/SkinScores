@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect, Suspense } from 'react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useSearchParams } from 'next/navigation';
 import { useToolContext } from '@/hooks/useToolContext';
 import { ToolForm } from '@/components/dermscore/ToolForm';
@@ -37,43 +38,34 @@ function SkinScorePageContent() {
     selectedTool, 
     calculationResult,
     setCalculationResult, 
-    isClient,
     setSelectedTool,
   } = useToolContext();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if(isClient) {
-      const toolIdFromQuery = searchParams.get('toolId');
-      if (toolIdFromQuery) {
-        if (toolIdFromQuery !== selectedTool?.id) {
-            const tool = toolData.find(t => t.id === toolIdFromQuery);
-            setSelectedTool(tool || null);
-        }
-      } else {
-        if (selectedTool) {
-            setSelectedTool(null);
-        }
+    const toolIdFromQuery = searchParams.get('toolId');
+    if (toolIdFromQuery) {
+      if (toolIdFromQuery !== selectedTool?.id) {
+          const tool = toolData.find(t => t.id === toolIdFromQuery);
+          setSelectedTool(tool || null);
+      }
+    } else {
+      if (selectedTool) {
+          setSelectedTool(null);
       }
     }
-  }, [isClient, searchParams, selectedTool, setSelectedTool]);
+  }, [searchParams, selectedTool, setSelectedTool]);
 
 
   const handleCalculate = (inputs: Record<string, any>) => {
     if (selectedTool && selectedTool.calculationLogic && selectedTool.displayType !== 'staticList') {
       const result = selectedTool.calculationLogic(inputs);
       setCalculationResult(result);
-      if (isClient) {
-        const resultsElement = document.getElementById('results-section');
-        resultsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      const resultsElement = document.getElementById('results-section');
+      resultsElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
   
-  if (!isClient) {
-      return null;
-  }
-
   if (!selectedTool) {
     return <HomePage />;
   }
@@ -207,7 +199,7 @@ function SkinScorePageContent() {
 
 export default function Page() {
     return (
-      <Suspense>
+      <Suspense fallback={<LoadingSpinner />}>
         <SkinScorePageContent />
       </Suspense>
     );

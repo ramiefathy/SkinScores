@@ -13,7 +13,6 @@ interface ToolContextType {
   setSelectedTool: React.Dispatch<React.SetStateAction<Tool | null>>;
   calculationResult: CalculationResult | null;
   setCalculationResult: React.Dispatch<React.SetStateAction<CalculationResult | null>>;
-  isClient: boolean;
   popularTools: Tool[];
   groupedTools: Record<string, Tool[]>;
   recentToolDetails: Tool[];
@@ -26,11 +25,9 @@ export function ToolProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
-  const [isClient, setIsClient] = useState(false);
   const [recentlyUsed, setRecentlyUsed] = useState<string[]>([]);
 
   useEffect(() => {
-    setIsClient(true);
     const getRecentTools = () => {
         const stored = localStorage.getItem(RECENT_TOOLS_STORAGE_KEY);
         if (stored) {
@@ -86,9 +83,8 @@ export function ToolProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const recentToolDetails = useMemo(() => {
-    if (!isClient) return [];
     return recentlyUsed.map(id => toolData.find(t => t.id === id)).filter(Boolean) as Tool[];
-  }, [recentlyUsed, isClient]);
+  }, [recentlyUsed]);
 
 
   const value = {
@@ -96,7 +92,6 @@ export function ToolProvider({ children }: { children: React.ReactNode }) {
     setSelectedTool,
     calculationResult,
     setCalculationResult,
-    isClient,
     popularTools,
     groupedTools,
     recentToolDetails,

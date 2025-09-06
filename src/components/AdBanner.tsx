@@ -1,38 +1,17 @@
-
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function AdBanner() {
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    // This ensures the component only renders on the client side
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      try {
-        // This is necessary to initialize the ad unit.
-        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-      } catch (err) {
-        console.error("AdSense error:", err);
-      }
+    try {
+      // This is necessary to initialize the ad unit.
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+    } catch (err) {
+      console.error("AdSense error:", err);
     }
-  }, [isClient]);
-
-  // Render a placeholder or nothing on the server and initial client render
-  if (!isClient) {
-    return (
-        <div className="my-8">
-            <Card className="shadow-lg border-2 border-primary/20 transition-all min-h-[160px] flex items-center justify-center bg-muted/30">
-                <CardContent className="p-2 w-full"></CardContent>
-            </Card>
-        </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="my-8">
