@@ -2,21 +2,13 @@
 import './globals.css';
 import Script from 'next/script';
 import React from 'react';
-import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
-import { ToolProvider } from '@/hooks/useToolContext';
-import { SearchProvider } from '@/contexts/SearchContext';
-import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
-import { initializeDefaultTemplates } from '@/lib/default-templates';
+import { AppShell } from '@/components/layout/AppShell';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  React.useEffect(() => {
-    initializeDefaultTemplates();
-  }, []);
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -48,16 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <ThemeProvider defaultTheme="system">
-          <AnalyticsProvider>
-            <ToolProvider>
-              <SearchProvider>
-                {children}
-                <Toaster />
-              </SearchProvider>
-            </ToolProvider>
-          </AnalyticsProvider>
-        </ThemeProvider>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

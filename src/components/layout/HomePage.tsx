@@ -70,7 +70,7 @@ function HomePageComponent() {
   return (
     <>
       {/* Hero Section with Mesh Gradient */}
-      <section className="relative min-h-[70vh] -mt-24 pt-24 overflow-hidden">
+      <section className="relative min-h-[70vh] -mt-24 pt-24 overflow-hidden bg-gradient-soft">
         {/* Mesh Gradient Background */}
         <div className="absolute inset-0 opacity-40">
           <MeshGradient

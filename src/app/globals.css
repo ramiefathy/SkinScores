@@ -228,3 +228,11 @@ body {
 .bg-gradient-radial {
   background-image: radial-gradient(var(--tw-gradient-stops));
 }
+
+.bg-gradient-soft {
+  background-image: radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--primary) / 0.1), transparent);
+}
+
+.dark .bg-gradient-soft {
+  background-image: radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--primary) / 0.15), transparent);
+}
