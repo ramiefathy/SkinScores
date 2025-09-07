@@ -12,7 +12,7 @@ import { getSharedCalculation, type ShareableCalculation } from '@/lib/share-uti
 import { ResultsDisplay } from '@/components/dermscore/ResultsDisplay';
 import { SecurityBadge, FloatingSecurityBadge } from '@/components/ui/security-badge';
 import { motion } from 'framer-motion';
-import tools from '@/lib/tools';
+import { loadTool } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
 import { format } from 'date-fns';
 import { useToolContext } from '@/hooks/useToolContext';
@@ -50,8 +50,8 @@ export default function SharePage() {
           return;
         }
 
-        // Find the tool
-        const foundTool = tools.find(t => t.id === calc.toolId);
+        // Load the tool
+        const foundTool = await loadTool(calc.toolId);
         if (!foundTool) {
           setError('The tool used for this calculation is no longer available.');
           setLoading(false);

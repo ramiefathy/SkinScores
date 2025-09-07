@@ -28,9 +28,17 @@ export function ThemeProvider({
   storageKey = "skinscores-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<Theme>(
-    () => (typeof window !== "undefined" && (localStorage.getItem(storageKey) as Theme)) || defaultTheme
-  );
+  const [theme, setTheme] = React.useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = React.useState(false);
+  
+  // Load theme from localStorage after hydration
+  React.useEffect(() => {
+    setMounted(true);
+    const stored = localStorage.getItem(storageKey) as Theme;
+    if (stored) {
+      setTheme(stored);
+    }
+  }, [storageKey]);
 
   React.useEffect(() => {
     const root = window.document.documentElement;

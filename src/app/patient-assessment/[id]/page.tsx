@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { ToolForm } from '@/components/dermscore/ToolForm';
 import { ResultsDisplay } from '@/components/dermscore/ResultsDisplay';
-import { toolData } from '@/lib/tools';
+import { loadTool } from '@/lib/tools';
 import {
   validateAndUpdatePatientLink,
   getPatientRecord,
@@ -48,6 +48,8 @@ export default function PatientAssessmentPage() {
   const [completedAssessments, setCompletedAssessments] = useState<CompletedAssessment[]>([]);
   const [currentResult, setCurrentResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [assessmentTools, setAssessmentTools] = useState<Tool[]>([]);
+  const [toolsLoading, setToolsLoading] = useState(true);
 
   useEffect(() => {
     // Validate and load the link
@@ -72,8 +74,24 @@ export default function PatientAssessmentPage() {
         }
         
         setPatientRecord(record);
+        
+        // Load tools for this assessment
+        setToolsLoading(true);
+        const toolPromises = validLink.toolIds.map(id => loadTool(id));
+        const loadedTools = await Promise.all(toolPromises);
+        const validTools = loadedTools.filter(Boolean) as Tool[];
+        
+        if (validTools.length === 0) {
+          setError('No valid tools found for this assessment.');
+          setLoading(false);
+          return;
+        }
+        
+        setAssessmentTools(validTools);
+        setToolsLoading(false);
         setLoading(false);
       } catch (err) {
+        console.error('Error loading assessment:', err);
         setError('Failed to load assessment.');
         setLoading(false);
       }
@@ -116,9 +134,18 @@ export default function PatientAssessmentPage() {
   }
 
   if (!link || !patientRecord) return null;
+  
+  if (toolsLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading assessment tools...</p>
+        </div>
+      </div>
+    );
+  }
 
-  // Get tools for this assessment
-  const assessmentTools = link.toolIds.map(id => toolData.find(t => t.id === id)).filter(Boolean) as Tool[];
   const currentTool = assessmentTools[selectedToolIndex];
   const isLastTool = selectedToolIndex === assessmentTools.length - 1;
   const allCompleted = completedAssessments.length === assessmentTools.length;

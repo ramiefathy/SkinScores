@@ -17,20 +17,8 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
   },
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-*'],
-    turbo: {
-      resolveAlias: {
-        '@/*': ['./src/*'],
-      },
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    optimizePackageImports: ['lucide-react'],
   },
-  transpilePackages: ['@radix-ui'],
   async headers() {
     return [
       {

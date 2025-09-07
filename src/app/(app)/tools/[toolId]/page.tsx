@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { toolData } from '@/lib/tools';
+import { getToolMetadata } from '@/lib/tools/tool-metadata';
 
 interface ToolPageProps {
   params: Promise<{
@@ -11,7 +11,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const { toolId } = await params;
   
   // Check if the tool exists
-  const toolExists = toolData.some(tool => tool.id === toolId);
+  const toolExists = getToolMetadata(toolId) !== undefined;
   
   if (!toolExists) {
     // If tool doesn't exist, redirect to tools page

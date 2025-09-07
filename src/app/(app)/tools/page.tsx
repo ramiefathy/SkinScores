@@ -3,17 +3,17 @@
 
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { toolData } from '@/lib/tools';
-import type { Tool } from '@/lib/types';
+import { toolMetadata, getGroupedToolMetadata, type ToolMetadata } from '@/lib/tools/tool-metadata';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PremiumCard } from '@/components/ui/card-premium';
 import { Button } from '@/components/ui/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
 import { PremiumInput } from '@/components/ui/input-premium';
 import { FileQuestion, ExternalLink, Stethoscope, Search, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { AdBanner } from '@/components/AdBanner';
 import { PageWrapper } from '@/components/layout/PageWrapper';
+import { ToolAccordionItem } from '@/components/tools/ToolAccordionItem';
 
 export default function AllToolsPage() {
   const router = useRouter();
@@ -25,27 +25,30 @@ export default function AllToolsPage() {
 
   const filteredTools = useMemo(() => {
     if (!searchTerm.trim()) {
-      return toolData;
+      return toolMetadata;
     }
     const lowerSearchTerm = searchTerm.toLowerCase();
-    return toolData.filter(tool =>
+    return toolMetadata.filter(tool =>
       tool.name.toLowerCase().includes(lowerSearchTerm) ||
-      (tool.acronym && tool.acronym.toLowerCase().includes(lowerSearchTerm)) ||
-      tool.condition.toLowerCase().includes(lowerSearchTerm) ||
-      (tool.keywords && tool.keywords.some(keyword => keyword.toLowerCase().includes(lowerSearchTerm)))
+      tool.id.toLowerCase().includes(lowerSearchTerm) ||
+      (tool.condition && tool.condition.toLowerCase().includes(lowerSearchTerm)) ||
+      (tool.description && tool.description.toLowerCase().includes(lowerSearchTerm))
     );
   }, [searchTerm]);
 
   const groupedToolsForList = useMemo(() => {
-    return filteredTools.reduce((acc, tool) => {
-      const condition = tool.condition || 'Other';
-      if (!acc[condition]) {
-        acc[condition] = [];
-      }
-      acc[condition].push(tool);
-      return acc;
-    }, {} as Record<string, Tool[]>);
-  }, [filteredTools]);
+    if (searchTerm.trim()) {
+      return filteredTools.reduce((acc, tool) => {
+        const condition = tool.condition || 'Other';
+        if (!acc[condition]) {
+          acc[condition] = [];
+        }
+        acc[condition].push(tool);
+        return acc;
+      }, {} as Record<string, ToolMetadata[]>);
+    }
+    return getGroupedToolMetadata();
+  }, [filteredTools, searchTerm]);
 
   const sortedCategoriesForList = useMemo(() => {
     return Object.entries(groupedToolsForList).sort((a, b) => a[0].localeCompare(b[0]));
@@ -93,47 +96,13 @@ export default function AllToolsPage() {
 
             {searchTerm.trim() && filteredTools.length > 0 && (
                  <Accordion type="multiple" className="w-full space-y-2">
-                    {filteredTools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => {
-                        const ToolIcon = tool.icon || FileQuestion;
-                        return (
-                            <AccordionItem value={tool.id} key={tool.id} className="border bg-card/30 hover:bg-card/60 rounded-md px-3 shadow-sm">
-                                <AccordionTrigger className="py-3 text-left hover:no-underline">
-                                    <div className="flex items-center gap-3">
-                                        <ToolIcon className="h-5 w-5 text-primary/90 shrink-0"/>
-                                        <span>{tool.name} {tool.acronym && `(${tool.acronym})`}</span>
-                                    </div>
-                                </AccordionTrigger>
-                                <AccordionContent className="pt-2 pb-3 space-y-3 text-sm">
-                                    <div><h4 className="font-semibold text-foreground/80 mb-1">Condition:</h4><p className="text-muted-foreground text-xs leading-relaxed">{tool.condition}</p></div>
-                                    <div><h4 className="font-semibold text-foreground/80 mb-1">Purpose:</h4><p className="text-muted-foreground text-xs leading-relaxed">{tool.description}</p></div>
-                                    {tool.rationale && <div><h4 className="font-semibold text-foreground/80 mb-1">Rationale:</h4><p className="text-muted-foreground text-xs italic">{tool.rationale}</p></div>}
-                                    {tool.clinicalPerformance && <div><h4 className="font-semibold text-foreground/80 mb-1">Clinical Performance & Reliability:</h4><p className="text-muted-foreground text-xs italic">{tool.clinicalPerformance}</p></div>}
-                                    {tool.references && tool.references.length > 0 && (
-                                      <div>
-                                        <h4 className="font-semibold text-foreground/80 mb-1">Key References:</h4>
-                                        <ul className="list-disc list-inside text-muted-foreground text-xs space-y-1">
-                                          {tool.references.slice(0, 2).map((ref, index) => (
-                                            <li key={index}>
-                                              {ref.startsWith('http') ?
-                                                <a href={ref} target="_blank" rel="noopener noreferrer" className="text-primary/90 hover:underline inline-flex items-center gap-1 break-all">
-                                                  {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <ExternalLink size={12}/>
-                                                </a>
-                                                : <span className="break-all">{ref.length > 100 ? ref.substring(0,97) + '...' : ref}</span>
-                                              }
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    )}
-                                    <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.95 }}>
-                                      <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
-                                          <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
-                                      </Button>
-                                    </motion.div>
-                                </AccordionContent>
-                            </AccordionItem>
-                        )
-                    })}
+                    {filteredTools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
+                      <ToolAccordionItem 
+                        key={tool.id} 
+                        toolMetadata={tool} 
+                        onUseTool={handleUseTool}
+                      />
+                    ))}
                 </Accordion>
             )}
 
@@ -154,47 +123,13 @@ export default function AllToolsPage() {
                   />
                 </motion.h3>
                 <Accordion type="multiple" className="w-full space-y-2">
-                  {conditionTools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => {
-                      const ToolIcon = tool.icon || FileQuestion;
-                      return (
-                          <AccordionItem value={tool.id} key={tool.id} className="border bg-card/30 hover:bg-card/60 rounded-md px-3 shadow-sm">
-                              <AccordionTrigger className="py-3 text-left hover:no-underline">
-                                  <div className="flex items-center gap-3">
-                                      <ToolIcon className="h-5 w-5 text-primary/90 shrink-0"/>
-                                      <span>{tool.name} {tool.acronym && `(${tool.acronym})`}</span>
-                                  </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="pt-2 pb-3 space-y-3 text-sm">
-                                  <div><h4 className="font-semibold text-foreground/80 mb-1">Condition:</h4><p className="text-muted-foreground text-xs leading-relaxed">{tool.condition}</p></div>
-                                  <div><h4 className="font-semibold text-foreground/80 mb-1">Purpose:</h4><p className="text-muted-foreground text-xs leading-relaxed">{tool.description}</p></div>
-                                   {tool.rationale && <div><h4 className="font-semibold text-foreground/80 mb-1">Rationale:</h4><p className="text-muted-foreground text-xs italic">{tool.rationale}</p></div>}
-                                   {tool.clinicalPerformance && <div><h4 className="font-semibold text-foreground/80 mb-1">Clinical Performance & Reliability:</h4><p className="text-muted-foreground text-xs italic">{tool.clinicalPerformance}</p></div>}
-                                  {tool.references && tool.references.length > 0 && (
-                                    <div>
-                                      <h4 className="font-semibold text-foreground/80 mb-1">Key References:</h4>
-                                      <ul className="list-disc list-inside text-muted-foreground text-xs space-y-1">
-                                        {tool.references.slice(0, 2).map((ref, index) => (
-                                          <li key={index}>
-                                            {ref.startsWith('http') ?
-                                              <a href={ref} target="_blank" rel="noopener noreferrer" className="text-primary/90 hover:underline inline-flex items-center gap-1 break-all">
-                                                {ref.length > 100 ? ref.substring(0,97) + '...' : ref} <ExternalLink size={12}/>
-                                              </a>
-                                              : <span className="break-all">{ref.length > 100 ? ref.substring(0,97) + '...' : ref}</span>
-                                            }
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                  <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.95 }}>
-                                    <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
-                                        <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
-                                    </Button>
-                                  </motion.div>
-                              </AccordionContent>
-                          </AccordionItem>
-                      )
-                  })}
+                  {conditionTools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
+                    <ToolAccordionItem 
+                      key={tool.id} 
+                      toolMetadata={tool} 
+                      onUseTool={handleUseTool}
+                    />
+                  ))}
                 </Accordion>
               </div>
             ))}

@@ -29,7 +29,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Line,
-  CompositeChart,
+  ComposedChart,
 } from 'recharts';
 import type { PatientRecord, PatientTimelineEntry } from '@/lib/patient-progress';
 import { calculateTrend, exportPatientTimeline } from '@/lib/patient-progress';
@@ -176,12 +176,17 @@ export function PatientTimelineView({
             <div>
               <CardTitle className="text-2xl">Patient Progress Timeline</CardTitle>
               <CardDescription>
-                Tracking {patientRecord.timeline.length} assessments over{' '}
-                {differenceInDays(
-                  new Date(),
-                  new Date(patientRecord.timeline[0].timestamp)
-                )}{' '}
-                days
+                Tracking {patientRecord.timeline.length} assessments
+                {typeof window !== 'undefined' && patientRecord.timeline.length > 0 && (
+                  <>
+                    {' '}over{' '}
+                    {differenceInDays(
+                      new Date(),
+                      new Date(patientRecord.timeline[0].timestamp)
+                    )}{' '}
+                    days
+                  </>
+                )}
               </CardDescription>
             </div>
             <div className="flex items-center gap-4">
@@ -337,7 +342,7 @@ export function PatientTimelineView({
             <CardContent>
               {chartData.length > 1 ? (
                 <ResponsiveContainer width="100%" height={400}>
-                  <CompositeChart data={chartData}>
+                  <ComposedChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis />
@@ -366,7 +371,7 @@ export function PatientTimelineView({
                         </React.Fragment>
                       );
                     })}
-                  </CompositeChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="py-12 text-center text-muted-foreground">

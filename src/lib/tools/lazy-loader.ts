@@ -1,4 +1,5 @@
 import type { Tool } from '../types';
+import { toLazyLoaderId } from './tool-id-mapper';
 
 // Lazy load individual tools
 export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
@@ -77,27 +78,45 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
   // tnss: () => import('./tnss').then(m => ({ default: m.tnssTool })),
   // topss: () => import('./topss').then(m => ({ default: m.topssTool })),
   // topss_2: () => import('./topss2').then(m => ({ default: m.topss2Tool })),
+  pedis_classification: () => import('./pedisClassification').then(m => ({ default: m.pedisClassificationTool })),
+  pest: () => import('./pest').then(m => ({ default: m.pestTool })),
+  pg_delphi: () => import('./pgDelphi').then(m => ({ default: m.pgDelphiTool })),
+  pg_su: () => import('./pgSu').then(m => ({ default: m.pgSuTool })),
+  salt: () => import('./salt').then(m => ({ default: m.saltTool })),
+  sasi: () => import('./sasi').then(m => ({ default: m.sasiTool })),
+  sassad: () => import('./sassad').then(m => ({ default: m.sassadTool })),
+  scorten: () => import('./scorten').then(m => ({ default: m.scortenTool })),
+  scqoli10: () => import('./scqoli10').then(m => ({ default: m.scqoli10Tool })),
+  sinbad_score: () => import('./sinbadScore').then(m => ({ default: m.sinbadScoreTool })),
+  skindex29: () => import('./skindex29').then(m => ({ default: m.skindex29Tool })),
+  sledai_skin: () => import('./sledaiSkin').then(m => ({ default: m.sledaiSkinTool })),
+  slicc_criteria: () => import('./sliccCriteria').then(m => ({ default: m.sliccCriteriaTool })),
+  uas7: () => import('./uas7').then(m => ({ default: m.uas7Tool })),
   uct: () => import('./uct').then(m => ({ default: m.uctTool })),
-  // uss: () => import('./uss').then(m => ({ default: m.ussTool })),
+  ut_wound_classification: () => import('./utWoundClassification').then(m => ({ default: m.utWoundClassificationTool })),
+  vas_pruritus: () => import('./vasPruritus').then(m => ({ default: m.vasPruritusTool })),
   vasi: () => import('./vasi').then(m => ({ default: m.vasiTool })),
+  vida: () => import('./vida').then(m => ({ default: m.vidaTool })),
   viga_ad: () => import('./vigaAd').then(m => ({ default: m.vigaAdTool })),
   vitiqol: () => import('./vitiqol').then(m => ({ default: m.vitiqolTool }))
-  // wound_qol: () => import('./woundQol').then(m => ({ default: m.woundQolTool }))
 };
 
 // Cache for loaded tools
 const toolCache: Map<string, Tool> = new Map();
 
 export async function loadTool(toolId: string): Promise<Tool | null> {
+  // Convert to lazy loader format
+  const lazyLoaderId = toLazyLoaderId(toolId);
+  
   // Check cache first
   if (toolCache.has(toolId)) {
     return toolCache.get(toolId)!;
   }
 
   // Load tool dynamically
-  const loader = toolLoaders[toolId];
+  const loader = toolLoaders[lazyLoaderId];
   if (!loader) {
-    console.error(`Tool loader not found for: ${toolId}`);
+    console.error(`Tool loader not found for: ${toolId} (tried ${lazyLoaderId})`);
     return null;
   }
 
@@ -114,7 +133,7 @@ export async function loadTool(toolId: string): Promise<Tool | null> {
 
 // Preload tools for better performance
 export function preloadTool(toolId: string) {
-  if (!toolCache.has(toolId) && toolLoaders[toolId]) {
+  if (!toolCache.has(toolId)) {
     loadTool(toolId); // Fire and forget
   }
 }

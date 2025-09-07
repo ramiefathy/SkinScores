@@ -23,8 +23,9 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from '@/components/theme-provider';
 import { WorkspaceSelector } from '@/components/workspaces/WorkspaceSelector';
-import { toolData } from '@/lib/tools';
+import { toolMetadata, loadTool } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
+import type { ToolMetadata } from '@/lib/tools/tool-metadata';
 import { 
   Search, 
   Plus, 
@@ -48,12 +49,12 @@ export function AppHeader() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { theme, setTheme } = useTheme();
-  const tools = toolData;
+  const tools = toolMetadata;
   const [searchOpen, setSearchOpen] = useState(false);
   const [userMenuHovered, setUserMenuHovered] = useState(false);
   
   const currentToolId = searchParams.get('toolId');
-  const currentTool = tools.find((t: Tool) => t.id === currentToolId);
+  const currentTool = tools?.find((t: ToolMetadata) => t.id === currentToolId);
   const [currentWorkspace, setCurrentWorkspace] = useState<any>(null);
   
   React.useEffect(() => {
@@ -120,11 +121,12 @@ export function AppHeader() {
             </SelectTrigger>
             <SelectContent className="max-h-[400px]">
               {Object.entries(
-                tools.reduce((acc: Record<string, Tool[]>, tool: Tool) => {
-                  if (!acc[tool.condition]) acc[tool.condition] = [];
-                  acc[tool.condition].push(tool);
+                tools?.reduce((acc: Record<string, ToolMetadata[]>, tool: ToolMetadata) => {
+                  const condition = tool.condition || 'Other';
+                  if (!acc[condition]) acc[condition] = [];
+                  acc[condition].push(tool);
                   return acc;
-                }, {} as Record<string, typeof tools>)
+                }, {} as Record<string, ToolMetadata[]>) || {}
               )
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([condition, conditionTools]) => (
@@ -133,16 +135,11 @@ export function AppHeader() {
                       {condition}
                     </div>
                     {conditionTools
-                      .sort((a: Tool, b: Tool) => a.name.localeCompare(b.name))
+                      .sort((a: ToolMetadata, b: ToolMetadata) => a.name.localeCompare(b.name))
                       .map((tool) => (
                         <SelectItem key={tool.id} value={tool.id}>
                           <div className="flex items-center gap-2">
                             <span>{tool.name}</span>
-                            {tool.acronym && (
-                              <Badge variant="outline" className="text-xs">
-                                {tool.acronym}
-                              </Badge>
-                            )}
                           </div>
                         </SelectItem>
                       ))}

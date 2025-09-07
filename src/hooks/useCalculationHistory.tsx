@@ -37,8 +37,10 @@ export function useCalculationHistory() {
     inputs: Record<string, any>,
     notes?: string
   ) => {
+    const timestamp = Date.now();
+    const randomSuffix = typeof window !== 'undefined' ? Math.random().toString(36).substr(2, 9) : 'ssr';
     const newItem: CalculationHistoryItem = {
-      id: `calc_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `calc_${timestamp}_${randomSuffix}`,
       toolId: tool.id,
       toolName: tool.name,
       timestamp: new Date().toISOString(),

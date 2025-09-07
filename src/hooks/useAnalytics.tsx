@@ -34,30 +34,33 @@ const MAX_EVENTS = 1000; // Keep only last 1000 events
 
 export function useAnalytics() {
   const pathname = usePathname();
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>(() => {
-    // Load from localStorage on mount
-    if (typeof window !== 'undefined') {
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
+    events: [],
+    toolStats: {},
+    dailyUsage: {},
+    totalCalculations: 0,
+    uniqueToolsUsed: 0,
+    averageSessionDuration: 0,
+    exportCount: 0,
+    searchQueries: [],
+  });
+  
+  const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
+  
+  // Load from localStorage after hydration
+  useEffect(() => {
+    if (!hasLoadedFromStorage) {
       const stored = localStorage.getItem(ANALYTICS_KEY);
       if (stored) {
         try {
-          return JSON.parse(stored);
+          setAnalyticsData(JSON.parse(stored));
         } catch (e) {
           console.error('Failed to load analytics:', e);
         }
       }
+      setHasLoadedFromStorage(true);
     }
-    
-    return {
-      events: [],
-      toolStats: {},
-      dailyUsage: {},
-      totalCalculations: 0,
-      uniqueToolsUsed: 0,
-      averageSessionDuration: 0,
-      exportCount: 0,
-      searchQueries: [],
-    };
-  });
+  }, [hasLoadedFromStorage]);
 
   // Save to localStorage whenever data changes
   useEffect(() => {
@@ -70,9 +73,11 @@ export function useAnalytics() {
   }, [pathname]);
 
   const trackEvent = useCallback((type: AnalyticsEvent['type'], data: Record<string, any>) => {
+    const timestamp = new Date().toISOString();
+    const randomSuffix = typeof window !== 'undefined' ? Math.random().toString(36).substr(2, 9) : 'ssr';
     const event: AnalyticsEvent = {
-      id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      timestamp: new Date().toISOString(),
+      id: `event_${timestamp}_${randomSuffix}`,
+      timestamp,
       type,
       data,
     };

@@ -46,7 +46,8 @@ import {
   encryptPatientId,
   type PatientRecord
 } from '@/lib/patient-progress';
-import { toolData } from '@/lib/tools';
+import { toolMetadata } from '@/lib/tools';
+import type { ToolMetadata } from '@/lib/tools/tool-metadata';
 import { format } from 'date-fns';
 import QRCode from 'qrcode';
 
@@ -156,12 +157,13 @@ export default function PatientsPage() {
   );
 
   // Patient-reported tools that can be self-assessed
-  const patientFriendlyTools = toolData.filter(tool => 
-    tool.keywords.includes('patient reported') ||
-    tool.keywords.includes('quality of life') ||
+  const patientFriendlyTools = toolMetadata.filter(tool =>
     tool.name.toLowerCase().includes('dlqi') ||
     tool.name.toLowerCase().includes('poem') ||
-    tool.name.toLowerCase().includes('qol')
+    tool.name.toLowerCase().includes('qol') ||
+    tool.description?.toLowerCase().includes('patient reported') ||
+    tool.description?.toLowerCase().includes('quality of life') ||
+    tool.description?.toLowerCase().includes('self-assessed')
   );
 
   return (

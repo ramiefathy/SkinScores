@@ -181,16 +181,11 @@ export function CommandPalette() {
                             <span className="font-medium">
                               {nameMatch ? highlightMatch(result.item.name, nameMatch.matches) : result.item.name}
                             </span>
-                            {result.item.acronym && (
-                              <span className="ml-2 text-xs text-muted-foreground">
-                                ({result.item.acronym})
-                              </span>
-                            )}
                           </div>
                           {getComplexityBadge(result.item)}
                         </div>
                         <div className="ml-6 text-sm text-muted-foreground">
-                          {conditionMatch ? highlightMatch(result.item.condition, conditionMatch.matches) : result.item.condition}
+                          {result.item.condition && (conditionMatch ? highlightMatch(result.item.condition, conditionMatch.matches) : result.item.condition)}
                         </div>
                         {result.score !== undefined && (
                           <div className="ml-6 mt-1">

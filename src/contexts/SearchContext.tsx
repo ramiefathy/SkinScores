@@ -2,14 +2,13 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import tools from '@/lib/tools';
-import type { Tool } from '@/lib/types';
+import { toolMetadata, type ToolMetadata } from '@/lib/tools/tool-metadata';
 import { useRouter } from 'next/navigation';
 import { useToolContext } from '@/hooks/useToolContext';
 import { useAnalyticsContext } from '@/contexts/AnalyticsContext';
 
 interface SearchResult {
-  item: Tool;
+  item: ToolMetadata;
   score?: number;
   matches?: readonly any[];
 }
@@ -33,7 +32,7 @@ interface SearchContextType {
   clearRecentSearches: () => void;
   suggestions: string[];
   performSearch: (searchQuery: string) => void;
-  selectResult: (tool: Tool) => void;
+  selectResult: (tool: ToolMetadata) => void;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -48,11 +47,10 @@ const fuseOptions = {
   threshold: 0.3,
   keys: [
     { name: 'name', weight: 3 },
-    { name: 'acronym', weight: 2 },
+    { name: 'id', weight: 2 },
     { name: 'condition', weight: 2 },
     { name: 'description', weight: 1 },
-    { name: 'keywords', weight: 1.5 },
-    { name: 'sourceType', weight: 0.5 },
+    { name: 'category', weight: 0.5 },
   ],
 };
 
@@ -68,7 +66,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // Initialize Fuse instance with proper typing
-  const fuse = React.useMemo(() => new Fuse<Tool>(tools, fuseOptions), []);
+  const fuse = React.useMemo(() => new Fuse<ToolMetadata>(toolMetadata, fuseOptions), []);
 
   // Load recent searches from localStorage
   useEffect(() => {
@@ -93,15 +91,17 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     const allTerms = new Set<string>();
 
     // Add tool names and conditions
-    tools.forEach((tool: Tool) => {
+    toolMetadata.forEach((tool: ToolMetadata) => {
       if (tool.name.toLowerCase().includes(queryLower)) {
         allTerms.add(tool.name);
       }
-      if (tool.condition.toLowerCase().includes(queryLower)) {
+      if (tool.condition && tool.condition.toLowerCase().includes(queryLower)) {
         allTerms.add(tool.condition);
       }
-      if (tool.acronym && tool.acronym.toLowerCase().includes(queryLower)) {
-        allTerms.add(tool.acronym);
+      // Check if name contains acronym-like pattern
+      const acronym = tool.name.match(/^[A-Z]+(?:[a-z]|$)/);
+      if (acronym && acronym[0].toLowerCase().includes(queryLower)) {
+        allTerms.add(tool.name);
       }
     });
 
@@ -145,7 +145,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     if (filters.specialty?.length) {
       searchResults = searchResults.filter(result =>
         filters.specialty?.some(s => 
-          result.item.sourceType.toLowerCase().includes(s.toLowerCase())
+          result.item.category?.toLowerCase().includes(s.toLowerCase())
         )
       );
     }
@@ -153,20 +153,13 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     if (filters.condition?.length) {
       searchResults = searchResults.filter(result =>
         filters.condition?.some(c => 
-          result.item.condition.toLowerCase().includes(c.toLowerCase())
+          result.item.condition?.toLowerCase().includes(c.toLowerCase())
         )
       );
     }
 
-    if (filters.complexity?.length) {
-      searchResults = searchResults.filter(result => {
-        // Determine complexity based on number of form sections
-        const sectionCount = result.item.formSections?.length || 0;
-        const complexity = sectionCount <= 3 ? 'simple' : 
-                          sectionCount <= 6 ? 'moderate' : 'complex';
-        return filters.complexity?.includes(complexity);
-      });
-    }
+    // Note: complexity filtering would need to be based on metadata or removed
+    // since we don't have formSections in metadata
 
     setResults(searchResults);
     
@@ -191,7 +184,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     performSearch(query);
   }, [query, filters, performSearch]);
 
-  const selectResult = useCallback((tool: Tool) => {
+  const selectResult = useCallback((tool: ToolMetadata) => {
     handleToolSelect(tool.id);
     setIsOpen(false);
     setQuery('');

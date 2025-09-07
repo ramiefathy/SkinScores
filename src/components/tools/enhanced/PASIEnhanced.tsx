@@ -13,6 +13,7 @@ import {
   Calculator, Camera, TrendingUp, Info, 
   ChevronRight, RotateCcw, Save 
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { Tool } from '@/lib/types';
 
 interface PASIRegionData {

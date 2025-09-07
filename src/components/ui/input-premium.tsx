@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Input, InputProps } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-interface PremiumInputProps extends InputProps {
+interface PremiumInputProps extends React.ComponentProps<"input"> {
   icon?: React.ReactNode;
 }
 

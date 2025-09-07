@@ -29,7 +29,7 @@ import {
   Star,
   Search,
 } from 'lucide-react';
-import type { Tool } from '@/lib/types';
+import type { ToolMetadata } from '@/lib/tools/tool-metadata';
 import { PremiumInput } from '../ui/input-premium';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useToolContext } from '@/hooks/useToolContext';
@@ -40,31 +40,34 @@ export function AppSidebar() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = React.useState('');
 
-  const { groupedTools, recentToolDetails } = useToolContext();
+  const { groupedToolsMetadata, recentToolsMetadata } = useToolContext();
   
   const selectedToolId = React.useMemo(() => {
     return searchParams.get('toolId');
   }, [searchParams]);
 
   const filteredTools = React.useMemo(() => {
+    if (!groupedToolsMetadata) {
+      return {};
+    }
     if (!searchTerm) {
-      return groupedTools;
+      return groupedToolsMetadata;
     }
     const lowerSearchTerm = searchTerm.toLowerCase();
-    const filtered: Record<string, Tool[]> = {};
-    for (const condition in groupedTools) {
-      const matchingTools = groupedTools[condition].filter(tool =>
+    const filtered: Record<string, ToolMetadata[]> = {};
+    for (const condition in groupedToolsMetadata) {
+      const matchingTools = groupedToolsMetadata[condition].filter(tool =>
         tool.name.toLowerCase().includes(lowerSearchTerm) ||
-        (tool.acronym && tool.acronym.toLowerCase().includes(lowerSearchTerm)) ||
-        tool.condition.toLowerCase().includes(lowerSearchTerm) ||
-        (tool.keywords && tool.keywords.some(keyword => keyword.toLowerCase().includes(lowerSearchTerm)))
+        tool.id.toLowerCase().includes(lowerSearchTerm) ||
+        (tool.condition && tool.condition.toLowerCase().includes(lowerSearchTerm)) ||
+        (tool.description && tool.description.toLowerCase().includes(lowerSearchTerm))
       );
       if (matchingTools.length > 0) {
         filtered[condition] = matchingTools;
       }
     }
     return filtered;
-  }, [searchTerm, groupedTools]);
+  }, [searchTerm, groupedToolsMetadata]);
 
 
   return (
@@ -125,12 +128,12 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
     
-            {recentToolDetails.length > 0 && !searchTerm && (
+            {recentToolsMetadata.length > 0 && !searchTerm && (
                 <SidebarGroup>
                     <SidebarGroupLabel className="font-headline text-base">Recently Used</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenuSub>
-                        {recentToolDetails.map((tool) => (
+                        {recentToolsMetadata.map((tool) => (
                             <SidebarMenuItem key={tool.id}>
                                 <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
                                     <Link href={`/?toolId=${tool.id}`} className="block leading-normal">{tool.name}</Link>
@@ -143,25 +146,35 @@ export function AppSidebar() {
             )}
             
             <div className="px-2">
-                <Accordion type="multiple" className="w-full">
-                    {Object.entries(filteredTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
-                        <AccordionItem value={condition} key={condition} className="border-none">
-                            <AccordionTrigger className="py-3 px-2 text-base font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline font-headline">
-                                {condition}
-                            </AccordionTrigger>
-                            <AccordionContent className="pl-4 pt-1 pb-1">
-                                 <SidebarMenuSub>
-                                    {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
-                                        <SidebarMenuItem key={tool.id}>
-                                            <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
-                                                <Link href={`/?toolId=${tool.id}`} className="block leading-normal">{tool.name}</Link>
-                                            </SidebarMenuSubButton>
-                                        </SidebarMenuItem>
-                                    ))}
-                                </SidebarMenuSub>
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
+                <Accordion type="multiple" className="w-full" defaultValue={[]}>
+                    {Object.entries(filteredTools)
+                        .sort((a, b) => a[0].localeCompare(b[0]))
+                        .map(([condition, tools]) => (
+                            <AccordionItem 
+                                value={condition} 
+                                key={condition} 
+                                className="border-none"
+                            >
+                                <AccordionTrigger className="py-3 px-2 text-base font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline font-headline">
+                                    {condition}
+                                </AccordionTrigger>
+                                <AccordionContent className="pl-4 pt-1 pb-1">
+                                     <SidebarMenuSub>
+                                        {tools
+                                            .sort((a, b) => a.name.localeCompare(b.name))
+                                            .map(tool => (
+                                                <SidebarMenuItem key={tool.id}>
+                                                    <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
+                                                        <Link href={`/?toolId=${tool.id}`} className="block leading-normal">
+                                                            {tool.name}
+                                                        </Link>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuItem>
+                                            ))}
+                                    </SidebarMenuSub>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                 </Accordion>
             </div>
         </SidebarMenu>

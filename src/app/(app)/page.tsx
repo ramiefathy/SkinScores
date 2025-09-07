@@ -51,7 +51,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ChevronRight } from 'lucide-react';
 import type { Tool, InputConfig } from '@/lib/types';
-import { toolData } from '@/lib/tools';
 
 
 const getSourceTypeBadgeProps = (sourceType: Tool['sourceType']): { variant?: "default" | "secondary" | "destructive" | "outline", className?: string } => {
@@ -73,6 +72,7 @@ function SkinScorePageContent() {
     calculationResult,
     setCalculationResult, 
     setSelectedTool,
+    handleToolSelect,
   } = useToolContext();
   const searchParams = useSearchParams();
   const scrollToElement = useScrollToElement();
@@ -105,15 +105,15 @@ function SkinScorePageContent() {
     const toolIdFromQuery = searchParams.get('toolId');
     if (toolIdFromQuery) {
       if (toolIdFromQuery !== selectedTool?.id) {
-          const tool = toolData.find(t => t.id === toolIdFromQuery);
-          setSelectedTool(tool || null);
+          // Tool will be loaded by the ToolContext
+          handleToolSelect(toolIdFromQuery);
       }
     } else {
       if (selectedTool) {
-          setSelectedTool(null);
+          handleToolSelect(null);
       }
     }
-  }, [searchParams, selectedTool, setSelectedTool]);
+  }, [searchParams, selectedTool?.id, handleToolSelect]);
 
 
   const handleCalculate = (inputs: Record<string, any>) => {

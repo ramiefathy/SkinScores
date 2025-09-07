@@ -15,10 +15,10 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Badge } from "@/components/ui/badge";
-import { toolData } from '@/lib/tools';
+import { getToolMetadata } from '@/lib/tools';
 
 const ToolCard = memo(({ href, icon: Icon, title, description, toolId }: { href: string; icon: React.ElementType; title: string; description: string; toolId: string }) => {
-  const tool = toolData.find(t => t.id === toolId);
+  const tool = getToolMetadata(toolId);
   
   return (
     <HoverCard>
@@ -50,26 +50,11 @@ const ToolCard = memo(({ href, icon: Icon, title, description, toolId }: { href:
               <h4 className="text-sm font-semibold">{tool.name}</h4>
               <p className="text-sm text-muted-foreground mt-1">{tool.description}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
-                {tool.sourceType}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {tool.condition}
-              </Badge>
-            </div>
-            {tool.keywords && tool.keywords.length > 0 && (
-              <div className="flex flex-wrap gap-1 pt-1">
-                {tool.keywords.slice(0, 3).map(keyword => (
-                  <Badge key={keyword} variant="outline" className="text-xs py-0.5 px-2">
-                    {keyword}
-                  </Badge>
-                ))}
-                {tool.keywords.length > 3 && (
-                  <Badge variant="outline" className="text-xs py-0.5 px-2">
-                    +{tool.keywords.length - 3} more
-                  </Badge>
-                )}
+            {tool.condition && (
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="text-xs">
+                  {tool.condition}
+                </Badge>
               </div>
             )}
           </div>
