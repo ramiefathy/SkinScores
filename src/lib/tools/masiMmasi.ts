@@ -17,18 +17,18 @@ export const masiMmasiTool: Tool = {
   sourceType: 'Clinical Guideline',
   icon: Palette,
   formSections: [
-    { id:"masi_type", label:"MASI Type", type:"select", options:[{value:"masi",label:"MASI (includes Homogeneity)"},{value:"mmasi",label:"mMASI (excludes Homogeneity)"}], defaultValue:"masi", validation:getValidationSchema('select', [{value:"masi",label:"MASI"}])},
+    { id:"masi_type", label:"MASI Type", type:"select" as const, options:[{value:"masi",label:"MASI (includes Homogeneity)"},{value:"mmasi",label:"mMASI (excludes Homogeneity)"}], defaultValue:"masi", validation:getValidationSchema('select', [{value:"masi",label:"MASI"}])},
     ...(["Forehead", "Right Malar", "Left Malar", "Chin"] as const).map(regionName => {
         const regionId = regionName.toLowerCase().replace(/\s+/g, '_') as MasiRegionKey;
         const regionMultiplier = masiRegionMultiplierMapData[regionId];
         return {
           id: `masi_group_${regionId}`,
           title: `${regionName} (Area Multiplier x${regionMultiplier})`,
-          gridCols: 3,
+          gridCols: 3 as const,
           inputs: [
-              { id:`${regionId}_area`, label:`Area (A)`, type:'select', options: areaOptionsMASI, defaultValue:0, validation:getValidationSchema('select',areaOptionsMASI,0,6)},
-              { id:`${regionId}_darkness`, label:`Darkness (D)`, type:'select', options: darknessHomogeneityOptions, defaultValue:0, validation:getValidationSchema('select',darknessHomogeneityOptions,0,4)},
-              { id:`${regionId}_homogeneity`, label:`Homogeneity (H) (MASI only)`, type:'select', options: darknessHomogeneityOptions, defaultValue:0, description: "Skip for mMASI", validation:getValidationSchema('select',darknessHomogeneityOptions,0,4)}
+              { id:`${regionId}_area`, label:`Area (A)`, type:'select' as const, options: areaOptionsMASI, defaultValue:0, validation:getValidationSchema('select',areaOptionsMASI,0,6)},
+              { id:`${regionId}_darkness`, label:`Darkness (D)`, type:'select' as const, options: darknessHomogeneityOptions, defaultValue:0, validation:getValidationSchema('select',darknessHomogeneityOptions,0,4)},
+              { id:`${regionId}_homogeneity`, label:`Homogeneity (H) (MASI only)`, type:'select' as const, options: darknessHomogeneityOptions, defaultValue:0, description: "Skip for mMASI", validation:getValidationSchema('select',darknessHomogeneityOptions,0,4)}
           ]
         };
     })

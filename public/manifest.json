@@ -1,0 +1,44 @@
+{
+  "name": "SkinScores - Clinical Scoring Tools",
+  "short_name": "SkinScores",
+  "description": "Professional dermatology scoring tools for clinical assessment",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icon-placeholder.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "PASI Calculator",
+      "short_name": "PASI",
+      "description": "Psoriasis Area and Severity Index",
+      "url": "/?toolId=pasi",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "DLQI Calculator",
+      "short_name": "DLQI",
+      "description": "Dermatology Life Quality Index",
+      "url": "/?toolId=dlqi",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Calculation History",
+      "short_name": "History",
+      "description": "View saved calculations",
+      "url": "/history",
+      "icons": [{ "src": "/icon-96.png", "sizes": "96x96" }]
+    }
+  ],
+  "categories": ["medical", "health", "productivity"],
+  "prefer_related_applications": false
+}

@@ -158,3 +158,5 @@ export const toolData: Tool[] = [
   vigaAdTool,
   vitiqolTool,
 ].sort((a, b) => a.name.localeCompare(b.name));
+
+export default toolData;

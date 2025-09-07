@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import { toolData } from '@/lib/tools';
 import type { Tool } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { PremiumCard } from '@/components/ui/card-premium';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Input } from '@/components/ui/input';
-import { FileQuestion, ExternalLink, Stethoscope, Search } from 'lucide-react';
+import { PremiumInput } from '@/components/ui/input-premium';
+import { FileQuestion, ExternalLink, Stethoscope, Search, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { AdBanner } from '@/components/AdBanner';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 
@@ -50,27 +52,40 @@ export default function AllToolsPage() {
   }, [groupedToolsForList]);
 
   return (
-    <PageWrapper
-      title="All Scoring Tools"
-      description="Browse, search, and learn more about each available clinical scoring instrument."
-    >
-        <Card className="shadow-xl border">
-          <CardHeader>
-            <CardDescription>
-              Use the search bar to filter by name, condition, or keyword. Click on any tool to learn more or select "Use this Tool" to go directly to its calculator page.
+    <PageWrapper>
+      {/* Medical cross grid pattern background */}
+      <div className="fixed inset-0 -z-10 opacity-[0.03]">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="medical-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M15 0v15H0v10h15v15h10V25h15V15H25V0H15z" fill="currentColor" className="text-primary"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#medical-grid)" />
+        </svg>
+      </div>
+        <PremiumCard gradient hover className="shadow-xl border">
+          <CardHeader className="relative overflow-hidden">
+            <motion.div
+              className="absolute top-0 right-0 text-primary/10"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            >
+              <Sparkles className="w-32 h-32" />
+            </motion.div>
+            <CardDescription className="text-lg">
+              Use the search bar to filter by name, condition, or keyword. Click on any tool to learn more or select &quot;Use this Tool&quot; to go directly to its calculator page.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search tools..."
-                className="pl-10 w-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+            <PremiumInput
+              type="search"
+              placeholder="Search tools by name, condition, or keyword..."
+              className="w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              icon={<Search className="h-5 w-5" />}
+            />
 
             {searchTerm.trim() && filteredTools.length === 0 && (
               <p className="text-center text-muted-foreground py-4">No tools found matching your search criteria.</p>
@@ -110,9 +125,11 @@ export default function AllToolsPage() {
                                         </ul>
                                       </div>
                                     )}
-                                    <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
-                                        <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
-                                    </Button>
+                                    <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.95 }}>
+                                      <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
+                                          <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
+                                      </Button>
+                                    </motion.div>
                                 </AccordionContent>
                             </AccordionItem>
                         )
@@ -122,7 +139,20 @@ export default function AllToolsPage() {
 
             {!searchTerm.trim() && sortedCategoriesForList.map(([condition, conditionTools]) => (
               <div key={condition} className="pt-2">
-                <h3 className="text-xl font-semibold mb-3 text-foreground/90 border-b pb-2">{condition}</h3>
+                <motion.h3 
+                  className="text-2xl font-semibold mb-3 text-foreground/90 pb-2 relative font-headline"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {condition}
+                  <motion.div 
+                    className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-[hsl(var(--premium-purple))]"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  />
+                </motion.h3>
                 <Accordion type="multiple" className="w-full space-y-2">
                   {conditionTools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => {
                       const ToolIcon = tool.icon || FileQuestion;
@@ -156,9 +186,11 @@ export default function AllToolsPage() {
                                       </ul>
                                     </div>
                                   )}
-                                  <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
-                                      <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
-                                  </Button>
+                                  <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.95 }}>
+                                    <Button variant="ghost" size="sm" onClick={() => handleUseTool(tool.id)} className="mt-2 text-primary hover:text-primary/90 hover:bg-primary/10">
+                                        <Stethoscope className="mr-2 h-4 w-4"/>Use this Tool
+                                    </Button>
+                                  </motion.div>
                               </AccordionContent>
                           </AccordionItem>
                       )
@@ -167,7 +199,7 @@ export default function AllToolsPage() {
               </div>
             ))}
           </CardContent>
-        </Card>
+        </PremiumCard>
         <AdBanner />
     </PageWrapper>
   );

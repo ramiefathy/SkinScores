@@ -1,0 +1,100 @@
+@media print {
+  /* Hide non-essential elements */
+  .sidebar,
+  header,
+  nav,
+  .no-print,
+  button,
+  .adsbygoogle,
+  [data-id="page-wrapper-content"] > *:not(.print-content) {
+    display: none !important;
+  }
+
+  /* Reset page margins */
+  @page {
+    margin: 1cm;
+    size: A4;
+  }
+
+  /* Basic print styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black !important;
+    background: white !important;
+  }
+
+  /* Make content full width */
+  .print-content,
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Style cards for print */
+  .print-card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  /* Headers */
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Links */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  /* Print header */
+  .print-header {
+    display: block !important;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+  }
+
+  .print-header h1 {
+    margin: 0 0 5px 0;
+    font-size: 24pt;
+  }
+
+  .print-header .meta {
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Score display */
+  .score-display {
+    font-size: 18pt !important;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  /* Hide shadows and unnecessary borders */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

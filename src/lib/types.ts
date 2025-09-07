@@ -1,6 +1,7 @@
 
 import type { LucideIcon } from 'lucide-react';
 import type { ZodSchema } from 'zod';
+import type { ComponentType } from 'react';
 
 export type InputOption = {
   value: string | number;
@@ -52,4 +53,5 @@ export type Tool = {
   displayType?: 'staticList';
   rationale?: string;
   clinicalPerformance?: string;
+  customFormComponent?: ComponentType<any>; // Allow custom form components
 };

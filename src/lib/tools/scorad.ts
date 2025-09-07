@@ -86,5 +86,5 @@ Formula: SCORAD = A/5 + (7*B)/2 + C.`;
     "Zhao CY, Tran AQ, Lazo-Dizon JP, et al. A Pilot Comparison Study of Four Clinician-Rated Atopic Dermatitis Severity Scales. The British Journal of Dermatology. 2015;173(2):488-97. doi:10.1111/bjd.13846.",
     "Jacobson ME, Leshem YA, Apfelbacher C, et al. Measuring Signs of Atopic Dermatitis in Clinical Practice: A HOME-CP Consensus Statement. JAMA Dermatology. 2024;160(8):878-886. doi:10.1001/jamadermatol.2024.1162.",
     "Silverberg JI, Lei D, Yousaf M, et al. Comparison of Patient-Oriented Eczema Measure and Patient-Oriented Scoring Atopic Dermatitis vs Eczema Area and Severity Index and Other Measures of Atopic Dermatitis: A Validation Study. Annals of Allergy, Asthma & Immunology. 2020;125(1):78-83. doi:10.1016/j.anai.2020.03.006."
-  ]
+  ],
 };

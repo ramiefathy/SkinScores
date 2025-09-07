@@ -63,5 +63,5 @@ export const pasiTool: Tool = {
     "Puzenat E, Bronsard V, Prey S, et al. What Are the Best Outcome Measures for Assessing Plaque Psoriasis Severity? A Systematic Review of the Literature. Journal of the European Academy of Dermatology and Venereology : JEADV. 2010;24 Suppl 2:10-6. doi:10.1111/j.1468-3083.2009.03562.x.",
     "van Geel MJ, Otero ME, de Jong EM, van de Kerkhof PC, Seyger MM. Validation of the Simplified Psoriasis Index in Dutch Children and Adolescents With Plaque Psoriasis. The British Journal of Dermatology. 2017;176(3):771-776. doi:10.1111/bjd.15120.",
     "Folle L, Fenzl P, Fagni F, et al. DeepNAPSI Multi-Reader Nail Psoriasis Prediction Using Deep Learning. Scientific Reports. 2023;13(1):5329. doi:10.1038/s41598-023-32440-8."
-  ]
+  ],
 };

@@ -21,10 +21,16 @@ import {
   SidebarMenuSkeleton,
 } from '@/components/ui/sidebar';
 import {
+  History,
+  Activity,
+  GitCompare,
+  FileText,
+  Users,
+  Star,
   Search,
 } from 'lucide-react';
 import type { Tool } from '@/lib/types';
-import { Input } from '../ui/input';
+import { PremiumInput } from '../ui/input-premium';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useToolContext } from '@/hooks/useToolContext';
 
@@ -63,26 +69,16 @@ export function AppSidebar() {
 
   return (
     <>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 p-2">
-            <div className="group-data-[collapsible=icon]:hidden">
-                <h1 className="text-3xl font-bold text-sidebar-primary">SkinScores</h1>
-                <p className="text-xs text-sidebar-foreground/70">Clinical Scoring Tools</p>
-            </div>
-        </div>
-      </SidebarHeader>
 
       <SidebarContent>
-        <div className="p-2 space-y-4">
-            <div className="relative group-data-[collapsible=icon]:w-auto">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
-                <Input
-                    placeholder="Search tools..."
-                    className="pl-8 group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:p-2 group-data-[collapsible=icon]:h-8"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
+        <div className="p-2">
+            <PremiumInput
+                placeholder="Filter tools..."
+                className="w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                icon={<Search className="h-4 w-4" />}
+            />
         </div>
 
         <SidebarMenu>
@@ -96,16 +92,48 @@ export function AppSidebar() {
                     <Link href="/tools">Browse All Tools</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/history'} asChild>
+                    <Link href="/history" className="flex items-center gap-2">
+                        <History className="h-4 w-4" />
+                        Calculation History
+                    </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/compare'} asChild>
+                    <Link href="/compare" className="flex items-center gap-2">
+                        <GitCompare className="h-4 w-4" />
+                        Compare Calculations
+                    </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/templates'} asChild>
+                    <Link href="/templates" className="flex items-center gap-2">
+                        <FileText className="h-4 w-4" />
+                        My Templates
+                    </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={pathname === '/patients'} asChild>
+                    <Link href="/patients" className="flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        Patient Progress
+                    </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
     
             {recentToolDetails.length > 0 && !searchTerm && (
                 <SidebarGroup>
-                    <SidebarGroupLabel>Recently Used</SidebarGroupLabel>
+                    <SidebarGroupLabel className="font-headline text-base">Recently Used</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenuSub>
                         {recentToolDetails.map((tool) => (
                             <SidebarMenuItem key={tool.id}>
                                 <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
-                                    <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
+                                    <Link href={`/?toolId=${tool.id}`} className="block leading-normal">{tool.name}</Link>
                                 </SidebarMenuSubButton>
                             </SidebarMenuItem>
                         ))}
@@ -118,7 +146,7 @@ export function AppSidebar() {
                 <Accordion type="multiple" className="w-full">
                     {Object.entries(filteredTools).sort((a,b) => a[0].localeCompare(b[0])).map(([condition, tools]) => (
                         <AccordionItem value={condition} key={condition} className="border-none">
-                            <AccordionTrigger className="py-2 px-2 text-sm font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline">
+                            <AccordionTrigger className="py-3 px-2 text-base font-medium text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md hover:no-underline font-headline">
                                 {condition}
                             </AccordionTrigger>
                             <AccordionContent className="pl-4 pt-1 pb-1">
@@ -126,7 +154,7 @@ export function AppSidebar() {
                                     {tools.sort((a,b) => a.name.localeCompare(b.name)).map(tool => (
                                         <SidebarMenuItem key={tool.id}>
                                             <SidebarMenuSubButton isActive={selectedToolId === tool.id} asChild>
-                                                <Link href={`/?toolId=${tool.id}`}>{tool.name}</Link>
+                                                <Link href={`/?toolId=${tool.id}`} className="block leading-normal">{tool.name}</Link>
                                             </SidebarMenuSubButton>
                                         </SidebarMenuItem>
                                     ))}
@@ -136,14 +164,16 @@ export function AppSidebar() {
                     ))}
                 </Accordion>
             </div>
-          </>
         </SidebarMenu>
       </SidebarContent>
 
       <SidebarFooter>
         <div className="p-2 space-y-1">
             <SidebarMenuButton asChild>
-                <Link href="#">Settings</Link>
+                <Link href="/analytics">
+                    <Activity className="h-4 w-4 mr-2" />
+                    Analytics
+                </Link>
             </SidebarMenuButton>
         </div>
       </SidebarFooter>

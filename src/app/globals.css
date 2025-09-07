@@ -5,6 +5,8 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px; /* Increased base font size for better readability */
+  line-height: 1.6;
 }
 
 @layer base {
@@ -34,6 +36,15 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Premium fonts */
+    --font-funnel-display: 'Funnel Display', sans-serif;
+    --font-edu-cursive: 'Edu NSW ACT Cursive', cursive;
+    --font-inter: 'Inter', sans-serif;
+    
+    /* Premium accent colors */
+    --premium-purple: 270 60% 70%; /* #a855f7 adapted */
+    --premium-purple-dark: 270 50% 40%;
 
     /* Sidebar Colors - Light Theme */
     --sidebar-background: 197 40% 95%;
@@ -72,6 +83,10 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
+    /* Premium accent colors - Dark Mode */
+    --premium-purple: 270 70% 80%; /* Lighter purple for dark mode */
+    --premium-purple-dark: 270 60% 50%;
+
     /* Sidebar Colors - Dark Theme */
     --sidebar-background: 197 15% 12%;
     --sidebar-foreground: 197 50% 88%;
@@ -91,4 +106,125 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Premium font utilities */
+.font-headline {
+  font-family: var(--font-funnel-display);
+}
+
+.font-accent {
+  font-family: var(--font-edu-cursive);
+}
+
+.text-gradient-premium {
+  @apply bg-gradient-to-r from-primary to-[hsl(var(--premium-purple))] bg-clip-text text-transparent;
+}
+
+
+/* Print styles */
+@media print {
+  /* Hide non-essential elements */
+  .sidebar,
+  header,
+  nav,
+  .no-print,
+  button,
+  .adsbygoogle,
+  [data-id="page-wrapper-content"] > *:not(.print-content) {
+    display: none !important;
+  }
+
+  /* Reset page margins */
+  @page {
+    margin: 1cm;
+    size: A4;
+  }
+
+  /* Basic print styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black !important;
+    background: white !important;
+  }
+
+  /* Make content full width */
+  .print-content,
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Style cards for print */
+  .print-card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  /* Headers */
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  /* Links */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  /* Print header */
+  .print-header {
+    display: block !important;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+  }
+
+  .print-header h1 {
+    margin: 0 0 5px 0;
+    font-size: 24pt;
+  }
+
+  .print-header .meta {
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Score display */
+  .score-display {
+    font-size: 18pt !important;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  /* Hide shadows and unnecessary borders */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* Radial gradient utilities */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
 }

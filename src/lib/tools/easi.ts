@@ -22,19 +22,19 @@ export const easiTool: Tool = {
   sourceType: 'Clinical Guideline',
   icon: SlidersHorizontal,
   formSections: [
-    { id: "age_group", label: "Age Group (determines regional weights)", type: 'select', options: [ {value: "adult", label: "Adult/Child >7 years"}, {value: "child", label: "Child 0-7 years"} ], defaultValue: "adult", validation: getValidationSchema('select', [ {value: "adult", label: "Adult/Child >7 years"}])},
+    { id: "age_group", label: "Age Group (determines regional weights)", type: 'select' as const, options: [ {value: "adult", label: "Adult/Child >7 years"}, {value: "child", label: "Child 0-7 years"} ], defaultValue: "adult", validation: getValidationSchema('select', [ {value: "adult", label: "Adult/Child >7 years"}])},
     ...regionDataEASI.map(region => {
       const ageBasedWeight = `Adult Weight: ${region.adultWeight}, Child (0-7 yrs) Weight: ${region.childWeight}`;
       return {
           id: `easi_group_${region.id}`,
           title: `${region.name} (${ageBasedWeight})`,
-          gridCols: 2,
+          gridCols: 2 as const,
           inputs: [
-              { id: `${region.id}_area`, label: `Area Affected Score (0-6)`, type: 'select', options: areaOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',areaOptionsEASI,0,6) },
-              { id: `${region.id}_erythema`, label: `Erythema (0-3)`, type: 'select', options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
-              { id: `${region.id}_induration`, label: `Induration/Papulation (0-3)`, type: 'select', options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
-              { id: `${region.id}_excoriation`, label: `Excoriation (0-3)`, type: 'select', options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
-              { id: `${region.id}_lichenification`, label: `Lichenification (0-3)`, type: 'select', options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
+              { id: `${region.id}_area`, label: `Area Affected Score (0-6)`, type: 'select' as const, options: areaOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',areaOptionsEASI,0,6) },
+              { id: `${region.id}_erythema`, label: `Erythema (0-3)`, type: 'select' as const, options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
+              { id: `${region.id}_induration`, label: `Induration/Papulation (0-3)`, type: 'select' as const, options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
+              { id: `${region.id}_excoriation`, label: `Excoriation (0-3)`, type: 'select' as const, options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
+              { id: `${region.id}_lichenification`, label: `Lichenification (0-3)`, type: 'select' as const, options: severityOptionsEASI, defaultValue: 0, validation: getValidationSchema('select',severityOptionsEASI,0,3) },
           ]
       };
     })
@@ -90,5 +90,5 @@ Interpretation Bands: 0 Clear; 0.1–1.0 Almost clear; 1.1–7.0 Mild; 7.1–21.
   references: [
     "Hanifin, J. M., Thurston, M., Omoto, M., et al. (2001). The Eczema Area and Severity Index (EASI): assessment of reliability in atopic dermatitis. Experimental Dermatology, 10(1), 11–18.",
     "Leshem, Y. A., Hajar, T., Hanifin, J. M., & Simpson, E. L. (2015). What the Eczema Area and Severity Index score tells us about the severity of atopic dermatitis: a systematic review. British Journal of Dermatology, 172(5), 1353–1356."
-  ]
+  ],
 };

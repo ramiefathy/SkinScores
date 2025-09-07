@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState, useMemo, useCallback, useEf
 import { useRouter } from 'next/navigation';
 import { toolData } from '@/lib/tools';
 import type { Tool, CalculationResult } from '@/lib/types';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const RECENT_TOOLS_STORAGE_KEY = 'skinscore_recently_used_tools';
 
@@ -23,6 +24,7 @@ const ToolContext = createContext<ToolContextType | undefined>(undefined);
 
 export function ToolProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const scrollToTop = useScrollToTop();
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
   const [recentlyUsed, setRecentlyUsed] = useState<string[]>([]);
@@ -62,9 +64,9 @@ export function ToolProvider({ children }: { children: React.ReactNode }) {
         router.push('/', { scroll: false });
     }
     
-    document.querySelector('[data-id="page-wrapper-content"]')?.scrollTo(0, 0);
+    scrollToTop();
 
-  }, [router]);
+  }, [router, scrollToTop]);
 
   const popularTools: Tool[] = useMemo(() => {
     const popularIds = ['pasi', 'dlqi', 'abcde_melanoma', 'easi', 'scorad'];

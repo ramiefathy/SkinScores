@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import type { Control, FieldValues, Path } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import type { InputConfig } from '@/lib/types';
@@ -10,14 +10,113 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { TooltipField } from '@/components/ui/tooltip-field';
 
+
+// Generate contextual help based on field properties
+const generateTooltipContent = (inputConfig: InputConfig) => {
+  const { label, type, description, id } = inputConfig;
+  const labelLower = label.toLowerCase();
+  
+  // Common severity tooltips
+  if (labelLower.includes('erythema') || labelLower.includes('redness')) {
+    return {
+      tooltip: 'Redness of the skin. Assess the intensity of red coloration in the affected area.',
+      references: {
+        '0': 'No redness',
+        '1': 'Faint pink/light red',
+        '2': 'Definite red',
+        '3': 'Deep/dark red',
+        '4': 'Very deep red/purple'
+      }
+    };
+  }
+  
+  if (labelLower.includes('induration') || labelLower.includes('thickness')) {
+    return {
+      tooltip: 'Thickness or raised appearance of skin lesions. Assess by gently palpating the area.',
+      references: {
+        '0': 'No elevation',
+        '1': 'Barely perceptible elevation',
+        '2': 'Easily palpable elevation',
+        '3': 'Marked elevation',
+        '4': 'Very marked elevation'
+      }
+    };
+  }
+  
+  if (labelLower.includes('scaling') || labelLower.includes('desquamation')) {
+    return {
+      tooltip: 'Visible flaking or peeling of the skin surface.',
+      references: {
+        '0': 'No scaling',
+        '1': 'Fine scales',
+        '2': 'Moderate scales',
+        '3': 'Heavy scales',
+        '4': 'Very heavy/thick scales'
+      }
+    };
+  }
+  
+  if (labelLower.includes('body surface area') || labelLower.includes('bsa') || labelLower.includes('extent')) {
+    return {
+      tooltip: 'Percentage of the body region affected. Use the palm of your hand as approximately 1% of total body surface area.',
+      examples: [
+        'Palm = ~1% BSA',
+        'Entire arm = ~9% BSA',
+        'Entire leg = ~18% BSA'
+      ]
+    };
+  }
+  
+  if (labelLower.includes('pruritus') || labelLower.includes('itch')) {
+    return {
+      tooltip: 'Itching sensation. Rate the average intensity over the specified time period.',
+      examples: [
+        '0-3: Mild - occasional awareness',
+        '4-6: Moderate - frequent awareness, some interference',
+        '7-10: Severe - constant awareness, significant interference'
+      ]
+    };
+  }
+  
+  if (labelLower.includes('sleep') || labelLower.includes('insomnia')) {
+    return {
+      tooltip: 'Sleep disturbance due to skin symptoms. Consider both difficulty falling asleep and night-time awakening.',
+      examples: [
+        '0: No sleep loss',
+        '1-3: Occasional difficulty',
+        '4-6: Frequent awakening',
+        '7-10: Severe insomnia'
+      ]
+    };
+  }
+  
+  // VAS (Visual Analog Scale) specific help
+  if (labelLower.includes('vas') || type === 'number' && (inputConfig.max === 10 || inputConfig.max === 100)) {
+    return {
+      tooltip: `Rate on a scale from ${inputConfig.min || 0} (none) to ${inputConfig.max} (most severe).`,
+      examples: [
+        'Consider your average experience over the time period',
+        'Be consistent in your ratings across different assessments'
+      ]
+    };
+  }
+  
+  // Default to description if provided
+  if (description) {
+    return { tooltip: description };
+  }
+  
+  return null;
+};
 
 interface DynamicFormFieldProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
   inputConfig: InputConfig;
 }
 
-export function DynamicFormField<TFieldValues extends FieldValues>({
+function DynamicFormFieldComponent<TFieldValues extends FieldValues>({
   control,
   inputConfig,
 }: DynamicFormFieldProps<TFieldValues>) {
@@ -32,7 +131,9 @@ export function DynamicFormField<TFieldValues extends FieldValues>({
         <FormItem>
           {type !== 'checkbox' && (
             <div className="min-h-[4rem]">
-              <FormLabel>{label}</FormLabel>
+              <TooltipField {...generateTooltipContent(inputConfig) || {}}>
+                <FormLabel>{label}</FormLabel>
+              </TooltipField>
               {fieldDescription ? (
                 <FormDescription className="mt-1 text-sm text-muted-foreground">
                   {fieldDescription}
@@ -156,3 +257,5 @@ export function DynamicFormField<TFieldValues extends FieldValues>({
     />
   );
 }
+
+export const DynamicFormField = memo(DynamicFormFieldComponent) as typeof DynamicFormFieldComponent;

@@ -121,5 +121,5 @@ export const dlqiTool: Tool = {
       "Lacey RE, Minnis H. Practitioner Review: Twenty Years of Research With Adverse Childhood Experience Scores - Advantages, Disadvantages and Applications to Practice. Journal of Child Psychology and Psychiatry, and Allied Disciplines. 2020;61(2):116-130. doi:10.1111/jcpp.13135.",
       "McLennan JD, MacMillan HL, Afifi TO. Questioning the Use of Adverse Childhood Experiences (ACEs) Questionnaires. Child Abuse & Neglect. 2020;101:104331. doi:10.1016/j.chiabu.2019.104331.",
       "Finlay AY, Khan GK. Dermatology Life Quality Index (DLQI)--a simple practical measure for routine clinical use. Clin Exp Dermatol. 1994 May;19(3):210-6."
-  ]
+  ],
 };

@@ -1,8 +1,13 @@
 
 "use client";
 
-import React, { Suspense } from 'react';
+import React from 'react';
+import { Providers } from '@/components/layout/Providers';
 
 export function AppContent({ children }: { children: React.ReactNode }) {
-    return <Suspense>{children}</Suspense>
+    return (
+        <Providers>
+            {children}
+        </Providers>
+    )
 }
