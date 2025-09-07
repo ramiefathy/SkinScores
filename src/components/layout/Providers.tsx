@@ -4,7 +4,6 @@
 import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { AppHeader } from '@/components/layout/AppHeader';
-import { Toaster } from '@/components/ui/toaster';
 import { ToolProvider } from '@/hooks/useToolContext';
 import { ThemeProvider } from '@/components/theme-provider';
 import { KeyboardShortcutsProvider } from './KeyboardShortcutsProvider';
@@ -34,7 +33,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
                   {children}
                 </SidebarInset>
                 <CommandPalette />
-                <Toaster />
               </SidebarProvider>
             </KeyboardShortcutsProvider>
           </SearchProvider>

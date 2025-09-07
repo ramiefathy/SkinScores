@@ -2,6 +2,8 @@
 import './globals.css';
 import Script from 'next/script';
 import React from 'react';
+import { Providers } from '@/components/layout/Providers';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function RootLayout({
   children,
@@ -9,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -39,7 +41,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        {children}
+        <Providers>
+            {children}
+            <Toaster />
+        </Providers>
       </body>
     </html>
   );
