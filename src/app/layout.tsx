@@ -2,7 +2,7 @@
 import './globals.css';
 import Script from 'next/script';
 import React from 'react';
-import { Providers } from '@/components/layout/Providers';
+import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 export default function RootLayout({
@@ -41,10 +41,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <Providers>
-            {children}
-            <Toaster />
-        </Providers>
+        <ThemeProvider defaultTheme="system">
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

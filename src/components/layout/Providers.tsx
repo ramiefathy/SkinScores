@@ -1,43 +1,9 @@
-
 "use client";
 
-import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/layout/AppSidebar';
-import { AppHeader } from '@/components/layout/AppHeader';
-import { ToolProvider } from '@/hooks/useToolContext';
-import { ThemeProvider } from '@/components/theme-provider';
-import { KeyboardShortcutsProvider } from './KeyboardShortcutsProvider';
-import { SearchProvider } from '@/contexts/SearchContext';
-import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
-import { CommandPalette } from '@/components/search/CommandPalette';
-import { initializeDefaultTemplates } from '@/lib/default-templates';
-import React, { useEffect } from 'react';
+// This component is no longer used as providers have been moved to appropriate layouts
+// Keeping this file temporarily for backwards compatibility
+// TODO: Remove this file after confirming all references have been updated
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    // Initialize default templates on first load
-    initializeDefaultTemplates();
-  }, []);
-  return (
-    <ThemeProvider defaultTheme="system">
-      <AnalyticsProvider>
-        <ToolProvider>
-          <SearchProvider>
-            <KeyboardShortcutsProvider>
-              <SidebarProvider>
-                <AppHeader />
-                <Sidebar collapsible="icon" className="pt-24">
-                  <AppSidebar />
-                </Sidebar>
-                <SidebarInset className="pt-24">
-                  {children}
-                </SidebarInset>
-                <CommandPalette />
-              </SidebarProvider>
-            </KeyboardShortcutsProvider>
-          </SearchProvider>
-        </ToolProvider>
-      </AnalyticsProvider>
-    </ThemeProvider>
-  );
+  return <>{children}</>;
 }
