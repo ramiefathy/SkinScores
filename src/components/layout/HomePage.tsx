@@ -70,7 +70,7 @@ function HomePageComponent() {
   return (
     <>
       {/* Hero Section with Mesh Gradient */}
-      <section className="relative min-h-[70vh] -mt-24 pt-24 overflow-hidden bg-gradient-soft">
+      <section className="relative min-h-[70vh] overflow-hidden bg-gradient-soft">
         {/* Mesh Gradient Background */}
         <div className="absolute inset-0 opacity-40">
           <MeshGradient
@@ -100,7 +100,7 @@ function HomePageComponent() {
         </div>
       </section>
 
-      <div className="container mx-auto max-w-5xl p-4 sm:p-6 md:p-8 -mt-10 relative z-20">
+      <div className="container mx-auto max-w-5xl p-4 sm:p-6 md:p-8 relative z-20">
 
       <motion.div 
         className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16 text-left"
