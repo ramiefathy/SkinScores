@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToolContext } from '@/hooks/useToolContext';
 import { useToast } from '@/hooks/use-toast';
@@ -35,7 +35,7 @@ export function useKeyboardShortcuts() {
     });
   }, [toast]);
 
-  const shortcuts: ShortcutConfig[] = [
+  const shortcuts: ShortcutConfig[] = useMemo(() => [
     // Cmd+K is now handled by useCommandPalette hook
     {
       key: 'h',
@@ -92,7 +92,7 @@ export function useKeyboardShortcuts() {
         }
       },
     },
-  ];
+  ], [handleToolSelect, router, showShortcutsHelp, toast]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

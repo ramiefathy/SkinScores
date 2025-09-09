@@ -188,7 +188,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     handleToolSelect(tool.id);
     setIsOpen(false);
     setQuery('');
-    router.push(`/tools/${tool.id}`);
+    router.push(`/?toolId=${tool.id}`);
   }, [handleToolSelect, router]);
 
   const value: SearchContextType = {

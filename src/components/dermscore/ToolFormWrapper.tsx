@@ -3,6 +3,7 @@
 import React from 'react';
 import { ToolForm } from './ToolForm';
 import { customFormRegistry } from './customFormRegistry';
+import ErrorBoundary from '@/components/ui/error-boundary';
 import type { Tool } from '@/lib/types';
 
 interface ToolFormWrapperProps {
@@ -17,12 +18,19 @@ export function ToolFormWrapper({ tool, onCalculate }: ToolFormWrapperProps) {
   // Check if the tool has a custom form component in the registry
   const CustomForm = customFormRegistry[tool.id];
   
-  if (CustomForm) {
-    console.log('Using custom form component from registry for tool:', tool.id);
-    return <CustomForm tool={tool} onCalculate={onCalculate} />;
-  }
-  
-  // Otherwise use the default ToolForm
-  console.log('Using default ToolForm for tool:', tool.id);
-  return <ToolForm tool={tool} onCalculate={onCalculate} />;
+  return (
+    <ErrorBoundary>
+      {CustomForm ? (
+        <>
+          {console.log('Using custom form component from registry for tool:', tool.id)}
+          <CustomForm tool={tool} onCalculate={onCalculate} />
+        </>
+      ) : (
+        <>
+          {console.log('Using default ToolForm for tool:', tool.id)}
+          <ToolForm tool={tool} onCalculate={onCalculate} />
+        </>
+      )}
+    </ErrorBoundary>
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,16 +58,16 @@ export function TemplatesDialog({
   const [templateDescription, setTemplateDescription] = useState('');
   const [templateTags, setTemplateTags] = useState('');
   
+  const loadTemplates = useCallback(() => {
+    const toolTemplates = getToolTemplates(tool.id);
+    setTemplates(toolTemplates);
+  }, [tool.id]);
+  
   useEffect(() => {
     if (isOpen) {
       loadTemplates();
     }
-  }, [isOpen, tool.id]);
-  
-  const loadTemplates = () => {
-    const toolTemplates = getToolTemplates(tool.id);
-    setTemplates(toolTemplates);
-  };
+  }, [isOpen, loadTemplates]);
   
   const filteredTemplates = templates.filter(t =>
     searchQuery === '' ||

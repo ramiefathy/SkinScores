@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,13 +29,7 @@ export function ShareDialog({ isOpen, onClose, tool, inputs, result }: ShareDial
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (isOpen && !shareLink) {
-      generateShareLink();
-    }
-  }, [isOpen]);
-
-  const generateShareLink = async () => {
+  const generateShareLink = useCallback(async () => {
     setLoading(true);
     try {
       const link = await createShareableLink(tool, inputs, result);
@@ -55,7 +49,13 @@ export function ShareDialog({ isOpen, onClose, tool, inputs, result }: ShareDial
     } finally {
       setLoading(false);
     }
-  };
+  }, [tool, inputs, result, trackEvent, toast]);
+
+  useEffect(() => {
+    if (isOpen && !shareLink) {
+      generateShareLink();
+    }
+  }, [isOpen, shareLink, generateShareLink]);
 
   const handleCopy = async () => {
     if (!shareLink) return;

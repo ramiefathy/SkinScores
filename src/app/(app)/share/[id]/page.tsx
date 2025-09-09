@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +18,7 @@ import { format } from 'date-fns';
 import { useToolContext } from '@/hooks/useToolContext';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
-export default function SharePage() {
+function SharePageContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -74,7 +74,7 @@ export default function SharePage() {
   const handleUseThisTool = () => {
     if (!tool) return;
     handleToolSelect(tool.id);
-    router.push(`/tools/${tool.id}`);
+    router.push(`/?toolId=${tool.id}`);
   };
 
   if (loading) {
@@ -225,5 +225,13 @@ export default function SharePage() {
         </motion.div>
       </div>
     </PageWrapper>
+  );
+}
+
+export default function SharePage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <SharePageContent />
+    </Suspense>
   );
 }

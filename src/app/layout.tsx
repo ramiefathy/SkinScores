@@ -1,8 +1,23 @@
 
 import './globals.css';
-import Script from 'next/script';
 import React from 'react';
 import ClientAppShell from '@/components/layout/ClientAppShell';
+import { ScriptWrapper } from '@/components/layout/ScriptWrapper';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'SkinScores - Medical Assessment Tools',
+  description: 'Professional dermatology assessment tools and calculators',
+  icons: {
+    icon: '/icon-192.png',
+    apple: '/icon-192.png',
+  },
+  manifest: '/manifest.json',
+};
+
+export const viewport = {
+  themeColor: '#3b82f6',
+};
 
 export default function RootLayout({
   children,
@@ -18,28 +33,9 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
-        <Script
-          id="adsense-script"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2958059905874922"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-        <Script
-          id="sw-register"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js');
-                });
-              }
-            `,
-          }}
-        />
       </head>
       <body className="font-body antialiased">
+        <ScriptWrapper />
         <ClientAppShell>{children}</ClientAppShell>
       </body>
     </html>

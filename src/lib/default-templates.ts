@@ -148,7 +148,7 @@ function getDefaultTemplates() {
     {
       name: 'Moderate Melasma',
       description: 'Template for moderate melasma assessment',
-      toolId: 'masi',
+      toolId: 'masiMmasi',
       inputs: {
         forehead_area: 2,
         forehead_darkness: 2,
