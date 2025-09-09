@@ -503,7 +503,7 @@ SidebarMenu.displayName = "SidebarMenu"
 const SidebarMenuItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li"> & { index?: number }
->(({ className, index = 0, ...props }, ref) => (
+>(({ className, index = 0, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...props }, ref) => (
   <motion.li
     ref={ref}
     data-sidebar="menu-item"

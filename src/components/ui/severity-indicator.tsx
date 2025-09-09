@@ -89,17 +89,19 @@ export function SeverityIndicator({
       {showProgress && (
         <div className="space-y-2">
           <div className="relative">
-            <Progress 
-              value={normalizedScore} 
-              className="h-3"
-              indicatorClassName={cn(
-                normalizedScore < 20 && "bg-green-500",
-                normalizedScore >= 20 && normalizedScore < 40 && "bg-yellow-500",
-                normalizedScore >= 40 && normalizedScore < 60 && "bg-orange-500",
-                normalizedScore >= 60 && normalizedScore < 80 && "bg-red-500",
-                normalizedScore >= 80 && "bg-purple-500"
-              )}
-            />
+            <div className="relative h-3 w-full overflow-hidden rounded-full bg-secondary">
+              <div 
+                className={cn(
+                  "h-full transition-all",
+                  normalizedScore < 20 && "bg-green-500",
+                  normalizedScore >= 20 && normalizedScore < 40 && "bg-yellow-500",
+                  normalizedScore >= 40 && normalizedScore < 60 && "bg-orange-500",
+                  normalizedScore >= 60 && normalizedScore < 80 && "bg-red-500",
+                  normalizedScore >= 80 && "bg-purple-500"
+                )}
+                style={{ width: `${normalizedScore}%` }}
+              />
+            </div>
             {/* Level markers */}
             <div className="absolute inset-0 flex justify-between pointer-events-none">
               {levels.map((level, idx) => (

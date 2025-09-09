@@ -19,7 +19,7 @@ interface TemplateCardProps {
     name: string;
     description?: string;
     toolId: string;
-    values: Record<string, any>;
+    inputs: Record<string, any>;
     tags?: string[];
     createdAt: string;
   };
@@ -129,7 +129,7 @@ export function TemplateCard({ template, onLoad, onDelete, className }: Template
             </div>
             <div className="flex items-center gap-1">
               <Clock className="h-3 w-3" />
-              {Object.keys(template.values).length} fields
+              {Object.keys(template.inputs).length} fields
             </div>
           </div>
 
@@ -167,7 +167,7 @@ export function TemplateCard({ template, onLoad, onDelete, className }: Template
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
-                  {Object.entries(template.values).map(([key, value], index) => (
+                  {Object.entries(template.inputs).map(([key, value], index) => (
                     <motion.div
                       key={key}
                       initial={{ opacity: 0, x: -20 }}

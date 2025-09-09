@@ -2,7 +2,7 @@
 import './globals.css';
 import Script from 'next/script';
 import React from 'react';
-import { AppShell } from '@/components/layout/AppShell';
+import ClientAppShell from '@/components/layout/ClientAppShell';
 
 export default function RootLayout({
   children,
@@ -40,7 +40,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <AppShell>{children}</AppShell>
+        <ClientAppShell>{children}</ClientAppShell>
       </body>
     </html>
   );

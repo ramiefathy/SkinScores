@@ -10,7 +10,7 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, children, blur = "md", hover = false, ...props }, ref) => {
+  ({ className, children, blur = "md", hover = false, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...props }, ref) => {
     const blurClass = {
       sm: "backdrop-blur-sm",
       md: "backdrop-blur-md",

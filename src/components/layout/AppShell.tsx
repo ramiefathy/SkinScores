@@ -2,9 +2,9 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset, Sidebar } from '@/components/ui/sidebar';
 import { AppHeader } from '@/components/layout/AppHeader';
+import { AppSidebar } from '@/components/layout/AppSidebar';
 import { KeyboardShortcutsProvider } from '@/components/layout/KeyboardShortcutsProvider';
 import { CommandPalette } from '@/components/search/CommandPalette';
 import { initializeDefaultTemplates } from '@/lib/default-templates';
@@ -13,17 +13,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { ToolProvider } from '@/hooks/useToolContext';
 import { SearchProvider } from '@/contexts/SearchContext';
 import { AnalyticsProvider } from '@/contexts/AnalyticsContext';
-
-// Dynamic import for sidebar components to prevent SSR hydration issues with Radix UI
-const Sidebar = dynamic(
-  () => import('@/components/ui/sidebar').then(mod => mod.Sidebar),
-  { ssr: false }
-);
-
-const AppSidebar = dynamic(
-  () => import('@/components/layout/AppSidebar').then(mod => mod.AppSidebar),
-  { ssr: false }
-);
 
 // This component is a "use client" entry point that wraps the entire
 // interactive application shell, including all providers.

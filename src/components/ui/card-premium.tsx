@@ -10,7 +10,7 @@ interface PremiumCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const PremiumCard = React.forwardRef<HTMLDivElement, PremiumCardProps>(
-  ({ className, gradient = false, hover = true, children, ...props }, ref) => {
+  ({ className, gradient = false, hover = true, children, onDrag, onDragEnd, onDragStart, onAnimationStart, onAnimationEnd, onAnimationIteration, ...props }, ref) => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     return (
