@@ -1,4 +1,4 @@
-# **App Name**: DermScore
+# **App Name**: SkinScores
 
 ## Core Features:
 
