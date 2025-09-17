@@ -1,0 +1,13 @@
+54b2e03 2025-09-17 Improve UI/UX roadmap and add calculator progress tracking
+
+A	Desktop/WebApps/apps/SkinScores/UI-UX-Review-Report.md
+A	Desktop/WebApps/apps/SkinScores/src/routes/calculators/CalculatorRunnerPage.tsx
+A	Desktop/WebApps/apps/SkinScores/src/routes/library/LibraryPage.tsx
+A	Desktop/WebApps/apps/SkinScores/src/tools/tool-metadata.ts
+A	Desktop/WebApps/apps/SkinScores/src/tools/tool-registry.ts
+A	Desktop/WebApps/apps/SkinScores/src/tools/toolValidation.ts
+A	Desktop/WebApps/apps/SkinScores/src/tools/types.ts
+
+956fcad 2025-06-05 first commit
+
+A	README.md

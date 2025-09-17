@@ -1,0 +1,31 @@
+// Tool categories for organizing tools in the UI
+export const toolCategories = [
+  'General Dermatology',
+  'Psoriasis',
+  'Eczema',
+  'Acne',
+  'Melanoma',
+  'Lupus',
+  'Bullous Disorders',
+  'Hidradenitis Suppurativa',
+  'Vitiligo',
+  'Alopecia',
+  'Wounds',
+  'Burns',
+  'Pruritus',
+  'Rosacea',
+  'Melasma',
+  'Scleroderma',
+  'Morphea',
+  'Vasculitis',
+  'Stevens-Johnson Syndrome',
+  'Cutaneous Lymphoma',
+  'Dermatomyositis',
+  'Pyoderma Gangrenosum',
+  'Urticaria',
+  'Adverse Events',
+  'Inflammatory Diseases',
+  "Sjögren's Syndrome",
+] as const;
+
+export type ToolCategory = (typeof toolCategories)[number];
