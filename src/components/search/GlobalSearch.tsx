@@ -17,6 +17,7 @@ import Fuse from 'fuse.js';
 import { useToolsMetadata } from '../../hooks/useTools';
 import { debounce } from '../../utils/debounce';
 import type { SxProps, Theme } from '@mui/material/styles';
+import type { ToolListItem } from '../../services/toolService';
 
 interface SearchResult {
   item: {
