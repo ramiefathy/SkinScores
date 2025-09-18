@@ -34,19 +34,19 @@ jobs:
       - name: Deploy Firestore Rules
         run: firebase deploy --only firestore:rules --project skinscore-afw5a
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
 
       - name: Deploy Firestore Indexes
         run: firebase deploy --only firestore:indexes --project skinscore-afw5a
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
 
       - name: Deploy Storage Rules
         run: firebase deploy --only storage:rules --project skinscore-afw5a
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
 
       - name: Deploy Cloud Functions
         run: firebase deploy --only functions --project skinscore-afw5a
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}

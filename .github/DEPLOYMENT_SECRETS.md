@@ -20,7 +20,7 @@ This is used for deploying to Firebase Hosting.
 5. Value: Paste the entire JSON content from the downloaded file
 6. Click "Add secret"
 
-## 2. FIREBASE_TOKEN (Required for Functions, Rules, and Indexes)
+## 2. FIREBASE_DEPLOY_TOKEN (Required for Functions, Rules, and Indexes)
 
 This is used for deploying Firebase Functions, Firestore rules, and indexes.
 
@@ -34,7 +34,7 @@ This is used for deploying Firebase Functions, Firestore rules, and indexes.
 1. Go to your repository settings
 2. Navigate to Secrets and variables → Actions
 3. Click "New repository secret"
-4. Name: `FIREBASE_TOKEN`
+4. Name: `FIREBASE_DEPLOY_TOKEN`
 5. Value: Paste the token from step 4
 6. Click "Add secret"
 
