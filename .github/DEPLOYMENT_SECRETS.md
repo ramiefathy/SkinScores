@@ -53,9 +53,15 @@ This is used for deploying Firebase Functions, Firestore rules, and indexes.
   - Storage Rules
 
 ### 3. Preview Deployments (preview-deploy.yml)
-- Triggers on pull requests
+- Triggers on push to feature branches
 - Creates preview URLs for testing
-- Expires after 30 days
+- Expires after 7 days
+- Comments preview URL on associated PRs
+
+### 4. Manual Preview Deployment (manual-preview.yml)
+- Trigger manually from Actions tab
+- Enter PR number to deploy any PR
+- Useful for deploying PRs from forks
 
 ## Testing Deployment
 
