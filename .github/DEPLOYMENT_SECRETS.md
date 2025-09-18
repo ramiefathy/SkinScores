@@ -38,6 +38,26 @@ This is used for deploying Firebase Functions, Firestore rules, and indexes.
 5. Value: Paste the token from step 4
 6. Click "Add secret"
 
+## 3. Firebase Configuration (Required for all deployments)
+
+Add these as individual secrets (get values from your .env file):
+
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- `VITE_FIREBASE_MEASUREMENT_ID`
+
+### How to add:
+1. Go to your repository settings
+2. Navigate to Secrets and variables → Actions
+3. For each value above, click "New repository secret"
+4. Name: Use the exact name above
+5. Value: Get from your local .env file
+6. Click "Add secret"
+
 ## Deployment Workflows
 
 ### 1. Main Branch Deployment (ci.yml)
