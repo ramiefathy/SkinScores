@@ -25,7 +25,7 @@ import { BackgroundShader } from '../effects/BackgroundShader';
 import { HeaderShader } from '../effects/HeaderShader';
 import { GlobalSearch } from '../search/GlobalSearch';
 import { QuickAccessBar } from '../navigation/QuickAccessBar';
-import { Link as RouterLink, useLocation, Outlet, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useToolsMetadata } from '../../hooks/useTools';
 import NavigationDrawer from './NavigationDrawer';
@@ -38,7 +38,6 @@ const AppShell = () => {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const location = useLocation();
   const { data: tools = [] } = useToolsMetadata();
 
   const categories = useMemo(() => {
@@ -72,7 +71,8 @@ const AppShell = () => {
       const target = event.target as HTMLElement | null;
       if (target) {
         const tagName = target.tagName.toLowerCase();
-        const isEditable = target.isContentEditable || tagName === 'input' || tagName === 'textarea';
+        const isEditable =
+          target.isContentEditable || tagName === 'input' || tagName === 'textarea';
         if (isEditable && !(target as HTMLInputElement).dataset.globalSearchInput) {
           return;
         }
@@ -98,7 +98,12 @@ const AppShell = () => {
   }, []);
 
   return (
-    <Box display="flex" minHeight="100vh" flexDirection="column" sx={{ bgcolor: 'background.default' }}>
+    <Box
+      display="flex"
+      minHeight="100vh"
+      flexDirection="column"
+      sx={{ bgcolor: 'background.default' }}
+    >
       <BackgroundShader />
       <AppBar position="sticky" sx={{ position: 'relative', overflow: 'hidden' }}>
         <HeaderShader />
@@ -198,7 +203,7 @@ const AppShell = () => {
                     onClose={() => setMenuAnchor(null)}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     PaperProps={{
-                      sx: { mt: 1, minWidth: 200 }
+                      sx: { mt: 1, minWidth: 200 },
                     }}
                   >
                     <MenuItem disabled>
@@ -227,11 +232,7 @@ const AppShell = () => {
                   </Menu>
                 </>
               ) : (
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => navigate('/auth/sign-in')}
-                >
+                <Button variant="contained" size="small" onClick={() => navigate('/auth/sign-in')}>
                   Sign in
                 </Button>
               )}
@@ -245,17 +246,14 @@ const AppShell = () => {
         open={Boolean(toolsMenuAnchor)}
         onClose={() => setToolsMenuAnchor(null)}
         PaperProps={{
-          sx: { mt: 1, minWidth: 280 }
+          sx: { mt: 1, minWidth: 280 },
         }}
       >
         <MenuItem onClick={handleBrowseAllClick}>
           <ListItemIcon>
             <SearchIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText
-            primary="Browse All Tools"
-            secondary={`${tools.length} tools available`}
-          />
+          <ListItemText primary="Browse All Tools" secondary={`${tools.length} tools available`} />
         </MenuItem>
         <Divider />
         <MenuItem disabled>

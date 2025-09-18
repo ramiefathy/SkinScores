@@ -3,7 +3,9 @@
 ## Project Context for AI Implementation Agent
 
 ### Application Overview
+
 SkinScores is a clinical dermatology scoring application built with:
+
 - **Frontend**: React 18 + TypeScript + Vite
 - **UI Framework**: Material-UI (MUI) v5
 - **Routing**: React Router v6
@@ -14,6 +16,7 @@ SkinScores is a clinical dermatology scoring application built with:
 - **Date Handling**: date-fns
 
 ### Current File Structure
+
 ```
 src/
 ├── components/
@@ -40,6 +43,7 @@ src/
 ```
 
 ### Key Design Tokens
+
 - **Primary Color**: #6B4C8A (Soft purple)
 - **Secondary Color**: #D4826A (Warm terracotta)
 - **Background**: #FAFAF8 (Warm off-white)
@@ -48,6 +52,7 @@ src/
 - **Font Family**: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto"
 
 ### Critical Constraints
+
 1. **DO NOT** modify the calculator logic or data structures in `src/tools/`
 2. **DO NOT** change Firebase schema or security rules
 3. **MAINTAIN** all existing functionality while enhancing UI/UX
@@ -61,6 +66,7 @@ src/
 ### Task 1.1: Enhance Visual Design System
 
 #### File: `src/theme/tokens.ts` (NEW FILE)
+
 ```typescript
 // Create comprehensive design tokens
 export const tokens = {
@@ -92,20 +98,21 @@ export const tokens = {
     },
   },
   categoryColors: {
-    'Psoriasis': { main: '#8B6CAA', light: '#A586C5', dark: '#6B4C8A' },
-    'Eczema': { main: '#D4826A', light: '#E4A28A', dark: '#B66A52' },
-    'Acne': { main: '#5A8A5A', light: '#7AA57A', dark: '#457045' },
+    Psoriasis: { main: '#8B6CAA', light: '#A586C5', dark: '#6B4C8A' },
+    Eczema: { main: '#D4826A', light: '#E4A28A', dark: '#B66A52' },
+    Acne: { main: '#5A8A5A', light: '#7AA57A', dark: '#457045' },
     'Skin Cancer': { main: '#CC4444', light: '#DD6666', dark: '#AA3333' },
-    'Autoimmune': { main: '#4A90E2', light: '#6CA6E8', dark: '#3274C6' },
-    'Melanoma': { main: '#805099', light: '#9966B3', dark: '#663D80' },
-    'Rosacea': { main: '#E67E22', light: '#F39C12', dark: '#D35400' },
-    'Infections': { main: '#E74C3C', light: '#EC7063', dark: '#C0392B' },
-    'Other': { main: '#95A5A6', light: '#BDC3C7', dark: '#7F8C8D' },
+    Autoimmune: { main: '#4A90E2', light: '#6CA6E8', dark: '#3274C6' },
+    Melanoma: { main: '#805099', light: '#9966B3', dark: '#663D80' },
+    Rosacea: { main: '#E67E22', light: '#F39C12', dark: '#D35400' },
+    Infections: { main: '#E74C3C', light: '#EC7063', dark: '#C0392B' },
+    Other: { main: '#95A5A6', light: '#BDC3C7', dark: '#7F8C8D' },
   },
 };
 ```
 
 #### Update: `src/theme/theme.ts`
+
 ```typescript
 import { tokens } from './tokens';
 
@@ -156,6 +163,7 @@ components: {
 ### Task 1.2: Implement List View in Library
 
 #### Update: `src/routes/library/LibraryPage.tsx`
+
 Add after line 268 (replacing the TODO comment):
 
 ```typescript
@@ -236,6 +244,7 @@ Add after line 268 (replacing the TODO comment):
 ### Task 1.3: Enhanced Search Bar on Homepage
 
 #### Update: `src/routes/home/HomePage.tsx`
+
 Add after line 43 (after the buttons):
 
 ```typescript
@@ -272,6 +281,7 @@ Add after line 43 (after the buttons):
 ```
 
 #### Update: `src/components/search/GlobalSearch.tsx`
+
 Add prop interface and hero variant styling:
 
 ```typescript
@@ -316,6 +326,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
 ### Task 1.4: Add Loading Skeletons
 
 #### File: `src/components/common/ToolCardSkeleton.tsx` (NEW FILE)
+
 ```typescript
 import { Card, CardContent, Skeleton, Box } from '@mui/material';
 
@@ -338,11 +349,13 @@ export const ToolCardSkeleton = () => (
 ```
 
 #### Update loading states throughout the app
+
 Replace existing loading states with appropriate skeletons.
 
 ### Task 1.5: Keyboard Navigation System
 
 #### File: `src/components/navigation/CommandPalette.tsx` (NEW FILE)
+
 ```typescript
 import { useState, useEffect, useCallback } from 'react';
 import {
@@ -489,6 +502,7 @@ export const CommandPalette = () => {
 ```
 
 #### Add to `src/App.tsx`:
+
 ```typescript
 import { CommandPalette } from './components/navigation/CommandPalette';
 
@@ -503,6 +517,7 @@ import { CommandPalette } from './components/navigation/CommandPalette';
 ### Task 2.1: Progress Indicator for Multi-Step Forms
 
 #### File: `src/components/forms/FormProgress.tsx` (NEW FILE)
+
 ```typescript
 import { Box, LinearProgress, Typography, Stack } from '@mui/material';
 
@@ -558,6 +573,7 @@ export const FormProgress = ({ currentStep, totalSteps, sections }: FormProgress
 ```
 
 #### Update: `src/routes/calculators/CalculatorRunnerPage.tsx`
+
 Add progress tracking:
 
 ```typescript
@@ -583,6 +599,7 @@ const formSectionInfo = tool?.formSections.map((section, index) => ({
 ### Task 2.2: Visual Input Components
 
 #### File: `src/components/inputs/VisualAnalogScale.tsx` (NEW FILE)
+
 ```typescript
 import { Box, Slider, Typography, Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
@@ -665,6 +682,7 @@ export const VisualAnalogScale = ({
 ```
 
 #### File: `src/components/inputs/BodyDiagram.tsx` (NEW FILE)
+
 ```typescript
 import { useState } from 'react';
 import { Box, Typography, Chip, Stack } from '@mui/material';
@@ -787,6 +805,7 @@ export const BodyDiagram = ({
 ### Task 2.3: Enhanced Result Display
 
 #### File: `src/components/results/ResultCard.tsx` (NEW FILE)
+
 ```typescript
 import {
   Box,
@@ -980,6 +999,7 @@ export const ResultCard = ({
 ### Task 3.1: Dashboard Widget System
 
 #### File: `src/components/dashboard/DashboardWidget.tsx` (NEW FILE)
+
 ```typescript
 import { ReactNode } from 'react';
 import {
@@ -1094,6 +1114,7 @@ export const DashboardWidget = ({
 ```
 
 #### File: `src/components/dashboard/ScoreChart.tsx` (NEW FILE)
+
 ```typescript
 import { useMemo } from 'react';
 import {
@@ -1198,6 +1219,7 @@ export const ScoreChart = ({
 ```
 
 #### Update: `src/routes/dashboard/DashboardPage.tsx`
+
 Replace the existing dashboard with a widget-based layout:
 
 ```typescript
@@ -1326,6 +1348,7 @@ return (
 ### Task 4.1: Touch-Optimized Components
 
 #### Update: `src/theme/theme.ts`
+
 Add mobile-specific overrides:
 
 ```typescript
@@ -1372,6 +1395,7 @@ components: {
 ### Task 4.2: Accessibility Enhancements
 
 #### File: `src/hooks/useAccessibility.ts` (NEW FILE)
+
 ```typescript
 import { useState, useEffect } from 'react';
 
@@ -1417,13 +1441,14 @@ export const useAccessibility = () => {
 ```
 
 #### File: `src/styles/accessibility.css` (NEW FILE)
+
 ```css
 /* High Contrast Mode */
 .high-contrast {
-  --mui-palette-primary-main: #0066CC;
-  --mui-palette-secondary-main: #FF6600;
-  --mui-palette-background-default: #FFFFFF;
-  --mui-palette-background-paper: #FFFFFF;
+  --mui-palette-primary-main: #0066cc;
+  --mui-palette-secondary-main: #ff6600;
+  --mui-palette-background-default: #ffffff;
+  --mui-palette-background-paper: #ffffff;
   --mui-palette-text-primary: #000000;
   --mui-palette-text-secondary: #333333;
 }
@@ -1442,12 +1467,24 @@ export const useAccessibility = () => {
   font-size: 120%;
 }
 
-.large-text .MuiTypography-h1 { font-size: 3.5rem; }
-.large-text .MuiTypography-h2 { font-size: 2.8rem; }
-.large-text .MuiTypography-h3 { font-size: 2.4rem; }
-.large-text .MuiTypography-h4 { font-size: 2rem; }
-.large-text .MuiTypography-h5 { font-size: 1.6rem; }
-.large-text .MuiTypography-h6 { font-size: 1.4rem; }
+.large-text .MuiTypography-h1 {
+  font-size: 3.5rem;
+}
+.large-text .MuiTypography-h2 {
+  font-size: 2.8rem;
+}
+.large-text .MuiTypography-h3 {
+  font-size: 2.4rem;
+}
+.large-text .MuiTypography-h4 {
+  font-size: 2rem;
+}
+.large-text .MuiTypography-h5 {
+  font-size: 1.6rem;
+}
+.large-text .MuiTypography-h6 {
+  font-size: 1.4rem;
+}
 
 /* Reduced Motion */
 .reduced-motion * {
@@ -1458,7 +1495,7 @@ export const useAccessibility = () => {
 
 /* Focus Indicators */
 *:focus-visible {
-  outline: 3px solid #0066CC !important;
+  outline: 3px solid #0066cc !important;
   outline-offset: 2px !important;
 }
 
@@ -1486,6 +1523,7 @@ export const useAccessibility = () => {
 ```
 
 #### Add to `src/main.tsx`:
+
 ```typescript
 import './styles/accessibility.css';
 ```
@@ -1495,6 +1533,7 @@ import './styles/accessibility.css';
 #### Update all interactive components with proper ARIA labels:
 
 Example for `src/components/tools/ToolCard.tsx`:
+
 ```typescript
 <Card
   sx={{ /* existing styles */ }}
@@ -1536,12 +1575,14 @@ Example for `src/components/tools/ToolCard.tsx`:
 ## Implementation Guidelines
 
 ### Order of Implementation
+
 1. **Week 1**: Phase 1 - Foundation (Tasks 1.1-1.5)
 2. **Week 2**: Phase 2 - Tool Discovery (Tasks 2.1-2.3)
 3. **Week 3**: Phase 3 - Dashboard (Tasks 3.1)
 4. **Week 4**: Phase 4 - Mobile & Accessibility (Tasks 4.1-4.3)
 
 ### Testing Requirements
+
 1. **Visual Regression**: Test all components in different states
 2. **Accessibility**: Run axe-core tests on all pages
 3. **Performance**: Ensure Lighthouse scores remain >90
@@ -1549,6 +1590,7 @@ Example for `src/components/tools/ToolCard.tsx`:
 5. **Mobile**: Test on iOS Safari and Android Chrome
 
 ### Code Quality Standards
+
 1. **TypeScript**: Maintain strict type checking
 2. **Linting**: Run `npm run lint` before commits
 3. **Formatting**: Use Prettier configuration
@@ -1556,6 +1598,7 @@ Example for `src/components/tools/ToolCard.tsx`:
 5. **Performance**: Lazy load heavy components
 
 ### Deployment Checklist
+
 1. Run all tests: `npm run test`
 2. Check type errors: `npm run typecheck`
 3. Build production: `npm run build`

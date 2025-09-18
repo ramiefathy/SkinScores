@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
   TextField,
   Autocomplete,
@@ -17,6 +17,7 @@ import Fuse from 'fuse.js';
 import { useToolsMetadata } from '../../hooks/useTools';
 import { debounce } from '../../utils/debounce';
 import type { SxProps, Theme } from '@mui/material/styles';
+import type { ToolListItem } from '../../services/toolService';
 
 interface SearchResult {
   item: {
@@ -48,7 +49,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ autoFocus = false, s
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<SearchResult[]>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const fuseRef = useRef<Fuse<any>>();
+  const fuseRef = useRef<Fuse<ToolListItem>>();
 
   // Initialize Fuse.js search index
   useEffect(() => {
@@ -77,17 +78,18 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ autoFocus = false, s
   }, []);
 
   // Debounced search function
-  const performSearch = useCallback(
-    debounce((searchTerm: string) => {
-      if (!fuseRef.current || searchTerm.length < 2) {
-        setOptions([]);
-        return;
-      }
+  const performSearch = useMemo(
+    () =>
+      debounce((searchTerm: string) => {
+        if (!fuseRef.current || searchTerm.length < 2) {
+          setOptions([]);
+          return;
+        }
 
-      const results = fuseRef.current.search(searchTerm);
-      setOptions(results.slice(0, 8)); // Limit to 8 results
-    }, 300),
-    []
+        const results = fuseRef.current.search(searchTerm);
+        setOptions(results.slice(0, 8)); // Limit to 8 results
+      }, 300),
+    [],
   );
 
   const handleInputChange = (event: React.SyntheticEvent, value: string) => {
@@ -98,7 +100,10 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ autoFocus = false, s
   const handleSelect = (event: React.SyntheticEvent, value: SearchResult | null) => {
     if (value?.item) {
       // Save to recent searches
-      const updated = [value.item.name, ...recentSearches.filter(s => s !== value.item.name)].slice(0, MAX_RECENT_SEARCHES);
+      const updated = [
+        value.item.name,
+        ...recentSearches.filter((s) => s !== value.item.name),
+      ].slice(0, MAX_RECENT_SEARCHES);
       setRecentSearches(updated);
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
 
@@ -110,7 +115,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ autoFocus = false, s
     }
   };
 
-  const renderOption = (props: any, option: SearchResult) => {
+  const renderOption = (props: React.HTMLAttributes<HTMLLIElement>, option: SearchResult) => {
     const { item } = option;
     const relevanceScore = option.score ? (1 - option.score) * 100 : 0;
 
@@ -177,11 +182,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ autoFocus = false, s
       renderOption={renderOption}
       filterOptions={(x) => x} // Disable built-in filtering, we use Fuse.js
       loading={isLoading}
-      noOptionsText={
-        inputValue.length < 2
-          ? "Type to search tools..."
-          : "No tools found"
-      }
+      noOptionsText={inputValue.length < 2 ? 'Type to search tools...' : 'No tools found'}
       onChange={handleSelect}
       renderInput={(params) => (
         <TextField

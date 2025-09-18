@@ -1,5 +1,4 @@
 import { Box, Grid, Paper, Typography, List, ListItem, ListItemText, Chip } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
 import { format } from 'date-fns';
 import { useMemo } from 'react';
 import { useScoreSessions } from '../../hooks/useScoreSessions';

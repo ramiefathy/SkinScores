@@ -1,7 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -28,7 +27,7 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import CategoryIcon from '@mui/icons-material/Category';
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAllTools } from '../../hooks/useTools';
 import ToolCard from '../../components/tools/ToolCard';
 import { getToolComplexity, type ToolComplexityData } from '../../tools/tool-complexity';
@@ -51,7 +50,14 @@ type LibraryTool = {
 
 const LibraryPage = () => {
   const { data: toolEntries = [], isLoading } = useAllTools();
-  const { filters, updateFilter, toggleCategory, toggleComplexity, clearFilters, hasActiveFilters } = useToolFilters();
+  const {
+    filters,
+    updateFilter,
+    toggleCategory,
+    toggleComplexity,
+    clearFilters,
+    hasActiveFilters,
+  } = useToolFilters();
   const [searchValue, setSearchValue] = useState(filters.searchQuery);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
@@ -62,10 +68,11 @@ const LibraryPage = () => {
 
   // Debounced search update
   const updateSearch = useMemo(
-    () => debounce((value: string) => {
-      updateFilter('searchQuery', value);
-    }, 300),
-    [updateFilter]
+    () =>
+      debounce((value: string) => {
+        updateFilter('searchQuery', value);
+      }, 300),
+    [updateFilter],
   );
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,7 +110,10 @@ const LibraryPage = () => {
         return;
       }
 
-      if (filters.complexity.length > 0 && !filters.complexity.includes(complexityData.complexity)) {
+      if (
+        filters.complexity.length > 0 &&
+        !filters.complexity.includes(complexityData.complexity)
+      ) {
         return;
       }
 
@@ -282,7 +292,7 @@ const LibraryPage = () => {
         <>
           {viewMode === 'grid' ? (
             <Grid container spacing={3}>
-              {filteredTools.map((tool: any) => (
+              {filteredTools.map((tool) => (
                 <Grid item xs={12} sm={6} md={4} key={tool.id}>
                   <ToolCard {...tool} />
                 </Grid>
@@ -302,7 +312,7 @@ const LibraryPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {filteredTools.map((tool: any) => (
+                  {filteredTools.map((tool) => (
                     <TableRow key={tool.id} hover>
                       <TableCell
                         sx={{
@@ -329,7 +339,12 @@ const LibraryPage = () => {
                       </TableCell>
                       <TableCell>
                         {tool.condition ? (
-                          <Chip label={tool.condition} size="small" color="primary" variant="outlined" />
+                          <Chip
+                            label={tool.condition}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
                         ) : (
                           <Typography variant="body2" color="text.secondary">
                             —

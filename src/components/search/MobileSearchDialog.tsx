@@ -11,8 +11,18 @@ interface MobileSearchDialogProps {
 
 export const MobileSearchDialog: React.FC<MobileSearchDialogProps> = ({ open, onClose }) => {
   return (
-    <Dialog fullScreen open={open} onClose={onClose} PaperProps={{ sx: { bgcolor: 'background.default' } }}>
-      <AppBar position="static" color="transparent" elevation={0} sx={{ borderBottom: '1px solid', borderColor: 'divider' }}>
+    <Dialog
+      fullScreen
+      open={open}
+      onClose={onClose}
+      PaperProps={{ sx: { bgcolor: 'background.default' } }}
+    >
+      <AppBar
+        position="static"
+        color="transparent"
+        elevation={0}
+        sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
+      >
         <Toolbar>
           <IconButton edge="start" onClick={onClose} aria-label="Close search">
             <CloseIcon />

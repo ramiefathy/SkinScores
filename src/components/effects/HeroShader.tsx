@@ -32,7 +32,8 @@ export const HeroShader = memo(() => {
         sx={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(to bottom, transparent 0%, rgba(250, 250, 248, 0.5) 50%, rgba(250, 250, 248, 0.9) 100%)',
+          background:
+            'linear-gradient(to bottom, transparent 0%, rgba(250, 250, 248, 0.5) 50%, rgba(250, 250, 248, 0.9) 100%)',
         }}
       />
     </Box>

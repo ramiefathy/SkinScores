@@ -3,8 +3,6 @@ import {
   Alert,
   Box,
   Breadcrumbs,
-  Card,
-  CardContent,
   Divider,
   FormControl,
   FormControlLabel,
@@ -81,7 +79,9 @@ const isInputFilled = (value: unknown, input: InputConfig): boolean => {
       return value !== undefined && value !== null && value !== '';
     case 'text':
     case 'textarea':
-      return typeof value === 'string' ? value.trim().length > 0 : value !== undefined && value !== null;
+      return typeof value === 'string'
+        ? value.trim().length > 0
+        : value !== undefined && value !== null;
     default:
       return value !== undefined && value !== null && value !== '';
   }
@@ -187,7 +187,11 @@ const CalculatorRunnerPage = () => {
 
   const progressSummary = useMemo(() => {
     if (!tool) {
-      return { totalFields: 0, completedFields: 0, sections: [] as Array<{ id: string; label: string; total: number; completed: number }> };
+      return {
+        totalFields: 0,
+        completedFields: 0,
+        sections: [] as Array<{ id: string; label: string; total: number; completed: number }>,
+      };
     }
 
     const sections = tool.formSections.map((section, index) => {
@@ -197,9 +201,7 @@ const CalculatorRunnerPage = () => {
         return count + (isInputFilled(value, input) ? 1 : 0);
       }, 0);
 
-      const label = isInputGroup(section)
-        ? section.title || `Section ${index + 1}`
-        : section.label;
+      const label = isInputGroup(section) ? section.title || `Section ${index + 1}` : section.label;
 
       return {
         id: section.id,
@@ -283,7 +285,7 @@ const CalculatorRunnerPage = () => {
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Box textAlign="center">
           <Alert severity="error" sx={{ mb: 2 }}>
-            We couldn't find that calculator.
+            We couldn&apos;t find that calculator.
           </Alert>
           <Link component={RouterLink} to="/library">
             Back to library
@@ -312,9 +314,13 @@ const CalculatorRunnerPage = () => {
                 </Typography>
                 <IconButton
                   onClick={() => toggleFavorite(tool.id)}
-                  color={isFavorite(tool.id) ? "warning" : "default"}
-                  title={isFavorite(tool.id) ? "Remove from favorites" : "Add to favorites"}
-                  aria-label={isFavorite(tool.id) ? `Remove ${tool.name} from favorites` : `Add ${tool.name} to favorites`}
+                  color={isFavorite(tool.id) ? 'warning' : 'default'}
+                  title={isFavorite(tool.id) ? 'Remove from favorites' : 'Add to favorites'}
+                  aria-label={
+                    isFavorite(tool.id)
+                      ? `Remove ${tool.name} from favorites`
+                      : `Add ${tool.name} to favorites`
+                  }
                 >
                   {isFavorite(tool.id) ? <StarIcon /> : <StarBorderIcon />}
                 </IconButton>
@@ -328,9 +334,7 @@ const CalculatorRunnerPage = () => {
                 {tool.description}
               </Typography>
               <Stack direction="row" spacing={1} flexWrap="wrap">
-                {tool.condition && (
-                  <Chip label={tool.condition} color="primary" size="small" />
-                )}
+                {tool.condition && <Chip label={tool.condition} color="primary" size="small" />}
                 {tool.keywords?.slice(0, 3).map((keyword) => (
                   <Chip key={keyword} label={keyword} size="small" variant="outlined" />
                 ))}
@@ -346,7 +350,8 @@ const CalculatorRunnerPage = () => {
                     Completion progress
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {progressSummary.completedFields} of {progressSummary.totalFields} fields completed
+                    {progressSummary.completedFields} of {progressSummary.totalFields} fields
+                    completed
                   </Typography>
                 </Box>
                 <Typography variant="body2" fontWeight={600} color="text.primary">
@@ -464,7 +469,11 @@ const CalculatorRunnerPage = () => {
               About this Tool
             </Typography>
 
-            <Accordion defaultExpanded elevation={0} sx={{ border: '1px solid', borderColor: 'divider' }}>
+            <Accordion
+              defaultExpanded
+              elevation={0}
+              sx={{ border: '1px solid', borderColor: 'divider' }}
+            >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography fontWeight={600}>Clinical Information</Typography>
               </AccordionSummary>

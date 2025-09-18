@@ -27,6 +27,8 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off', // Using TypeScript for type checking
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'jsx-a11y/no-autofocus': 'off', // Autofocus is needed for search dialogs
   },
 };

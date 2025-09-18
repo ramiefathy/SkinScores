@@ -16,7 +16,8 @@
     "deploy": "firebase deploy",
     "emulators": "firebase emulators:start",
     "seed:emulator": "node scripts/seed-emulator.cjs --project=skinscores-test",
-    "clear:aggregates": "node scripts/clear-aggregates.mjs --project=skinscores-test"
+    "clear:aggregates": "node scripts/clear-aggregates.mjs --project=skinscores-test",
+    "postinstall": "cd functions && npm install && npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

@@ -38,41 +38,47 @@ export const useFavorites = () => {
   }, [user]);
 
   // Toggle favorite status
-  const toggleFavorite = useCallback(async (toolId: string) => {
-    setIsLoading(true);
+  const toggleFavorite = useCallback(
+    async (toolId: string) => {
+      setIsLoading(true);
 
-    try {
-      const newFavorites = favorites.includes(toolId)
-        ? favorites.filter(id => id !== toolId)
-        : [...favorites, toolId];
+      try {
+        const newFavorites = favorites.includes(toolId)
+          ? favorites.filter((id) => id !== toolId)
+          : [...favorites, toolId];
 
-      setFavorites(newFavorites);
+        setFavorites(newFavorites);
 
-      if (user) {
-        // Update in Firestore
-        const { firestore } = getFirebaseServices();
-        const userRef = doc(firestore, 'users', user.uid);
-        await updateDoc(userRef, {
-          favoriteTools: newFavorites,
-          lastUpdated: new Date().toISOString(),
-        });
-      } else {
-        // Update in localStorage
-        localStorage.setItem(LOCAL_FAVORITES_KEY, JSON.stringify(newFavorites));
+        if (user) {
+          // Update in Firestore
+          const { firestore } = getFirebaseServices();
+          const userRef = doc(firestore, 'users', user.uid);
+          await updateDoc(userRef, {
+            favoriteTools: newFavorites,
+            lastUpdated: new Date().toISOString(),
+          });
+        } else {
+          // Update in localStorage
+          localStorage.setItem(LOCAL_FAVORITES_KEY, JSON.stringify(newFavorites));
+        }
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+        // Revert on error
+        setFavorites(favorites);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-      // Revert on error
-      setFavorites(favorites);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [favorites, user]);
+    },
+    [favorites, user],
+  );
 
   // Check if a tool is favorited
-  const isFavorite = useCallback((toolId: string) => {
-    return favorites.includes(toolId);
-  }, [favorites]);
+  const isFavorite = useCallback(
+    (toolId: string) => {
+      return favorites.includes(toolId);
+    },
+    [favorites],
+  );
 
   // Clear all favorites
   const clearFavorites = useCallback(async () => {

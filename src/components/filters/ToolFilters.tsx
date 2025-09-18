@@ -82,24 +82,12 @@ export const ToolFilters: React.FC<ToolFiltersProps> = ({
           <Typography variant="h6" fontWeight={600}>
             Filters
           </Typography>
-          {hasActiveFilters && (
-            <Chip
-              label="Active"
-              size="small"
-              color="primary"
-              sx={{ ml: 1 }}
-            />
-          )}
+          {hasActiveFilters && <Chip label="Active" size="small" color="primary" sx={{ ml: 1 }} />}
         </Box>
 
         <Box display="flex" alignItems="center" gap={1}>
           {hasActiveFilters && (
-            <Button
-              size="small"
-              startIcon={<ClearIcon />}
-              onClick={onClearFilters}
-              sx={{ mr: 1 }}
-            >
+            <Button size="small" startIcon={<ClearIcon />} onClick={onClearFilters} sx={{ mr: 1 }}>
               Clear All
             </Button>
           )}
@@ -167,17 +155,25 @@ export const ToolFilters: React.FC<ToolFiltersProps> = ({
                   <Chip
                     key={option.value}
                     label={option.label}
-                    onClick={() => onComplexityToggle(option.value as any)}
+                    onClick={() =>
+                      onComplexityToggle(option.value as 'basic' | 'intermediate' | 'advanced')
+                    }
                     sx={{
                       cursor: 'pointer',
-                      backgroundColor: filters.complexity.includes(option.value as any)
+                      backgroundColor: filters.complexity.includes(
+                        option.value as 'basic' | 'intermediate' | 'advanced',
+                      )
                         ? `${option.color}22`
                         : 'transparent',
-                      color: filters.complexity.includes(option.value as any)
+                      color: filters.complexity.includes(
+                        option.value as 'basic' | 'intermediate' | 'advanced',
+                      )
                         ? option.color
                         : 'text.secondary',
                       border: `1px solid ${
-                        filters.complexity.includes(option.value as any)
+                        filters.complexity.includes(
+                          option.value as 'basic' | 'intermediate' | 'advanced',
+                        )
                           ? option.color
                           : 'divider'
                       }`,
@@ -231,12 +227,19 @@ export const ToolFilters: React.FC<ToolFiltersProps> = ({
                     control={
                       <Switch
                         checked={filters.sortBy === option.value}
-                        onChange={() => onSortChange(option.value as any)}
+                        onChange={() =>
+                          onSortChange(
+                            option.value as 'name' | 'popularity' | 'complexity' | 'time',
+                          )
+                        }
                         size="small"
                       />
                     }
                     label={
-                      <Typography variant="body2" color={filters.sortBy === option.value ? 'primary' : 'text.secondary'}>
+                      <Typography
+                        variant="body2"
+                        color={filters.sortBy === option.value ? 'primary' : 'text.secondary'}
+                      >
                         {option.label}
                       </Typography>
                     }
