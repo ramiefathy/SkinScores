@@ -29,7 +29,7 @@ async function seedTemplates() {
     await firestore.doc(`scoreTemplates/${docId}`).set({
       ...template,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     });
   }
 }

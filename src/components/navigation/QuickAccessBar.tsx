@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  IconButton,
-  Tooltip,
-  Divider,
-  Typography,
-  Chip,
-} from '@mui/material';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { Box, IconButton, Tooltip, Divider, Typography, Chip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useNavigate } from 'react-router-dom';
@@ -19,12 +10,12 @@ import { useToolsMetadata } from '../../hooks/useTools';
 export const QuickAccessBar: React.FC = () => {
   const navigate = useNavigate();
   const { recentTools } = useRecentTools();
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { favorites, toggleFavorite } = useFavorites();
   const { data: allTools = [] } = useToolsMetadata();
 
   // Get tool data for favorites
   const favoriteTools = favorites
-    .map(id => allTools.find(tool => tool.id === id))
+    .map((id) => allTools.find((tool) => tool.id === id))
     .filter((tool): tool is NonNullable<typeof tool> => tool !== undefined)
     .slice(0, 3); // Limit to 3 favorites in header
 
@@ -37,12 +28,7 @@ export const QuickAccessBar: React.FC = () => {
   }
 
   return (
-    <Box
-      display={{ xs: 'none', lg: 'flex' }}
-      alignItems="center"
-      gap={1}
-      ml={2}
-    >
+    <Box display={{ xs: 'none', lg: 'flex' }} alignItems="center" gap={1} ml={2}>
       {/* Recent Tools */}
       {recentTools.length > 0 && (
         <>
@@ -52,7 +38,10 @@ export const QuickAccessBar: React.FC = () => {
               Recent:
             </Typography>
             {recentTools.slice(0, 3).map((recent) => (
-              <Tooltip key={recent.toolId} title={`Last used: ${new Date(recent.lastUsed).toLocaleDateString()}`}>
+              <Tooltip
+                key={recent.toolId}
+                title={`Last used: ${new Date(recent.lastUsed).toLocaleDateString()}`}
+              >
                 <Chip
                   label={recent.toolName}
                   size="small"
@@ -71,9 +60,7 @@ export const QuickAccessBar: React.FC = () => {
             ))}
           </Box>
 
-          {favoriteTools.length > 0 && (
-            <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-          )}
+          {favoriteTools.length > 0 && <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />}
         </>
       )}
 

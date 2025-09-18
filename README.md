@@ -28,15 +28,15 @@ scripts/
 
 ## Key npm Scripts
 
-| Command                    | Description |
-| ---                        | --- |
-| `npm run dev`              | Start the Vite dev server on http://localhost:5173 |
-| `npm run lint`             | ESLint with TypeScript + Prettier rules |
-| `npm run typecheck`        | TypeScript type checking (no emit) |
-| `npm run test`             | Vitest via Firebase emulators (auth, Firestore, functions) |
-| `npm run build`            | TypeScript compile + production bundle |
-| `npm run emulators`        | Launch Firebase emulators locally |
-| `npm run seed:emulator`    | Seed the auth emulator with the default clinician account |
+| Command                    | Description                                                   |
+| -------------------------- | ------------------------------------------------------------- |
+| `npm run dev`              | Start the Vite dev server on http://localhost:5173            |
+| `npm run lint`             | ESLint with TypeScript + Prettier rules                       |
+| `npm run typecheck`        | TypeScript type checking (no emit)                            |
+| `npm run test`             | Vitest via Firebase emulators (auth, Firestore, functions)    |
+| `npm run build`            | TypeScript compile + production bundle                        |
+| `npm run emulators`        | Launch Firebase emulators locally                             |
+| `npm run seed:emulator`    | Seed the auth emulator with the default clinician account     |
 | `npm run clear:aggregates` | Remove all docs from `aggregateSnapshots` (use before deploy) |
 
 > The old template seeding scripts have been removed. Calculators now live in code under

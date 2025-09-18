@@ -22,12 +22,12 @@ interface ToolCardProps {
 
 // Category colors mapping
 const categoryColors: Record<string, string> = {
-  'Psoriasis': '#8B6CAA',
-  'Eczema': '#D4826A',
-  'Acne': '#5A8A5A',
+  Psoriasis: '#8B6CAA',
+  Eczema: '#D4826A',
+  Acne: '#5A8A5A',
   'Skin Cancer': '#CC4444',
-  'Autoimmune': '#4A90E2',
-  'Other': '#666666',
+  Autoimmune: '#4A90E2',
+  Other: '#666666',
 };
 
 const complexityConfig = {
@@ -50,7 +50,9 @@ export const ToolCard = ({
   const [isHovered, setIsHovered] = useState(false);
   const { toggleFavorite, isFavorite } = useFavorites();
 
-  const categoryColor = condition ? categoryColors[condition] || categoryColors['Other'] : categoryColors['Other'];
+  const categoryColor = condition
+    ? categoryColors[condition] || categoryColors['Other']
+    : categoryColors['Other'];
 
   return (
     <Card
@@ -160,7 +162,9 @@ export const ToolCard = ({
                 color: isFavorite(id) ? 'warning.main' : 'text.secondary',
                 '&:hover': { backgroundColor: 'rgba(255, 193, 7, 0.08)' },
               }}
-              aria-label={isFavorite(id) ? `Remove ${name} from favorites` : `Add ${name} to favorites`}
+              aria-label={
+                isFavorite(id) ? `Remove ${name} from favorites` : `Add ${name} to favorites`
+              }
             >
               {isFavorite(id) ? <StarIcon fontSize="small" /> : <StarBorderIcon fontSize="small" />}
             </IconButton>
@@ -206,7 +210,11 @@ export const ToolCard = ({
               />
             ))}
             {keywords.length > 3 && (
-              <Typography variant="caption" color="text.secondary" sx={{ alignSelf: 'center', ml: 0.5 }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ alignSelf: 'center', ml: 0.5 }}
+              >
                 +{keywords.length - 3} more
               </Typography>
             )}

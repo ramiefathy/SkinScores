@@ -32,7 +32,8 @@ export const theme = createTheme({
     divider: 'rgba(107, 76, 138, 0.08)', // Purple tint
   },
   typography: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,

@@ -5,7 +5,7 @@ import type { CalculationResult, Tool, InputValue } from './types';
  */
 export function safeCalculation(
   calculationFn: (inputs: Record<string, InputValue>) => CalculationResult,
-  toolName: string
+  toolName: string,
 ): (inputs: Record<string, InputValue>) => CalculationResult {
   return (inputs: Record<string, InputValue>) => {
     try {
@@ -96,7 +96,11 @@ export function safeArrayAccess<T>(arr: T[], index: number, defaultValue: T): T 
 /**
  * Safe division with zero check
  */
-export function safeDivide(numerator: number, denominator: number, defaultValue: number = 0): number {
+export function safeDivide(
+  numerator: number,
+  denominator: number,
+  defaultValue: number = 0,
+): number {
   if (denominator === 0) {
     return defaultValue;
   }

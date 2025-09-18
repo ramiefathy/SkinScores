@@ -10,16 +10,32 @@ const HomePage = () => {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={heroSectionStyles}>
         <HeroShader />
-        <Typography variant="overline" color="primary" fontWeight={600} gutterBottom sx={{ position: 'relative', zIndex: 1 }}>
+        <Typography
+          variant="overline"
+          color="primary"
+          fontWeight={600}
+          gutterBottom
+          sx={{ position: 'relative', zIndex: 1 }}
+        >
           Professional Dermatology Tools
         </Typography>
-        <Typography variant="h1" fontWeight={700} gutterBottom sx={{ position: 'relative', zIndex: 1 }}>
+        <Typography
+          variant="h1"
+          fontWeight={700}
+          gutterBottom
+          sx={{ position: 'relative', zIndex: 1 }}
+        >
           Clinical Scoring
           <br />
           Made Simple
         </Typography>
-        <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 600, mb: 4, position: 'relative', zIndex: 1 }}>
-          Access 90+ validated dermatology assessment tools. Calculate scores, track patient progress, and generate clinical documentation.
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          sx={{ maxWidth: 600, mb: 4, position: 'relative', zIndex: 1 }}
+        >
+          Access 90+ validated dermatology assessment tools. Calculate scores, track patient
+          progress, and generate clinical documentation.
         </Typography>
         <Box display="flex" gap={2} flexWrap="wrap" sx={{ position: 'relative', zIndex: 1 }}>
           <Button
@@ -89,8 +105,13 @@ const HomePage = () => {
         <Typography variant="h3" fontWeight={700} gutterBottom>
           Trusted by Clinicians
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto', mb: 4 }}>
-          Join thousands of dermatologists who use SkinScores for accurate, efficient clinical assessments.
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ maxWidth: 600, mx: 'auto', mb: 4 }}
+        >
+          Join thousands of dermatologists who use SkinScores for accurate, efficient clinical
+          assessments.
         </Typography>
         <Button
           variant="contained"
