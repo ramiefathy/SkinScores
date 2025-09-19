@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
 import { Box } from '@mui/material';
 
 interface CardShaderProps {
