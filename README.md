@@ -1,13 +1,13 @@
 # SkinScores Clinical Workspace
 
-**Latest Update:** December 19, 2025 - v2.1.0
+**Latest Update:** September 19, 2025 - v2.1.0
 **Status:** 🟢 All Systems Operational | 70+ Clinical Tools Available
 
 SkinScores is a Vite + React (TypeScript) application backed by Firebase. It now ships with a
 front-end tool runtime capable of rendering and calculating 70+ dermatology scoring and screening
 instruments, with results persisted through callable Cloud Functions.
 
-## 🚀 Recent Updates (Dec 17-19, 2025)
+## 🚀 Recent Updates (Sep 17-19, 2025)
 - Added 12 new comprehensive clinical tools (ALDEN, RegiSCAR, AECT, EBDASI, HDSS, and more)
 - Enhanced 8 existing tools with complete formulas and clinical context
 - Fixed CI/CD pipeline with proper GitHub Actions permissions

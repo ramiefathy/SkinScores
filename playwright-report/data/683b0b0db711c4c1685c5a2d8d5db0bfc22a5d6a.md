@@ -1,0 +1,51 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "SkinScores" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e9]:
+          - generic [ref=e12]:
+            - img [ref=e14]
+            - combobox "Search tools, conditions..." [ref=e16]
+            - button "Open" [ref=e18] [cursor=pointer]:
+              - img [ref=e19] [cursor=pointer]
+            - group
+          - button "Browse Tools" [ref=e21] [cursor=pointer]:
+            - text: Browse Tools
+            - img [ref=e23] [cursor=pointer]
+      - button "Sign in" [ref=e26] [cursor=pointer]
+  - main [ref=e27]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Professional Dermatology Tools
+        - heading "Clinical Scoring Made Simple" [level=1] [ref=e32]:
+          - text: Clinical Scoring
+          - text: Made Simple
+        - heading "Access 90+ validated dermatology assessment tools. Calculate scores, track patient progress, and generate clinical documentation." [level=5] [ref=e33]
+        - generic [ref=e34]:
+          - button "Browse All Tools" [ref=e35] [cursor=pointer]:
+            - text: Browse All Tools
+            - img [ref=e37] [cursor=pointer]
+          - button "Sign In" [ref=e39] [cursor=pointer]
+      - generic [ref=e40]:
+        - generic [ref=e43]:
+          - img [ref=e45]
+          - heading "Evidence-Based Tools" [level=6] [ref=e47]
+          - paragraph [ref=e48]: Every calculator is based on published research with full references and clinical validation data.
+        - generic [ref=e51]:
+          - img [ref=e53]
+          - heading "Track Patient Progress" [level=6] [ref=e55]
+          - paragraph [ref=e56]: Save calculations to patient records, monitor trends over time, and export data for research.
+        - generic [ref=e59]:
+          - img [ref=e61]
+          - heading "HIPAA Compliant" [level=6] [ref=e63]
+          - paragraph [ref=e64]: Secure cloud storage with enterprise-grade encryption ensures patient data remains protected.
+      - generic [ref=e65]:
+        - heading "Trusted by Clinicians" [level=3] [ref=e66]
+        - paragraph [ref=e67]: Join thousands of dermatologists who use SkinScores for accurate, efficient clinical assessments.
+        - button "Get Started" [ref=e68] [cursor=pointer]
+```

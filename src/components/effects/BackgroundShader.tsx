@@ -1,8 +1,5 @@
 import React, { memo } from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
 import { Box } from '@mui/material';
-
-const backgroundColors = ['#F5F0FA', '#E8D8F0', '#D8C8E8', '#C8B8D8'];
 
 export const BackgroundShader = memo(() => {
   return (
@@ -15,21 +12,20 @@ export const BackgroundShader = memo(() => {
         bottom: 0,
         zIndex: -1,
         pointerEvents: 'none',
-        willChange: 'transform',
+        backgroundImage:
+          'radial-gradient(circle at 15% 20%, rgba(107, 70, 193, 0.08), transparent 55%),' +
+          'radial-gradient(circle at 85% 30%, rgba(139, 108, 170, 0.12), transparent 60%),' +
+          'radial-gradient(circle at 50% 80%, rgba(212, 130, 106, 0.08), transparent 65%)',
+        backgroundSize: '150% 150%',
+        backgroundPosition: '0% 50%',
+        animation: 'backgroundShift 28s ease-in-out infinite',
+        '@keyframes backgroundShift': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
       }}
-    >
-      <MeshGradient
-        colors={backgroundColors}
-        speed={0.4}
-        distortion={0.8}
-        swirl={0.2}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.35,
-        }}
-      />
-    </Box>
+    />
   );
 });
 

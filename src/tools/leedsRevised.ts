@@ -1,80 +1,88 @@
-import type { Tool, InputConfig, FormSectionConfig } from './types';
+import type { Tool, InputConfig, FormSectionConfig, InputOption } from './types';
 import { Camera } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+
+const facialGradeOptions: InputOption[] = [
+  { value: 0, label: 'Grade 0 - No acne' },
+  { value: 1, label: 'Grade 1 - Very mild (few comedones)' },
+  { value: 2, label: 'Grade 2 - Mild (scattered comedones, few papules)' },
+  { value: 3, label: 'Grade 3 - Mild-moderate (comedones, some papules)' },
+  { value: 4, label: 'Grade 4 - Moderate (many comedones/papules, few pustules)' },
+  { value: 5, label: 'Grade 5 - Moderate (comedones, papules, some pustules)' },
+  { value: 6, label: 'Grade 6 - Moderate-severe (numerous papules/pustules)' },
+  { value: 7, label: 'Grade 7 - Severe (numerous papules/pustules, some nodules)' },
+  { value: 8, label: 'Grade 8 - Severe (many papules/pustules, nodules)' },
+  { value: 9, label: 'Grade 9 - Severe (predominantly nodular, extensive)' },
+  { value: 10, label: 'Grade 10 - Very severe (nodular, cystic, extensive)' },
+  { value: 11, label: 'Grade 11 - Very severe (confluent nodular/cystic)' },
+  { value: 12, label: 'Grade 12 - Extremely severe (extensive confluent nodular)' },
+];
+
+const backGradeOptions: InputOption[] = [
+  { value: 0, label: 'Grade 0 - No acne' },
+  { value: 1, label: 'Grade 1 - Very mild' },
+  { value: 2, label: 'Grade 2 - Mild' },
+  { value: 3, label: 'Grade 3 - Mild-moderate' },
+  { value: 4, label: 'Grade 4 - Moderate' },
+  { value: 5, label: 'Grade 5 - Moderate-severe' },
+  { value: 6, label: 'Grade 6 - Severe' },
+  { value: 7, label: 'Grade 7 - Very severe' },
+  { value: 8, label: 'Grade 8 - Extremely severe' },
+];
+
+const chestGradeOptions: InputOption[] = [
+  { value: 0, label: 'Grade 0 - No acne' },
+  { value: 1, label: 'Grade 1 - Very mild' },
+  { value: 2, label: 'Grade 2 - Mild' },
+  { value: 3, label: 'Grade 3 - Mild-moderate' },
+  { value: 4, label: 'Grade 4 - Moderate' },
+  { value: 5, label: 'Grade 5 - Moderate-severe' },
+  { value: 6, label: 'Grade 6 - Severe' },
+  { value: 7, label: 'Grade 7 - Very severe' },
+  { value: 8, label: 'Grade 8 - Extremely severe' },
+];
+
+const lesionTypeOptions: InputOption[] = [
+  { value: 'inflammatory', label: 'Inflammatory (papules, pustules, nodules)' },
+  { value: 'noninflammatory', label: 'Noninflammatory (comedones)' },
+  { value: 'mixed', label: 'Mixed (both types equally present)' },
+];
 
 const leedsRevisedFormSections: FormSectionConfig[] = [
   {
     id: 'facial_grade',
     label: 'Facial Acne Grade (1-12)',
     type: 'select',
-    options: [
-      { value: 0, label: 'Grade 0 - No acne' },
-      { value: 1, label: 'Grade 1 - Very mild (few comedones)' },
-      { value: 2, label: 'Grade 2 - Mild (scattered comedones, few papules)' },
-      { value: 3, label: 'Grade 3 - Mild-moderate (comedones, some papules)' },
-      { value: 4, label: 'Grade 4 - Moderate (many comedones/papules, few pustules)' },
-      { value: 5, label: 'Grade 5 - Moderate (comedones, papules, some pustules)' },
-      { value: 6, label: 'Grade 6 - Moderate-severe (numerous papules/pustules)' },
-      { value: 7, label: 'Grade 7 - Severe (numerous papules/pustules, some nodules)' },
-      { value: 8, label: 'Grade 8 - Severe (many papules/pustules, nodules)' },
-      { value: 9, label: 'Grade 9 - Severe (predominantly nodular, extensive)' },
-      { value: 10, label: 'Grade 10 - Very severe (nodular, cystic, extensive)' },
-      { value: 11, label: 'Grade 11 - Very severe (confluent nodular/cystic)' },
-      { value: 12, label: 'Grade 12 - Extremely severe (extensive confluent nodular)' },
-    ],
+    options: facialGradeOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', facialGradeOptions),
     description: 'Compare patient to photographic standards (12 grades for face).',
   } as InputConfig,
   {
     id: 'back_grade',
     label: 'Back Acne Grade (0-8)',
     type: 'select',
-    options: [
-      { value: 0, label: 'Grade 0 - No acne' },
-      { value: 1, label: 'Grade 1 - Very mild' },
-      { value: 2, label: 'Grade 2 - Mild' },
-      { value: 3, label: 'Grade 3 - Mild-moderate' },
-      { value: 4, label: 'Grade 4 - Moderate' },
-      { value: 5, label: 'Grade 5 - Moderate-severe' },
-      { value: 6, label: 'Grade 6 - Severe' },
-      { value: 7, label: 'Grade 7 - Very severe' },
-      { value: 8, label: 'Grade 8 - Extremely severe' },
-    ],
+    options: backGradeOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', backGradeOptions),
     description: 'Compare to photographic standards (8 grades for back).',
   } as InputConfig,
   {
     id: 'chest_grade',
     label: 'Chest Acne Grade (0-8)',
     type: 'select',
-    options: [
-      { value: 0, label: 'Grade 0 - No acne' },
-      { value: 1, label: 'Grade 1 - Very mild' },
-      { value: 2, label: 'Grade 2 - Mild' },
-      { value: 3, label: 'Grade 3 - Mild-moderate' },
-      { value: 4, label: 'Grade 4 - Moderate' },
-      { value: 5, label: 'Grade 5 - Moderate-severe' },
-      { value: 6, label: 'Grade 6 - Severe' },
-      { value: 7, label: 'Grade 7 - Very severe' },
-      { value: 8, label: 'Grade 8 - Extremely severe' },
-    ],
+    options: chestGradeOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', chestGradeOptions),
     description: 'Compare to photographic standards (8 grades for chest).',
   } as InputConfig,
   {
     id: 'lesion_type',
     label: 'Predominant Lesion Type',
     type: 'select',
-    options: [
-      { value: 'inflammatory', label: 'Inflammatory (papules, pustules, nodules)' },
-      { value: 'noninflammatory', label: 'Noninflammatory (comedones)' },
-      { value: 'mixed', label: 'Mixed (both types equally present)' },
-    ],
+    options: lesionTypeOptions,
     defaultValue: 'inflammatory',
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', lesionTypeOptions),
     description: 'Identify the predominant type of acne lesions.',
   } as InputConfig,
 ];

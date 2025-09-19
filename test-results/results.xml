@@ -1,0 +1,258 @@
+<testsuites id="" name="" tests="6" failures="6" skipped="0" errors="0" time="33.974027">
+<testsuite name="auth.spec.ts" timestamp="2025-09-18T03:32:36.888Z" hostname="chromium" tests="6" failures="6" skipped="0" time="138.53" errors="0">
+<testcase name="Authentication Testing › should display login page for unauthenticated users" classname="auth.spec.ts" time="7.535">
+<failure message="auth.spec.ts:13:3 should display login page for unauthenticated users" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:13:3 › Authentication Testing › should display login page for unauthenticated users 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /.*\/login/
+    Received string:  "https://skinscore-afw5a.web.app/"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        8 × unexpected value "https://skinscore-afw5a.web.app/"
+
+
+      12 |
+      13 |   test('should display login page for unauthenticated users', async ({ page }) => {
+    > 14 |     await expect(page).toHaveURL(/.*\/login/);
+         |                        ^
+      15 |     await expect(page.locator('h1, h2')).toContainText(/sign in|login/i);
+      16 |
+      17 |     // Take screenshot of login page
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:14:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testin-7daba-e-for-unauthenticated-users-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Testing › should successfully login with valid credentials" classname="auth.spec.ts" time="30.936">
+<failure message="auth.spec.ts:21:3 should successfully login with valid credentials" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:21:3 › Authentication Testing › should successfully login with valid credentials 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[type="email"], input[name="email"]')
+
+
+      26 |
+      27 |     // Fill in credentials
+    > 28 |     await page.fill('input[type="email"], input[name="email"]', TEST_CREDENTIALS.email);
+         |                ^
+      29 |     await page.fill('input[type="password"], input[name="password"]', TEST_CREDENTIALS.password);
+      30 |
+      31 |     // Submit the form
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:28:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testin-44611-ogin-with-valid-credentials-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Testing › should show error for invalid credentials" classname="auth.spec.ts" time="30.991">
+<failure message="auth.spec.ts:44:3 should show error for invalid credentials" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:44:3 › Authentication Testing › should show error for invalid credentials 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[type="email"], input[name="email"]')
+
+
+      47 |     }
+      48 |
+    > 49 |     await page.fill('input[type="email"], input[name="email"]', 'invalid@example.com');
+         |                ^
+      50 |     await page.fill('input[type="password"], input[name="password"]', 'wrongpassword');
+      51 |
+      52 |     await page.click('button[type="submit"], button:has-text("Sign In"), button:has-text("Login")');
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:49:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testin-1b7c0-ror-for-invalid-credentials-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Testing › should persist session after page refresh" classname="auth.spec.ts" time="31.116">
+<failure message="auth.spec.ts:61:3 should persist session after page refresh" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:61:3 › Authentication Testing › should persist session after page refresh 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[type="email"], input[name="email"]')
+
+
+      65 |     }
+      66 |
+    > 67 |     await page.fill('input[type="email"], input[name="email"]', TEST_CREDENTIALS.email);
+         |                ^
+      68 |     await page.fill('input[type="password"], input[name="password"]', TEST_CREDENTIALS.password);
+      69 |     await page.click('button[type="submit"], button:has-text("Sign In"), button:has-text("Login")');
+      70 |
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:67:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testin-ab1e5--session-after-page-refresh-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Testing › should successfully logout" classname="auth.spec.ts" time="31.005">
+<failure message="auth.spec.ts:80:3 should successfully logout" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:80:3 › Authentication Testing › should successfully logout ─────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[type="email"], input[name="email"]')
+
+
+      84 |     }
+      85 |
+    > 86 |     await page.fill('input[type="email"], input[name="email"]', TEST_CREDENTIALS.email);
+         |                ^
+      87 |     await page.fill('input[type="password"], input[name="password"]', TEST_CREDENTIALS.password);
+      88 |     await page.click('button[type="submit"], button:has-text("Sign In"), button:has-text("Login")');
+      89 |
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:86:16
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testing-should-successfully-logout-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testing-should-successfully-logout-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testing-should-successfully-logout-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testing-should-successfully-logout-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testing-should-successfully-logout-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testing-should-successfully-logout-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Authentication Testing › should protect routes that require authentication" classname="auth.spec.ts" time="6.947">
+<failure message="auth.spec.ts:109:3 should protect routes that require authentication" type="FAILURE">
+<![CDATA[  [chromium] › auth.spec.ts:109:3 › Authentication Testing › should protect routes that require authentication 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /.*\/login/
+    Received string:  "https://skinscore-afw5a.web.app/auth/sign-in"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        9 × unexpected value "https://skinscore-afw5a.web.app/auth/sign-in"
+
+
+      114 |       await page.goto(route);
+      115 |       // Should be redirected to login
+    > 116 |       await expect(page).toHaveURL(/.*\/login/, { timeout: 5000 });
+          |                          ^
+      117 |     }
+      118 |   });
+      119 | });
+        at /Users/ramiefathy/Desktop/WebApps/apps/SkinScores/tests/e2e/auth.spec.ts:116:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-0664b-that-require-authentication-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../test-results/auth-Authentication-Testin-0664b-that-require-authentication-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Authentication-Testin-0664b-that-require-authentication-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|auth-Authentication-Testin-0664b-that-require-authentication-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|auth-Authentication-Testin-0664b-that-require-authentication-chromium/video.webm]]
+
+[[ATTACHMENT|auth-Authentication-Testin-0664b-that-require-authentication-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

@@ -1,8 +1,5 @@
 import React, { memo } from 'react';
-import { MeshGradient } from '@paper-design/shaders-react';
 import { Box } from '@mui/material';
-
-const headerColors = ['#6B4C8A22', '#8B6CAA22', '#D4826A22', '#E4A28A22'];
 
 export const HeaderShader = memo(() => {
   return (
@@ -15,6 +12,13 @@ export const HeaderShader = memo(() => {
         bottom: 0,
         overflow: 'hidden',
         pointerEvents: 'none',
+        backgroundImage:
+          'radial-gradient(circle at 30% 20%, rgba(107, 70, 193, 0.18), transparent 60%),' +
+          'radial-gradient(circle at 70% 0%, rgba(139, 108, 170, 0.15), transparent 60%),' +
+          'radial-gradient(circle at 90% 60%, rgba(212, 130, 106, 0.12), transparent 65%)',
+        backgroundSize: '160% 160%',
+        backgroundPosition: '0% 50%',
+        animation: 'headerShift 20s ease-in-out infinite',
         '&::after': {
           content: '""',
           position: 'absolute',
@@ -22,20 +26,13 @@ export const HeaderShader = memo(() => {
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
         },
+        '@keyframes headerShift': {
+          '0%': { backgroundPosition: '0% 60%' },
+          '50%': { backgroundPosition: '100% 40%' },
+          '100%': { backgroundPosition: '0% 60%' },
+        },
       }}
-    >
-      <MeshGradient
-        colors={headerColors}
-        speed={0.2}
-        distortion={0.6}
-        swirl={0.15}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          transform: 'scale(1.1)',
-        }}
-      />
-    </Box>
+    />
   );
 });
 
