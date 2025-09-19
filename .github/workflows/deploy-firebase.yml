@@ -42,7 +42,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
 
       - name: Deploy Storage Rules
-        run: firebase deploy --only storage:rules --project skinscore-afw5a
+        run: firebase deploy --only storage --project skinscore-afw5a
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
 
