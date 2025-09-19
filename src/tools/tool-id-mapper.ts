@@ -13,6 +13,7 @@ const toolIdMap: Record<string, string> = {
   ceaRosacea: 'cea_rosacea',
   ctcaeSkin: 'ctcae_skin',
   essdaiCutaneous: 'essdai_cutaneous',
+  ferrimanGallwey: 'ferriman_gallwey',
   fitzpatrickSkinType: 'fitzpatrick_skin_type',
   fiveDItch: '5d_itch',
   hsPga: 'hs_pga',
@@ -21,6 +22,7 @@ const toolIdMap: Record<string, string> = {
   igaRosacea: 'iga_rosacea',
   iimSontheimer2002: 'iim_sontheimer_2002',
   issVis: 'iss_vis',
+  leedsRevised: 'leeds_revised',
   masiMmasi: 'masi_mmasi',
   mfgScore: 'mfg_score',
   mssHs: 'mss_hs',
@@ -37,6 +39,7 @@ const toolIdMap: Record<string, string> = {
   sledaiSkin: 'sledai_skin',
   sliccCriteria: 'slicc_criteria',
   utWoundClassification: 'ut_wound_classification',
+  vancouverScar: 'vancouver_scar',
   vasPruritus: 'vas_pruritus',
   vigaAd: 'viga_ad',
 };
