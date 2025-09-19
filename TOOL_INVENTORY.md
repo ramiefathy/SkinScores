@@ -1,10 +1,10 @@
 # SkinScores Tool Inventory
-**Last Updated:** December 19, 2025
+**Last Updated:** September 19, 2025
 **Total Tools:** 70+
 
 ## Tool Categories & Status
 
-### ✅ Recently Added Tools (Dec 17-19, 2025)
+### ✅ Recently Added Tools (Sep 17-19, 2025)
 
 | Tool ID | Name | Condition | Status |
 |---------|------|-----------|--------|
@@ -21,7 +21,7 @@
 | `leedsRevised` | Leeds Revised Acne Grading | Acne Vulgaris | ✅ Implemented |
 | `mdaPsa` | MDA for Psoriatic Arthritis | PsA | ✅ Implemented |
 
-### 📊 Enhanced Tools (Dec 17-19, 2025)
+### 📊 Enhanced Tools (Sep 17-19, 2025)
 
 | Tool ID | Enhancement | Status |
 |---------|-------------|--------|

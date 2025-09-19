@@ -40,5 +40,9 @@ service cloud.firestore {
       allow update: if isOwner(resource.data.ownerUserId) || isAdmin();
       allow delete: if isOwner(resource.data.ownerUserId) || isAdmin();
     }
+
+    match /aggregateSnapshots/{snapshotId} {
+      allow get, list: if isSignedIn() || isAdmin();
+    }
   }
 }

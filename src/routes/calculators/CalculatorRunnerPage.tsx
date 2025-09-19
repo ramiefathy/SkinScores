@@ -41,6 +41,8 @@ import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 import { callSubmitToolResult } from '../../firebase/functions';
 import { useAuth } from '../../hooks/useAuth';
+import { patientSessionsQueryKey } from '../../hooks/usePatientSessions';
+import { usePatients } from '../../hooks/usePatients';
 import { sessionsQueryKey } from '../../hooks/useScoreSessions';
 import { useTool } from '../../hooks/useTools';
 import { useRecentTools } from '../../hooks/useRecentTools';
@@ -152,6 +154,7 @@ const CalculatorRunnerPage = () => {
   const { user } = useAuth();
   const { addRecentTool } = useRecentTools();
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { data: patients = [], isLoading: patientsLoading } = usePatients();
   const { data, isLoading } = useTool(slug);
   const tool = data?.tool;
   const metadata = data?.metadata;
@@ -182,6 +185,7 @@ const CalculatorRunnerPage = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<CalculationResult | null>(null);
+  const [selectedPatientId, setSelectedPatientId] = useState<string>('');
 
   const watchedValues = watch();
 
@@ -232,7 +236,11 @@ const CalculatorRunnerPage = () => {
     : 0;
 
   const mutation = useMutation({
-    mutationFn: async (payload: { values: Record<string, unknown>; result: CalculationResult }) => {
+    mutationFn: async (payload: {
+      values: Record<string, unknown>;
+      result: CalculationResult;
+      patientRef?: string | null;
+    }) => {
       if (!tool || !metadata) throw new Error('Tool not loaded');
       await callSubmitToolResult({
         toolId: tool.id,
@@ -240,11 +248,22 @@ const CalculatorRunnerPage = () => {
         toolName: tool.name,
         inputs: payload.values,
         result: payload.result,
+        patientRef: payload.patientRef ?? null,
       });
     },
-    onSuccess: async () => {
+    onSuccess: async (_, variables) => {
       if (user) {
-        await queryClient.invalidateQueries({ queryKey: sessionsQueryKey(user.uid) });
+        const invalidatePromises = [
+          queryClient.invalidateQueries({ queryKey: sessionsQueryKey(user.uid) }),
+        ];
+        if (variables?.patientRef) {
+          invalidatePromises.push(
+            queryClient.invalidateQueries({
+              queryKey: patientSessionsQueryKey(variables.patientRef, user.uid),
+            }),
+          );
+        }
+        await Promise.all(invalidatePromises);
       }
       setSuccessMessage('Result saved successfully.');
       setSubmitError(null);
@@ -267,7 +286,11 @@ const CalculatorRunnerPage = () => {
       setSuccessMessage('Result calculated. Sign in to save this session.');
       return;
     }
-    await mutation.mutateAsync({ values, result: calculation });
+    await mutation.mutateAsync({
+      values,
+      result: calculation,
+      patientRef: selectedPatientId || null,
+    });
   };
 
   if (isLoading) {
@@ -384,6 +407,34 @@ const CalculatorRunnerPage = () => {
               <Typography variant="h6" fontWeight={600} gutterBottom sx={{ mb: 3 }}>
                 Input Parameters
               </Typography>
+              {user && (
+                <Box mb={3}>
+                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                    Link session to patient (optional)
+                  </Typography>
+                  <TextField
+                    select
+                    fullWidth
+                    size="small"
+                    value={selectedPatientId}
+                    onChange={(event) => setSelectedPatientId(event.target.value)}
+                    label={patientsLoading ? 'Loading patients…' : 'Select patient'}
+                    disabled={patientsLoading || patients.length === 0}
+                    helperText={
+                      patients.length === 0
+                        ? 'Create a patient record to track calculator history.'
+                        : 'Linked sessions appear under the selected patient history.'
+                    }
+                  >
+                    <MenuItem value="">No patient selected</MenuItem>
+                    {patients.map((patient) => (
+                      <MenuItem key={patient.id} value={patient.id}>
+                        {patient.displayId}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Box>
+              )}
               <Stack spacing={4}>
                 {tool.formSections.map((section, index) => (
                   <FormSection
