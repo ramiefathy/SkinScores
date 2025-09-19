@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Accessibility Testing', () => {
@@ -31,15 +31,17 @@ test.describe('Accessibility Testing', () => {
 
       if (await focusedElement.isVisible()) {
         // Check if focused element has proper focus indicator
-        const focusedElementInfo = await focusedElement.evaluate(el => ({
+        const focusedElementInfo = await focusedElement.evaluate((el) => ({
           tagName: el.tagName,
           type: el.getAttribute('type'),
           role: el.getAttribute('role'),
           ariaLabel: el.getAttribute('aria-label'),
-          hasVisibleFocus: getComputedStyle(el).outline !== 'none'
+          hasVisibleFocus: getComputedStyle(el).outline !== 'none',
         }));
 
-        console.log(`Tab ${tabCount}: ${focusedElementInfo.tagName} with role=${focusedElementInfo.role}`);
+        console.log(
+          `Tab ${tabCount}: ${focusedElementInfo.tagName} with role=${focusedElementInfo.role}`,
+        );
 
         // Interactive elements should have proper focus indicators
         if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(focusedElementInfo.tagName)) {
@@ -52,7 +54,10 @@ test.describe('Accessibility Testing', () => {
     }
 
     // Take screenshot of keyboard navigation
-    await page.screenshot({ path: 'test-results/screenshots/accessibility-keyboard.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/accessibility-keyboard.png',
+      fullPage: true,
+    });
   });
 
   test('should test ARIA labels and roles', async ({ page }) => {
@@ -113,7 +118,7 @@ test.describe('Accessibility Testing', () => {
       // Take screenshot for ARIA analysis
       await page.screenshot({
         path: `test-results/screenshots/accessibility-aria-${pagePath.replace(/[^a-zA-Z0-9]/g, '-')}.png`,
-        fullPage: true
+        fullPage: true,
       });
     }
   });
@@ -132,24 +137,27 @@ test.describe('Accessibility Testing', () => {
       const element = textElements.nth(i);
 
       if (await element.isVisible()) {
-        const colorInfo = await element.evaluate(el => {
+        const colorInfo = await element.evaluate((el) => {
           const styles = getComputedStyle(el);
           return {
             color: styles.color,
             backgroundColor: styles.backgroundColor,
             fontSize: styles.fontSize,
-            fontWeight: styles.fontWeight
+            fontWeight: styles.fontWeight,
           };
         });
 
         // Check if colors are defined (not transparent)
-        if (colorInfo.color !== 'rgba(0, 0, 0, 0)' && colorInfo.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+        if (
+          colorInfo.color !== 'rgba(0, 0, 0, 0)' &&
+          colorInfo.backgroundColor !== 'rgba(0, 0, 0, 0)'
+        ) {
           // Log potential contrast issues (manual review needed)
           if (colorInfo.color === colorInfo.backgroundColor) {
             contrastIssues.push({
               element: i,
               issue: 'Same color and background color',
-              ...colorInfo
+              ...colorInfo,
             });
           }
         }
@@ -161,7 +169,10 @@ test.describe('Accessibility Testing', () => {
     }
 
     // Take screenshot for color contrast analysis
-    await page.screenshot({ path: 'test-results/screenshots/accessibility-contrast.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/accessibility-contrast.png',
+      fullPage: true,
+    });
   });
 
   test('should test screen reader compatibility', async ({ page }) => {
@@ -173,7 +184,7 @@ test.describe('Accessibility Testing', () => {
       main: await page.locator('main, [role="main"]').count(),
       navigation: await page.locator('nav, [role="navigation"]').count(),
       banner: await page.locator('header, [role="banner"]').count(),
-      contentinfo: await page.locator('footer, [role="contentinfo"]').count()
+      contentinfo: await page.locator('footer, [role="contentinfo"]').count(),
     };
 
     console.log('Landmark regions found:', landmarks);
@@ -183,7 +194,7 @@ test.describe('Accessibility Testing', () => {
 
     // Check for skip links
     const skipLinks = page.locator('a[href*="#main"], a[href*="#content"], a:has-text("Skip to")');
-    const hasSkipLinks = await skipLinks.count() > 0;
+    const hasSkipLinks = (await skipLinks.count()) > 0;
 
     if (hasSkipLinks) {
       console.log('Skip links found - good for accessibility');
@@ -206,7 +217,10 @@ test.describe('Accessibility Testing', () => {
     }
 
     // Take screenshot for screen reader analysis
-    await page.screenshot({ path: 'test-results/screenshots/accessibility-screenreader.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/accessibility-screenreader.png',
+      fullPage: true,
+    });
   });
 
   test('should test focus management in modals/dialogs', async ({ page }) => {
@@ -214,7 +228,9 @@ test.describe('Accessibility Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for buttons that might open modals
-    const modalTriggers = page.locator('button:has-text("Help"), button:has-text("Info"), button:has-text("Add"), button:has-text("Edit")');
+    const modalTriggers = page.locator(
+      'button:has-text("Help"), button:has-text("Info"), button:has-text("Add"), button:has-text("Edit")',
+    );
 
     if (await modalTriggers.first().isVisible()) {
       await modalTriggers.first().click();
@@ -225,7 +241,9 @@ test.describe('Accessibility Testing', () => {
 
       if (await modal.isVisible()) {
         // Focus should be trapped in modal
-        const focusableInModal = modal.locator('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        const focusableInModal = modal.locator(
+          'button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        );
         const focusableCount = await focusableInModal.count();
 
         if (focusableCount > 0) {
@@ -234,7 +252,7 @@ test.describe('Accessibility Testing', () => {
           const focusedElement = page.locator(':focus');
 
           // Focused element should be within modal
-          const isWithinModal = await modal.locator(':focus').count() > 0;
+          const isWithinModal = (await modal.locator(':focus').count()) > 0;
           expect(isWithinModal).toBeTruthy();
 
           console.log('Modal focus management working correctly');
@@ -251,7 +269,10 @@ test.describe('Accessibility Testing', () => {
         }
 
         // Take screenshot of modal focus management
-        await page.screenshot({ path: 'test-results/screenshots/accessibility-modal-focus.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/accessibility-modal-focus.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -261,7 +282,9 @@ test.describe('Accessibility Testing', () => {
     await page.goto('/calculators');
     await page.waitForLoadState('networkidle');
 
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -300,7 +323,9 @@ test.describe('Accessibility Testing', () => {
           await page.waitForTimeout(500);
 
           // Look for error messages
-          const errorMessages = page.locator('[role="alert"], .error, .validation-error, [aria-describedby]');
+          const errorMessages = page.locator(
+            '[role="alert"], .error, .validation-error, [aria-describedby]',
+          );
 
           if (await errorMessages.isVisible()) {
             // Error messages should be associated with inputs
@@ -313,7 +338,10 @@ test.describe('Accessibility Testing', () => {
         }
 
         // Take screenshot of form accessibility
-        await page.screenshot({ path: 'test-results/screenshots/accessibility-forms.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/accessibility-forms.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -369,7 +397,10 @@ test.describe('Accessibility Testing', () => {
     }
 
     // Take screenshot of mobile accessibility
-    await page.screenshot({ path: 'test-results/screenshots/accessibility-mobile.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/accessibility-mobile.png',
+      fullPage: true,
+    });
   });
 
   test('should test accessibility of data tables', async ({ page }) => {
@@ -412,7 +443,8 @@ test.describe('Accessibility Testing', () => {
         const dataCells = table.locator('td');
         const dataCellCount = await dataCells.count();
 
-        if (dataCellCount > 20) { // Complex table
+        if (dataCellCount > 20) {
+          // Complex table
           // Should have additional accessibility features
           const hasHeaders = await table.getAttribute('headers');
           const hasAriaLabel = await table.getAttribute('aria-label');
@@ -425,7 +457,10 @@ test.describe('Accessibility Testing', () => {
       }
 
       // Take screenshot of table accessibility
-      await page.screenshot({ path: 'test-results/screenshots/accessibility-tables.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/accessibility-tables.png',
+        fullPage: true,
+      });
     }
   });
 });

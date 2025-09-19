@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Analytics Dashboard Testing', () => {
@@ -17,7 +17,9 @@ test.describe('Analytics Dashboard Testing', () => {
 
   test('should display analytics dashboard', async ({ page }) => {
     // Navigate to analytics
-    const analyticsLink = page.locator('a:has-text("Analytics"), a[href*="analytics"], nav a:has-text("Reports")');
+    const analyticsLink = page.locator(
+      'a:has-text("Analytics"), a[href*="analytics"], nav a:has-text("Reports")',
+    );
 
     if (await analyticsLink.first().isVisible()) {
       await analyticsLink.first().click();
@@ -31,7 +33,10 @@ test.describe('Analytics Dashboard Testing', () => {
     await expect(page.locator('h1, h2')).toContainText(/analytics|dashboard|report/i);
 
     // Take screenshot of analytics dashboard
-    await page.screenshot({ path: 'test-results/screenshots/analytics-dashboard.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/analytics-dashboard.png',
+      fullPage: true,
+    });
   });
 
   test('should display key metrics and KPIs', async ({ page }) => {
@@ -39,14 +44,19 @@ test.describe('Analytics Dashboard Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for metric cards/widgets
-    const metricCards = page.locator('.metric-card, .kpi-card, .stat-card, [data-testid*="metric"]');
+    const metricCards = page.locator(
+      '.metric-card, .kpi-card, .stat-card, [data-testid*="metric"]',
+    );
 
     if (await metricCards.first().isVisible()) {
       const cardCount = await metricCards.count();
       console.log(`Found ${cardCount} metric cards`);
 
       // Take screenshot of metrics
-      await page.screenshot({ path: 'test-results/screenshots/analytics-metrics.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-metrics.png',
+        fullPage: true,
+      });
     }
 
     // Look for numeric values in dashboard
@@ -78,18 +88,26 @@ test.describe('Analytics Dashboard Testing', () => {
       await page.waitForTimeout(2000);
 
       // Take screenshot of filtered data
-      await page.screenshot({ path: 'test-results/screenshots/analytics-date-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-date-filter.png',
+        fullPage: true,
+      });
     }
 
     // Look for preset date range buttons
-    const presetButtons = page.locator('button:has-text("Last 7 days"), button:has-text("Last 30 days"), button:has-text("This month")');
+    const presetButtons = page.locator(
+      'button:has-text("Last 7 days"), button:has-text("Last 30 days"), button:has-text("This month")',
+    );
 
     if (await presetButtons.first().isVisible()) {
       await presetButtons.first().click();
       await page.waitForTimeout(1000);
 
       // Take screenshot of preset filter
-      await page.screenshot({ path: 'test-results/screenshots/analytics-preset-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-preset-filter.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -114,7 +132,10 @@ test.describe('Analytics Dashboard Testing', () => {
       }
 
       // Take screenshot of chart interaction
-      await page.screenshot({ path: 'test-results/screenshots/analytics-chart-interaction.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-chart-interaction.png',
+        fullPage: true,
+      });
 
       // Try clicking on chart elements
       await chart.click();
@@ -127,7 +148,9 @@ test.describe('Analytics Dashboard Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for export buttons
-    const exportBtn = page.locator('button:has-text("Export"), a:has-text("Export"), button:has-text("Download"), [aria-label*="export"]');
+    const exportBtn = page.locator(
+      'button:has-text("Export"), a:has-text("Export"), button:has-text("Download"), [aria-label*="export"]',
+    );
 
     if (await exportBtn.isVisible()) {
       // Set up download handling
@@ -136,7 +159,9 @@ test.describe('Analytics Dashboard Testing', () => {
       await exportBtn.click();
 
       // Look for export format options
-      const formatOptions = page.locator('button:has-text("CSV"), button:has-text("PDF"), button:has-text("Excel")');
+      const formatOptions = page.locator(
+        'button:has-text("CSV"), button:has-text("PDF"), button:has-text("Excel")',
+      );
 
       if (await formatOptions.first().isVisible()) {
         await formatOptions.first().click();
@@ -147,7 +172,10 @@ test.describe('Analytics Dashboard Testing', () => {
         console.log(`Analytics export started: ${download.suggestedFilename()}`);
 
         // Take screenshot of export action
-        await page.screenshot({ path: 'test-results/screenshots/analytics-export.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/analytics-export.png',
+          fullPage: true,
+        });
       } catch (error) {
         console.log('No download triggered for analytics export');
       }
@@ -159,9 +187,11 @@ test.describe('Analytics Dashboard Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for different analytics tabs/sections
-    const tabs = page.locator('[role="tab"], .tab, button:has-text("Usage"), button:has-text("Patients"), button:has-text("Tools")');
+    const tabs = page.locator(
+      '[role="tab"], .tab, button:has-text("Usage"), button:has-text("Patients"), button:has-text("Tools")',
+    );
 
-    if (await tabs.count() > 1) {
+    if ((await tabs.count()) > 1) {
       const tabCount = await tabs.count();
 
       for (let i = 0; i < Math.min(tabCount, 4); i++) {
@@ -175,7 +205,7 @@ test.describe('Analytics Dashboard Testing', () => {
         // Take screenshot of each tab
         await page.screenshot({
           path: `test-results/screenshots/analytics-tab-${i}-${tabText?.toLowerCase().replace(/\s+/g, '-')}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -207,7 +237,10 @@ test.describe('Analytics Dashboard Testing', () => {
       console.log(`Analytics data refresh time with 6 months of data: ${dataLoadTime}ms`);
 
       // Take screenshot of performance test
-      await page.screenshot({ path: 'test-results/screenshots/analytics-performance.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-performance.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -220,21 +253,30 @@ test.describe('Analytics Dashboard Testing', () => {
     await page.waitForTimeout(1000);
 
     // Take screenshot of mobile analytics
-    await page.screenshot({ path: 'test-results/screenshots/analytics-mobile.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/analytics-mobile.png',
+      fullPage: true,
+    });
 
     // Test tablet view
     await page.setViewportSize({ width: 768, height: 1024 });
     await page.waitForTimeout(1000);
 
     // Take screenshot of tablet analytics
-    await page.screenshot({ path: 'test-results/screenshots/analytics-tablet.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/analytics-tablet.png',
+      fullPage: true,
+    });
 
     // Test desktop view
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.waitForTimeout(1000);
 
     // Take screenshot of desktop analytics
-    await page.screenshot({ path: 'test-results/screenshots/analytics-desktop.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/analytics-desktop.png',
+      fullPage: true,
+    });
   });
 
   test('should verify data accuracy and consistency', async ({ page }) => {
@@ -244,7 +286,7 @@ test.describe('Analytics Dashboard Testing', () => {
     // Get values from different metric cards
     const metricValues = page.locator('.metric-value, .kpi-value, .stat-value, text=/^\\d+$/');
 
-    if (await metricValues.count() > 0) {
+    if ((await metricValues.count()) > 0) {
       const values = [];
       const count = await metricValues.count();
 
@@ -256,13 +298,16 @@ test.describe('Analytics Dashboard Testing', () => {
       console.log('Analytics metric values:', values);
 
       // Verify no negative values where inappropriate
-      const hasNegativeValues = values.some(v => v && v.includes('-') && !v.includes('-%'));
+      const hasNegativeValues = values.some((v) => v && v.includes('-') && !v.includes('-%'));
       if (hasNegativeValues) {
         console.warn('Found unexpected negative values in analytics');
       }
 
       // Take screenshot for data verification
-      await page.screenshot({ path: 'test-results/screenshots/analytics-data-verification.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/analytics-data-verification.png',
+        fullPage: true,
+      });
     }
   });
 });

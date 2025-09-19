@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Calculator Tools Testing', () => {
@@ -29,7 +29,9 @@ test.describe('Calculator Tools Testing', () => {
     await page.screenshot({ path: 'test-results/screenshots/tools-library.png', fullPage: true });
 
     // Check that tools are listed
-    const toolCards = page.locator('[data-testid*="tool"], [data-testid*="calculator"], .tool-card, .calculator-card');
+    const toolCards = page.locator(
+      '[data-testid*="tool"], [data-testid*="calculator"], .tool-card, .calculator-card',
+    );
     await expect(toolCards.first()).toBeVisible({ timeout: 10000 });
   });
 
@@ -38,7 +40,9 @@ test.describe('Calculator Tools Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for search input
-    const searchInput = page.locator('input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]');
+    const searchInput = page.locator(
+      'input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]',
+    );
 
     if (await searchInput.isVisible()) {
       await searchInput.fill('pasi');
@@ -49,7 +53,10 @@ test.describe('Calculator Tools Testing', () => {
       await expect(results.first()).toBeVisible();
 
       // Take screenshot of search results
-      await page.screenshot({ path: 'test-results/screenshots/search-results.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/search-results.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -68,7 +75,10 @@ test.describe('Calculator Tools Testing', () => {
       await expect(page.locator('h1, h2')).toContainText(/pasi/i);
 
       // Take screenshot of PASI calculator
-      await page.screenshot({ path: 'test-results/screenshots/pasi-calculator.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/pasi-calculator.png',
+        fullPage: true,
+      });
 
       // Fill in some test values
       const inputs = page.locator('input[type="number"], input[type="range"], select');
@@ -80,13 +90,15 @@ test.describe('Calculator Tools Testing', () => {
 
         if (inputType === 'number' || inputType === 'range') {
           await input.fill('2');
-        } else if (await input.getAttribute('tagName') === 'SELECT') {
+        } else if ((await input.getAttribute('tagName')) === 'SELECT') {
           await input.selectOption({ index: 1 });
         }
       }
 
       // Look for calculate button
-      const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]');
+      const calculateBtn = page.locator(
+        'button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]',
+      );
       if (await calculateBtn.isVisible()) {
         await calculateBtn.click();
 
@@ -94,7 +106,10 @@ test.describe('Calculator Tools Testing', () => {
         await expect(page.locator('text=/score|result|total/i')).toBeVisible({ timeout: 5000 });
 
         // Take screenshot of results
-        await page.screenshot({ path: 'test-results/screenshots/pasi-results.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/pasi-results.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -104,7 +119,9 @@ test.describe('Calculator Tools Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find any calculator tool
-    const firstTool = page.locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]').first();
+    const firstTool = page
+      .locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]')
+      .first();
     await firstTool.click();
     await page.waitForLoadState('networkidle');
 
@@ -123,10 +140,15 @@ test.describe('Calculator Tools Testing', () => {
       await firstInput.fill('1.5');
 
       // Look for validation messages
-      const validationMessages = page.locator('.error, [role="alert"], .validation-error, text=/invalid|error/i');
+      const validationMessages = page.locator(
+        '.error, [role="alert"], .validation-error, text=/invalid|error/i',
+      );
 
       // Take screenshot of validation state
-      await page.screenshot({ path: 'test-results/screenshots/validation-error.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/validation-error.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -135,7 +157,9 @@ test.describe('Calculator Tools Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and use a calculator
-    const firstTool = page.locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]').first();
+    const firstTool = page
+      .locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]')
+      .first();
     await firstTool.click();
     await page.waitForLoadState('networkidle');
 
@@ -153,7 +177,9 @@ test.describe('Calculator Tools Testing', () => {
     }
 
     // Calculate
-    const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]');
+    const calculateBtn = page.locator(
+      'button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]',
+    );
     if (await calculateBtn.isVisible()) {
       await calculateBtn.click();
       await page.waitForTimeout(2000);
@@ -164,7 +190,9 @@ test.describe('Calculator Tools Testing', () => {
         await saveBtn.click();
 
         // Should show success message or redirect
-        await expect(page.locator('text=/saved|success/i, [role="alert"]')).toBeVisible({ timeout: 5000 });
+        await expect(page.locator('text=/saved|success/i, [role="alert"]')).toBeVisible({
+          timeout: 5000,
+        });
 
         // Take screenshot of save confirmation
         await page.screenshot({ path: 'test-results/screenshots/save-result.png', fullPage: true });
@@ -192,11 +220,13 @@ test.describe('Calculator Tools Testing', () => {
         // Take screenshot
         await page.screenshot({
           path: `test-results/screenshots/${calcType}-calculator.png`,
-          fullPage: true
+          fullPage: true,
         });
 
         // Test basic functionality
-        const inputs = page.locator('input[type="number"], input[type="range"], select, input[type="radio"], input[type="checkbox"]');
+        const inputs = page.locator(
+          'input[type="number"], input[type="range"], select, input[type="radio"], input[type="checkbox"]',
+        );
         const inputCount = await inputs.count();
 
         if (inputCount > 0) {
@@ -210,7 +240,7 @@ test.describe('Calculator Tools Testing', () => {
                 await input.fill('1');
               } else if (inputType === 'radio' || inputType === 'checkbox') {
                 await input.check();
-              } else if (await input.getAttribute('tagName') === 'SELECT') {
+              } else if ((await input.getAttribute('tagName')) === 'SELECT') {
                 await input.selectOption({ index: 1 });
               }
             } catch (error) {
@@ -231,21 +261,30 @@ test.describe('Calculator Tools Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find a calculator
-    const firstTool = page.locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]').first();
+    const firstTool = page
+      .locator('[data-testid*="tool"], .tool-card, .calculator-card, a[href*="/calculators/"]')
+      .first();
     await firstTool.click();
     await page.waitForLoadState('networkidle');
 
     // Look for help/info buttons
-    const helpButtons = page.locator('button:has-text("Help"), button:has-text("Info"), [aria-label*="help"], [aria-label*="info"], .help-icon, .info-icon');
+    const helpButtons = page.locator(
+      'button:has-text("Help"), button:has-text("Info"), [aria-label*="help"], [aria-label*="info"], .help-icon, .info-icon',
+    );
 
     if (await helpButtons.first().isVisible()) {
       await helpButtons.first().click();
 
       // Should show help content
-      await expect(page.locator('text=/instruction|how to|guide|help/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/instruction|how to|guide|help/i')).toBeVisible({
+        timeout: 5000,
+      });
 
       // Take screenshot of help content
-      await page.screenshot({ path: 'test-results/screenshots/calculator-help.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/calculator-help.png',
+        fullPage: true,
+      });
     }
   });
 });

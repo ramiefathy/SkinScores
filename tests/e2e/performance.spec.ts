@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Performance Analysis Testing', () => {
@@ -29,19 +29,22 @@ test.describe('Performance Analysis Testing', () => {
 
       // Get performance metrics
       const performanceMetrics = await page.evaluate(() => {
-        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        const navigation = performance.getEntriesByType(
+          'navigation',
+        )[0] as PerformanceNavigationTiming;
         return {
           domContentLoaded: navigation.domContentLoadedEventEnd - navigation.navigationStart,
           loadComplete: navigation.loadEventEnd - navigation.navigationStart,
           firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime || 0,
-          firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime || 0,
+          firstContentfulPaint:
+            performance.getEntriesByName('first-contentful-paint')[0]?.startTime || 0,
         };
       });
 
       performanceResults.push({
         page: pagePath,
         loadTime,
-        ...performanceMetrics
+        ...performanceMetrics,
       });
 
       console.log(`${pagePath}: ${loadTime}ms (DOM: ${performanceMetrics.domContentLoaded}ms)`);
@@ -51,18 +54,21 @@ test.describe('Performance Analysis Testing', () => {
     console.log('Performance Results:', JSON.stringify(performanceResults, null, 2));
 
     // Take screenshot of performance metrics
-    await page.screenshot({ path: 'test-results/screenshots/performance-metrics.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/performance-metrics.png',
+      fullPage: true,
+    });
 
     // Verify reasonable load times (under 5 seconds)
-    performanceResults.forEach(result => {
+    performanceResults.forEach((result) => {
       expect(result.loadTime).toBeLessThan(5000);
     });
   });
 
   test('should test slow network conditions', async ({ page, context }) => {
     // Simulate slow 3G network
-    await context.route('**/*', async route => {
-      await new Promise(resolve => setTimeout(resolve, 100)); // Add 100ms delay
+    await context.route('**/*', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Add 100ms delay
       await route.continue();
     });
 
@@ -86,11 +92,13 @@ test.describe('Performance Analysis Testing', () => {
 
     // Get initial memory
     const initialMemory = await page.evaluate(() => {
-      return (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
-      } : null;
+      return (performance as any).memory
+        ? {
+            usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
+            totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
+            jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit,
+          }
+        : null;
     });
 
     if (initialMemory) {
@@ -108,11 +116,13 @@ test.describe('Performance Analysis Testing', () => {
 
     // Get final memory
     const finalMemory = await page.evaluate(() => {
-      return (performance as any).memory ? {
-        usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-        totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-        jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit
-      } : null;
+      return (performance as any).memory
+        ? {
+            usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
+            totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
+            jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit,
+          }
+        : null;
     });
 
     if (finalMemory && initialMemory) {
@@ -165,7 +175,10 @@ test.describe('Performance Analysis Testing', () => {
     console.log(`Scroll performance time: ${scrollTime}ms`);
 
     // Take screenshot of large dataset handling
-    await page.screenshot({ path: 'test-results/screenshots/large-dataset-performance.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/large-dataset-performance.png',
+      fullPage: true,
+    });
   });
 
   test('should test calculator computation performance', async ({ page }) => {
@@ -173,7 +186,9 @@ test.describe('Performance Analysis Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and test a calculator
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -191,7 +206,9 @@ test.describe('Performance Analysis Testing', () => {
       }
 
       // Trigger calculation
-      const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]');
+      const calculateBtn = page.locator(
+        'button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]',
+      );
 
       if (await calculateBtn.isVisible()) {
         await calculateBtn.click();
@@ -206,7 +223,10 @@ test.describe('Performance Analysis Testing', () => {
         expect(computationTime).toBeLessThan(2000);
 
         // Take screenshot of computation result
-        await page.screenshot({ path: 'test-results/screenshots/computation-performance.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/computation-performance.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -219,7 +239,7 @@ test.describe('Performance Analysis Testing', () => {
       () => page.goto('/results'),
       () => page.goto('/analytics'),
       () => page.goBack(),
-      () => page.reload()
+      () => page.reload(),
     ];
 
     const concurrentStart = Date.now();
@@ -238,7 +258,10 @@ test.describe('Performance Analysis Testing', () => {
     expect(concurrentTime).toBeLessThan(15000);
 
     // Take screenshot after concurrent operations
-    await page.screenshot({ path: 'test-results/screenshots/concurrent-operations.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/concurrent-operations.png',
+      fullPage: true,
+    });
   });
 
   test('should analyze bundle size and resource loading', async ({ page }) => {
@@ -247,18 +270,18 @@ test.describe('Performance Analysis Testing', () => {
     // Get resource loading information
     const resources = await page.evaluate(() => {
       const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-      return resources.map(resource => ({
+      return resources.map((resource) => ({
         name: resource.name,
         size: resource.transferSize || 0,
         duration: resource.duration,
-        type: resource.initiatorType
+        type: resource.initiatorType,
       }));
     });
 
     // Analyze JavaScript bundles
-    const jsResources = resources.filter(r => r.name.includes('.js'));
-    const cssResources = resources.filter(r => r.name.includes('.css'));
-    const imageResources = resources.filter(r => r.type === 'img');
+    const jsResources = resources.filter((r) => r.name.includes('.js'));
+    const cssResources = resources.filter((r) => r.name.includes('.css'));
+    const imageResources = resources.filter((r) => r.type === 'img');
 
     const totalJSSize = jsResources.reduce((sum, r) => sum + r.size, 0);
     const totalCSSSize = cssResources.reduce((sum, r) => sum + r.size, 0);
@@ -273,6 +296,9 @@ test.describe('Performance Analysis Testing', () => {
     expect(totalCSSSize).toBeLessThan(500 * 1024); // Less than 500KB CSS
 
     // Take screenshot for resource analysis
-    await page.screenshot({ path: 'test-results/screenshots/resource-analysis.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/resource-analysis.png',
+      fullPage: true,
+    });
   });
 });

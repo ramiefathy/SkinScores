@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Error Handling and Edge Cases Testing', () => {
@@ -20,7 +20,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find a calculator to test
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -59,7 +61,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
         await page.waitForTimeout(300);
 
         // Check for validation messages
-        const validationMessage = page.locator('.error, [role="alert"], .validation-error, text=/invalid|error/i');
+        const validationMessage = page.locator(
+          '.error, [role="alert"], .validation-error, text=/invalid|error/i',
+        );
 
         if (await validationMessage.isVisible()) {
           console.log(`Validation working for input ${i}`);
@@ -67,31 +71,39 @@ test.describe('Error Handling and Edge Cases Testing', () => {
       }
 
       // Take screenshot of validation errors
-      await page.screenshot({ path: 'test-results/screenshots/input-validation-errors.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/input-validation-errors.png',
+        fullPage: true,
+      });
 
       // Try to submit with invalid data
-      const submitBtn = page.locator('button[type="submit"], button:has-text("Calculate"), button:has-text("Submit")');
+      const submitBtn = page.locator(
+        'button[type="submit"], button:has-text("Calculate"), button:has-text("Submit")',
+      );
 
       if (await submitBtn.isVisible()) {
         await submitBtn.click();
 
         // Should show validation errors or prevent submission
         const errorMessages = page.locator('.error, [role="alert"], .validation-error');
-        const hasErrors = await errorMessages.count() > 0;
+        const hasErrors = (await errorMessages.count()) > 0;
 
         if (hasErrors) {
           console.log('Form validation prevents submission with invalid data');
         }
 
         // Take screenshot of form submission errors
-        await page.screenshot({ path: 'test-results/screenshots/form-submission-errors.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/form-submission-errors.png',
+          fullPage: true,
+        });
       }
     }
   });
 
   test('should handle network failures gracefully', async ({ page, context }) => {
     // Block all network requests to simulate network failure
-    await context.route('**/*', route => route.abort());
+    await context.route('**/*', (route) => route.abort());
 
     await page.goto('/calculators');
 
@@ -119,13 +131,16 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await expect(page.locator('h1, h2, main')).toBeVisible({ timeout: 10000 });
 
     // Take screenshot of recovery
-    await page.screenshot({ path: 'test-results/screenshots/network-recovery.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/network-recovery.png',
+      fullPage: true,
+    });
   });
 
   test('should handle slow network responses', async ({ page, context }) => {
     // Add significant delay to all requests
-    await context.route('**/*', async route => {
-      await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay
+    await context.route('**/*', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 second delay
       await route.continue();
     });
 
@@ -133,13 +148,18 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await page.goto('/analytics');
 
     // Should show loading indicators
-    const loadingIndicators = page.locator('.loading, .spinner, [role="progressbar"], text=/loading|please wait/i');
+    const loadingIndicators = page.locator(
+      '.loading, .spinner, [role="progressbar"], text=/loading|please wait/i',
+    );
 
     if (await loadingIndicators.first().isVisible()) {
       console.log('Loading indicators shown during slow network');
 
       // Take screenshot of loading state
-      await page.screenshot({ path: 'test-results/screenshots/loading-indicators.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/loading-indicators.png',
+        fullPage: true,
+      });
     }
 
     // Wait for page to eventually load
@@ -152,16 +172,19 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await expect(page.locator('h1, h2')).toBeVisible();
 
     // Take screenshot of loaded state
-    await page.screenshot({ path: 'test-results/screenshots/slow-network-loaded.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/slow-network-loaded.png',
+      fullPage: true,
+    });
   });
 
   test('should handle API errors gracefully', async ({ page, context }) => {
     // Mock API errors
-    await context.route('**/api/**', route => {
+    await context.route('**/api/**', (route) => {
       route.fulfill({
         status: 500,
         contentType: 'application/json',
-        body: JSON.stringify({ error: 'Internal Server Error' })
+        body: JSON.stringify({ error: 'Internal Server Error' }),
       });
     });
 
@@ -179,7 +202,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     }
 
     // Test retry functionality if available
-    const retryBtn = page.locator('button:has-text("Retry"), button:has-text("Try Again"), button:has-text("Reload")');
+    const retryBtn = page.locator(
+      'button:has-text("Retry"), button:has-text("Try Again"), button:has-text("Reload")',
+    );
 
     if (await retryBtn.isVisible()) {
       await retryBtn.click();
@@ -191,11 +216,11 @@ test.describe('Error Handling and Edge Cases Testing', () => {
 
   test('should handle empty states appropriately', async ({ page, context }) => {
     // Mock empty responses
-    await context.route('**/api/**', route => {
+    await context.route('**/api/**', (route) => {
       route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ data: [], results: [], items: [] })
+        body: JSON.stringify({ data: [], results: [], items: [] }),
       });
     });
 
@@ -207,7 +232,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
       await page.waitForLoadState('networkidle');
 
       // Look for empty state messages
-      const emptyStateMessages = page.locator('text=/no data|no results|empty|nothing found/i, .empty-state');
+      const emptyStateMessages = page.locator(
+        'text=/no data|no results|empty|nothing found/i, .empty-state',
+      );
 
       if (await emptyStateMessages.first().isVisible()) {
         console.log(`Empty state handled on ${pagePath}`);
@@ -216,12 +243,14 @@ test.describe('Error Handling and Edge Cases Testing', () => {
         const pageSlug = pagePath.replace(/[^a-zA-Z0-9]/g, '-');
         await page.screenshot({
           path: `test-results/screenshots/empty-state${pageSlug}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
 
       // Look for actions to add data
-      const addActions = page.locator('button:has-text("Add"), button:has-text("Create"), a:has-text("Get Started")');
+      const addActions = page.locator(
+        'button:has-text("Add"), button:has-text("Create"), a:has-text("Get Started")',
+      );
 
       if (await addActions.first().isVisible()) {
         console.log(`Add action available in empty state on ${pagePath}`);
@@ -246,7 +275,10 @@ test.describe('Error Handling and Edge Cases Testing', () => {
       console.log('Browser compatibility message shown');
 
       // Take screenshot of compatibility warning
-      await page.screenshot({ path: 'test-results/screenshots/browser-compatibility.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/browser-compatibility.png',
+        fullPage: true,
+      });
     } else {
       // Should still be somewhat functional
       await expect(page.locator('h1, h2, main')).toBeVisible();
@@ -272,11 +304,14 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     const isLoginPage = page.url().includes('/login');
     const sessionExpiredMessage = page.locator('text=/session expired|please log in again/i');
 
-    if (isLoginPage || await sessionExpiredMessage.isVisible()) {
+    if (isLoginPage || (await sessionExpiredMessage.isVisible())) {
       console.log('Session expiration handled correctly');
 
       // Take screenshot of session expiration
-      await page.screenshot({ path: 'test-results/screenshots/session-expired.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/session-expired.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -284,14 +319,18 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await page.goto('/calculators');
     await page.waitForLoadState('networkidle');
 
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
       await page.waitForLoadState('networkidle');
 
       // Rapid button clicking
-      const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]');
+      const calculateBtn = page.locator(
+        'button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]',
+      );
 
       if (await calculateBtn.isVisible()) {
         // Click rapidly multiple times
@@ -307,13 +346,16 @@ test.describe('Error Handling and Edge Cases Testing', () => {
         console.log(`Rapid clicking resulted in ${resultCount} result elements`);
 
         // Take screenshot after rapid clicking
-        await page.screenshot({ path: 'test-results/screenshots/rapid-clicking.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/rapid-clicking.png',
+          fullPage: true,
+        });
       }
 
       // Rapid form input changes
       const inputs = page.locator('input[type="number"]');
 
-      if (await inputs.count() > 0) {
+      if ((await inputs.count()) > 0) {
         const input = inputs.first();
 
         // Rapid value changes
@@ -332,7 +374,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     await page.goto('/calculators');
     await page.waitForLoadState('networkidle');
 
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -340,16 +384,16 @@ test.describe('Error Handling and Edge Cases Testing', () => {
 
       const numberInputs = page.locator('input[type="number"]');
 
-      if (await numberInputs.count() > 0) {
+      if ((await numberInputs.count()) > 0) {
         const edgeCases = [
-          '0',           // Zero
-          '0.0001',      // Very small decimal
-          '999999',      // Very large number
-          '3.14159',     // Pi
-          '2.718281',    // e
-          '1e10',        // Scientific notation
-          'Infinity',    // Infinity
-          'NaN'          // Not a Number
+          '0', // Zero
+          '0.0001', // Very small decimal
+          '999999', // Very large number
+          '3.14159', // Pi
+          '2.718281', // e
+          '1e10', // Scientific notation
+          'Infinity', // Infinity
+          'NaN', // Not a Number
         ];
 
         for (const value of edgeCases) {
@@ -357,7 +401,9 @@ test.describe('Error Handling and Edge Cases Testing', () => {
           await page.waitForTimeout(200);
 
           // Try to calculate
-          const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute")');
+          const calculateBtn = page.locator(
+            'button:has-text("Calculate"), button:has-text("Compute")',
+          );
 
           if (await calculateBtn.isVisible()) {
             await calculateBtn.click();
@@ -375,7 +421,10 @@ test.describe('Error Handling and Edge Cases Testing', () => {
         }
 
         // Take screenshot of edge case handling
-        await page.screenshot({ path: 'test-results/screenshots/edge-case-handling.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/edge-case-handling.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -391,12 +440,14 @@ test.describe('Error Handling and Edge Cases Testing', () => {
       page.goto('/results'),
       page.reload(),
       page.goBack(),
-      page.goForward()
+      page.goForward(),
     ];
 
     try {
       // Execute operations concurrently
-      await Promise.all(promises.map(p => p.catch(e => console.log('Concurrent operation error:', e))));
+      await Promise.all(
+        promises.map((p) => p.catch((e) => console.log('Concurrent operation error:', e))),
+      );
 
       // Should end up in a stable state
       await page.waitForLoadState('networkidle');
@@ -405,12 +456,18 @@ test.describe('Error Handling and Edge Cases Testing', () => {
       console.log('Concurrent operations handled successfully');
 
       // Take screenshot of final state
-      await page.screenshot({ path: 'test-results/screenshots/concurrent-operations-final.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/concurrent-operations-final.png',
+        fullPage: true,
+      });
     } catch (error) {
       console.log('Concurrent operations caused issues:', error);
 
       // Take screenshot of error state
-      await page.screenshot({ path: 'test-results/screenshots/concurrent-operations-error.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/concurrent-operations-error.png',
+        fullPage: true,
+      });
     }
   });
 });

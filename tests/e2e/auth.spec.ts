@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Authentication Testing', () => {
@@ -13,7 +13,7 @@ test.describe('Authentication Testing', () => {
   test('should display login page for unauthenticated users', async ({ page }) => {
     // Check if we're on a login page or home page with login functionality
     const url = page.url();
-    const hasLoginElements = await page.locator('text=/sign.*in|login/i').count() > 0;
+    const hasLoginElements = (await page.locator('text=/sign.*in|login/i').count()) > 0;
 
     console.log('Current URL:', url);
     console.log('Has login elements:', hasLoginElements);
@@ -44,7 +44,10 @@ test.describe('Authentication Testing', () => {
     await expect(page).not.toHaveURL(/.*\/login/);
 
     // Take screenshot of dashboard
-    await page.screenshot({ path: 'test-results/screenshots/dashboard-logged-in.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/dashboard-logged-in.png',
+      fullPage: true,
+    });
   });
 
   test('should show error for invalid credentials', async ({ page }) => {
@@ -96,11 +99,15 @@ test.describe('Authentication Testing', () => {
     await page.waitForURL(/.*(?<!\/login)$/, { timeout: 10000 });
 
     // Look for logout button (could be in menu, profile dropdown, etc.)
-    const logoutButton = page.locator('button:has-text("Logout"), button:has-text("Sign Out"), a:has-text("Logout"), a:has-text("Sign Out")');
+    const logoutButton = page.locator(
+      'button:has-text("Logout"), button:has-text("Sign Out"), a:has-text("Logout"), a:has-text("Sign Out")',
+    );
 
     // If logout button is not immediately visible, try clicking profile menu
     if (!(await logoutButton.isVisible())) {
-      const profileMenu = page.locator('[aria-label*="profile"], [aria-label*="menu"], button:has([aria-label*="profile"]), button:has([aria-label*="account"])');
+      const profileMenu = page.locator(
+        '[aria-label*="profile"], [aria-label*="menu"], button:has([aria-label*="profile"]), button:has([aria-label*="account"])',
+      );
       if (await profileMenu.isVisible()) {
         await profileMenu.click();
       }

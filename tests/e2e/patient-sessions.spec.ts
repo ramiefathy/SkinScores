@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Patient Session Management', () => {
@@ -17,7 +17,9 @@ test.describe('Patient Session Management', () => {
 
   test('should display patient sessions page', async ({ page }) => {
     // Navigate to patient sessions
-    const patientsLink = page.locator('a:has-text("Patients"), a[href*="patient"], nav a:has-text("Sessions")');
+    const patientsLink = page.locator(
+      'a:has-text("Patients"), a[href*="patient"], nav a:has-text("Sessions")',
+    );
 
     if (await patientsLink.first().isVisible()) {
       await patientsLink.first().click();
@@ -31,7 +33,10 @@ test.describe('Patient Session Management', () => {
     await expect(page.locator('h1, h2')).toContainText(/patient|session/i);
 
     // Take screenshot of sessions page
-    await page.screenshot({ path: 'test-results/screenshots/patient-sessions.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/patient-sessions.png',
+      fullPage: true,
+    });
   });
 
   test('should create new patient session', async ({ page }) => {
@@ -39,30 +44,40 @@ test.describe('Patient Session Management', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for create/new session button
-    const createBtn = page.locator('button:has-text("Create"), button:has-text("New"), button:has-text("Add"), a:has-text("New Session")');
+    const createBtn = page.locator(
+      'button:has-text("Create"), button:has-text("New"), button:has-text("Add"), a:has-text("New Session")',
+    );
 
     if (await createBtn.first().isVisible()) {
       await createBtn.first().click();
       await page.waitForLoadState('networkidle');
 
       // Fill in patient details
-      const patientNameInput = page.locator('input[name*="name"], input[placeholder*="name"], input[label*="Name"]');
+      const patientNameInput = page.locator(
+        'input[name*="name"], input[placeholder*="name"], input[label*="Name"]',
+      );
       if (await patientNameInput.isVisible()) {
         await patientNameInput.fill(`Test Patient ${Date.now()}`);
       }
 
-      const patientIdInput = page.locator('input[name*="id"], input[placeholder*="id"], input[label*="ID"]');
+      const patientIdInput = page.locator(
+        'input[name*="id"], input[placeholder*="id"], input[label*="ID"]',
+      );
       if (await patientIdInput.isVisible()) {
         await patientIdInput.fill(`TEST${Date.now()}`);
       }
 
-      const ageInput = page.locator('input[name*="age"], input[placeholder*="age"], input[label*="Age"]');
+      const ageInput = page.locator(
+        'input[name*="age"], input[placeholder*="age"], input[label*="Age"]',
+      );
       if (await ageInput.isVisible()) {
         await ageInput.fill('30');
       }
 
       // Save the session
-      const saveBtn = page.locator('button:has-text("Save"), button:has-text("Create"), button[type="submit"]');
+      const saveBtn = page.locator(
+        'button:has-text("Save"), button:has-text("Create"), button[type="submit"]',
+      );
       if (await saveBtn.isVisible()) {
         await saveBtn.click();
 
@@ -70,7 +85,10 @@ test.describe('Patient Session Management', () => {
         await page.waitForTimeout(2000);
 
         // Take screenshot of created session
-        await page.screenshot({ path: 'test-results/screenshots/new-patient-session.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/new-patient-session.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -80,11 +98,15 @@ test.describe('Patient Session Management', () => {
     await page.waitForLoadState('networkidle');
 
     // Find an existing session to edit
-    const sessionRow = page.locator('tr, .session-item, .patient-card, [data-testid*="session"]').first();
+    const sessionRow = page
+      .locator('tr, .session-item, .patient-card, [data-testid*="session"]')
+      .first();
 
     if (await sessionRow.isVisible()) {
       // Look for edit button
-      const editBtn = sessionRow.locator('button:has-text("Edit"), a:has-text("Edit"), [aria-label*="edit"]');
+      const editBtn = sessionRow.locator(
+        'button:has-text("Edit"), a:has-text("Edit"), [aria-label*="edit"]',
+      );
 
       if (await editBtn.isVisible()) {
         await editBtn.click();
@@ -97,12 +119,17 @@ test.describe('Patient Session Management', () => {
         }
 
         // Save changes
-        const saveBtn = page.locator('button:has-text("Save"), button:has-text("Update"), button[type="submit"]');
+        const saveBtn = page.locator(
+          'button:has-text("Save"), button:has-text("Update"), button[type="submit"]',
+        );
         if (await saveBtn.isVisible()) {
           await saveBtn.click();
 
           // Take screenshot of updated session
-          await page.screenshot({ path: 'test-results/screenshots/edited-patient-session.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/edited-patient-session.png',
+            fullPage: true,
+          });
         }
       } else {
         // Try clicking on the session itself
@@ -110,7 +137,10 @@ test.describe('Patient Session Management', () => {
         await page.waitForLoadState('networkidle');
 
         // Take screenshot of session details
-        await page.screenshot({ path: 'test-results/screenshots/session-details.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/session-details.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -120,14 +150,19 @@ test.describe('Patient Session Management', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for search functionality
-    const searchInput = page.locator('input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]');
+    const searchInput = page.locator(
+      'input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]',
+    );
 
     if (await searchInput.isVisible()) {
       await searchInput.fill('test');
       await page.waitForTimeout(1000);
 
       // Take screenshot of search results
-      await page.screenshot({ path: 'test-results/screenshots/session-search.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/session-search.png',
+        fullPage: true,
+      });
 
       // Clear search
       await searchInput.clear();
@@ -142,7 +177,10 @@ test.describe('Patient Session Management', () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot of filtered results
-      await page.screenshot({ path: 'test-results/screenshots/session-date-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/session-date-filter.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -151,25 +189,36 @@ test.describe('Patient Session Management', () => {
     await page.waitForLoadState('networkidle');
 
     // Find a session to delete
-    const sessionRow = page.locator('tr, .session-item, .patient-card, [data-testid*="session"]').first();
+    const sessionRow = page
+      .locator('tr, .session-item, .patient-card, [data-testid*="session"]')
+      .first();
 
     if (await sessionRow.isVisible()) {
       // Look for delete button
-      const deleteBtn = sessionRow.locator('button:has-text("Delete"), [aria-label*="delete"], .delete-btn');
+      const deleteBtn = sessionRow.locator(
+        'button:has-text("Delete"), [aria-label*="delete"], .delete-btn',
+      );
 
       if (await deleteBtn.isVisible()) {
         await deleteBtn.click();
 
         // Handle confirmation dialog
-        const confirmBtn = page.locator('button:has-text("Confirm"), button:has-text("Delete"), button:has-text("Yes")');
+        const confirmBtn = page.locator(
+          'button:has-text("Confirm"), button:has-text("Delete"), button:has-text("Yes")',
+        );
         if (await confirmBtn.isVisible()) {
           await confirmBtn.click();
 
           // Should show success message
-          await expect(page.locator('text=/deleted|removed/i, [role="alert"]')).toBeVisible({ timeout: 5000 });
+          await expect(page.locator('text=/deleted|removed/i, [role="alert"]')).toBeVisible({
+            timeout: 5000,
+          });
 
           // Take screenshot of deletion confirmation
-          await page.screenshot({ path: 'test-results/screenshots/session-deleted.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/session-deleted.png',
+            fullPage: true,
+          });
         }
       }
     }
@@ -182,19 +231,24 @@ test.describe('Patient Session Management', () => {
     // Look for checkboxes to select multiple sessions
     const checkboxes = page.locator('input[type="checkbox"]');
 
-    if (await checkboxes.count() > 1) {
+    if ((await checkboxes.count()) > 1) {
       // Select first few sessions
       await checkboxes.nth(0).check();
       await checkboxes.nth(1).check();
 
       // Look for batch action buttons
-      const batchActions = page.locator('button:has-text("Delete Selected"), button:has-text("Export Selected"), button:has-text("Batch")');
+      const batchActions = page.locator(
+        'button:has-text("Delete Selected"), button:has-text("Export Selected"), button:has-text("Batch")',
+      );
 
       if (await batchActions.first().isVisible()) {
         await batchActions.first().click();
 
         // Take screenshot of batch action
-        await page.screenshot({ path: 'test-results/screenshots/batch-operations.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/batch-operations.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -204,7 +258,9 @@ test.describe('Patient Session Management', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for export functionality
-    const exportBtn = page.locator('button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]');
+    const exportBtn = page.locator(
+      'button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]',
+    );
 
     if (await exportBtn.isVisible()) {
       // Set up download handling
@@ -218,7 +274,10 @@ test.describe('Patient Session Management', () => {
         console.log(`Download started: ${download.suggestedFilename()}`);
 
         // Take screenshot during export
-        await page.screenshot({ path: 'test-results/screenshots/session-export.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/session-export.png',
+          fullPage: true,
+        });
       } catch (error) {
         console.log('No download triggered or export functionality not available');
       }
@@ -231,14 +290,19 @@ test.describe('Patient Session Management', () => {
 
     // Look for pagination controls
     const nextBtn = page.locator('button:has-text("Next"), [aria-label*="next"], .pagination-next');
-    const prevBtn = page.locator('button:has-text("Previous"), [aria-label*="previous"], .pagination-prev');
+    const prevBtn = page.locator(
+      'button:has-text("Previous"), [aria-label*="previous"], .pagination-prev',
+    );
 
     if (await nextBtn.isVisible()) {
       await nextBtn.click();
       await page.waitForTimeout(1000);
 
       // Take screenshot of next page
-      await page.screenshot({ path: 'test-results/screenshots/session-pagination.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/session-pagination.png',
+        fullPage: true,
+      });
 
       if (await prevBtn.isVisible()) {
         await prevBtn.click();
@@ -253,7 +317,10 @@ test.describe('Patient Session Management', () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot of sorted results
-      await page.screenshot({ path: 'test-results/screenshots/session-sorting.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/session-sorting.png',
+        fullPage: true,
+      });
     }
   });
 });

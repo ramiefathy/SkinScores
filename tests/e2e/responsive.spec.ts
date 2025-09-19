@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 const VIEWPORTS = {
   mobile: { width: 375, height: 667 },
   tablet: { width: 768, height: 1024 },
   desktop: { width: 1440, height: 900 },
-  largeDesktop: { width: 1920, height: 1080 }
+  largeDesktop: { width: 1920, height: 1080 },
 };
 
 test.describe('Responsive Design Testing', () => {
@@ -36,18 +36,21 @@ test.describe('Responsive Design Testing', () => {
         await expect(page.locator('h1, h2, main')).toBeVisible();
 
         // Check for horizontal scrolling (shouldn't happen)
-        const bodyWidth = await page.locator('body').evaluate(el => el.scrollWidth);
+        const bodyWidth = await page.locator('body').evaluate((el) => el.scrollWidth);
         const viewportWidth = viewport.width;
 
-        if (bodyWidth > viewportWidth + 50) { // Allow small tolerance
-          console.warn(`Horizontal scroll detected on ${pagePath} at ${viewportName}: ${bodyWidth}px > ${viewportWidth}px`);
+        if (bodyWidth > viewportWidth + 50) {
+          // Allow small tolerance
+          console.warn(
+            `Horizontal scroll detected on ${pagePath} at ${viewportName}: ${bodyWidth}px > ${viewportWidth}px`,
+          );
         }
 
         // Take screenshot
         const pageSlug = pagePath.replace(/[^a-zA-Z0-9]/g, '-') || 'home';
         await page.screenshot({
           path: `test-results/screenshots/${viewportName}-${pageSlug}.png`,
-          fullPage: true
+          fullPage: true,
         });
 
         await page.waitForTimeout(500);
@@ -62,7 +65,9 @@ test.describe('Responsive Design Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Mobile should have hamburger menu or collapsed navigation
-    const mobileMenu = page.locator('button[aria-label*="menu"], .hamburger, .mobile-menu-btn, [aria-expanded]');
+    const mobileMenu = page.locator(
+      'button[aria-label*="menu"], .hamburger, .mobile-menu-btn, [aria-expanded]',
+    );
     const fullNav = page.locator('nav a, .nav-item').first();
 
     const hasMobileMenu = await mobileMenu.isVisible();
@@ -76,13 +81,18 @@ test.describe('Responsive Design Testing', () => {
       await page.waitForTimeout(500);
 
       // Menu should expand
-      const expandedMenu = page.locator('.mobile-menu, .drawer, .sidebar, nav[aria-expanded="true"]');
+      const expandedMenu = page.locator(
+        '.mobile-menu, .drawer, .sidebar, nav[aria-expanded="true"]',
+      );
 
       if (await expandedMenu.isVisible()) {
         console.log('Mobile menu expands correctly');
 
         // Take screenshot of expanded mobile menu
-        await page.screenshot({ path: 'test-results/screenshots/mobile-menu-expanded.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/mobile-menu-expanded.png',
+          fullPage: true,
+        });
 
         // Test menu items
         const menuItems = expandedMenu.locator('a, button');
@@ -104,7 +114,10 @@ test.describe('Responsive Design Testing', () => {
     }
 
     // Take screenshot of mobile navigation
-    await page.screenshot({ path: 'test-results/screenshots/mobile-navigation-test.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/mobile-navigation-test.png',
+      fullPage: true,
+    });
   });
 
   test('should have appropriate touch targets on mobile', async ({ page }) => {
@@ -113,7 +126,9 @@ test.describe('Responsive Design Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Check touch target sizes
-    const interactiveElements = page.locator('button, a, input[type="button"], input[type="submit"], [role="button"]');
+    const interactiveElements = page.locator(
+      'button, a, input[type="button"], input[type="submit"], [role="button"]',
+    );
     const elementCount = await interactiveElements.count();
 
     let smallTargetCount = 0;
@@ -140,14 +155,19 @@ test.describe('Responsive Design Testing', () => {
     console.log(`Found ${smallTargetCount} touch targets smaller than recommended size`);
 
     // Take screenshot highlighting touch targets
-    await page.screenshot({ path: 'test-results/screenshots/mobile-touch-targets.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/mobile-touch-targets.png',
+      fullPage: true,
+    });
   });
 
   test('should test calculator responsiveness', async ({ page }) => {
     await page.goto('/calculators');
     await page.waitForLoadState('networkidle');
 
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -184,7 +204,7 @@ test.describe('Responsive Design Testing', () => {
         // Take screenshot of calculator on each viewport
         await page.screenshot({
           path: `test-results/screenshots/calculator-${viewportName}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -203,11 +223,11 @@ test.describe('Responsive Design Testing', () => {
         await page.waitForTimeout(500);
 
         const table = tables.first();
-        const tableWidth = await table.evaluate(el => el.scrollWidth);
+        const tableWidth = await table.evaluate((el) => el.scrollWidth);
 
         if (viewportName === 'mobile' && tableWidth > viewport.width) {
           // Mobile tables should be horizontally scrollable or stacked
-          const isScrollable = await table.evaluate(el => {
+          const isScrollable = await table.evaluate((el) => {
             const parent = el.parentElement;
             return parent && getComputedStyle(parent).overflowX === 'auto';
           });
@@ -220,7 +240,7 @@ test.describe('Responsive Design Testing', () => {
         // Take screenshot of table responsiveness
         await page.screenshot({
           path: `test-results/screenshots/table-${viewportName}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -259,7 +279,7 @@ test.describe('Responsive Design Testing', () => {
         // Take screenshot of media responsiveness
         await page.screenshot({
           path: `test-results/screenshots/media-${viewportName}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -270,14 +290,14 @@ test.describe('Responsive Design Testing', () => {
     await page.waitForLoadState('networkidle');
 
     const breakpoints = [
-      { width: 320, height: 568 },  // Small mobile
-      { width: 375, height: 667 },  // Mobile
-      { width: 414, height: 896 },  // Large mobile
+      { width: 320, height: 568 }, // Small mobile
+      { width: 375, height: 667 }, // Mobile
+      { width: 414, height: 896 }, // Large mobile
       { width: 768, height: 1024 }, // Tablet
       { width: 1024, height: 768 }, // Small desktop
       { width: 1200, height: 800 }, // Medium desktop
       { width: 1440, height: 900 }, // Large desktop
-      { width: 1920, height: 1080 } // Extra large desktop
+      { width: 1920, height: 1080 }, // Extra large desktop
     ];
 
     for (const viewport of breakpoints) {
@@ -300,7 +320,7 @@ test.describe('Responsive Design Testing', () => {
       if ([375, 768, 1024, 1440].includes(viewport.width)) {
         await page.screenshot({
           path: `test-results/screenshots/breakpoint-${viewport.width}w.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -325,14 +345,14 @@ test.describe('Responsive Design Testing', () => {
           const element = textElements.nth(i);
 
           if (await element.isVisible()) {
-            const fontSize = await element.evaluate(el => {
+            const fontSize = await element.evaluate((el) => {
               return parseInt(getComputedStyle(el).fontSize);
             });
 
             // Text should be readable on all viewports
             if (viewportName === 'mobile') {
               // Mobile text should be at least 16px for body text
-              const tagName = await element.evaluate(el => el.tagName.toLowerCase());
+              const tagName = await element.evaluate((el) => el.tagName.toLowerCase());
 
               if (['p', 'span', 'div'].includes(tagName) && fontSize < 14) {
                 console.warn(`Small text on mobile: ${fontSize}px`);
@@ -345,7 +365,7 @@ test.describe('Responsive Design Testing', () => {
         const pageSlug = pagePath.replace(/[^a-zA-Z0-9]/g, '-') || 'home';
         await page.screenshot({
           path: `test-results/screenshots/text-${viewportName}-${pageSlug}.png`,
-          fullPage: true
+          fullPage: true,
         });
       }
     }
@@ -361,7 +381,10 @@ test.describe('Responsive Design Testing', () => {
     await expect(page.locator('h1, h2, main')).toBeVisible();
 
     // Take screenshot of landscape mobile
-    await page.screenshot({ path: 'test-results/screenshots/mobile-landscape.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/mobile-landscape.png',
+      fullPage: true,
+    });
 
     // Test portrait tablet
     await page.setViewportSize({ width: 768, height: 1024 });
@@ -375,6 +398,9 @@ test.describe('Responsive Design Testing', () => {
     await page.waitForTimeout(300);
 
     // Take screenshot of landscape tablet
-    await page.screenshot({ path: 'test-results/screenshots/tablet-landscape.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/tablet-landscape.png',
+      fullPage: true,
+    });
   });
 });

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Navigation and User Flows Testing', () => {
@@ -21,7 +21,7 @@ test.describe('Navigation and User Flows Testing', () => {
     // Find main navigation elements
     const navItems = page.locator('nav a, [role="navigation"] a, .nav-item, .menu-item');
 
-    if (await navItems.count() > 0) {
+    if ((await navItems.count()) > 0) {
       console.log(`Found ${await navItems.count()} navigation items`);
 
       // Test each navigation item
@@ -34,7 +34,10 @@ test.describe('Navigation and User Flows Testing', () => {
         navTexts.push(navText);
 
         // Skip if it's a logout or external link
-        if (navText?.toLowerCase().includes('logout') || navText?.toLowerCase().includes('sign out')) {
+        if (
+          navText?.toLowerCase().includes('logout') ||
+          navText?.toLowerCase().includes('sign out')
+        ) {
           continue;
         }
 
@@ -53,7 +56,10 @@ test.describe('Navigation and User Flows Testing', () => {
       }
 
       // Take screenshot of navigation
-      await page.screenshot({ path: 'test-results/screenshots/navigation-menu.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/navigation-menu.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -63,14 +69,18 @@ test.describe('Navigation and User Flows Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Find and click on a calculator
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
       await page.waitForLoadState('networkidle');
 
       // Look for breadcrumbs
-      const breadcrumbs = page.locator('.breadcrumb, [aria-label*="breadcrumb"], nav[aria-label*="breadcrumb"]');
+      const breadcrumbs = page.locator(
+        '.breadcrumb, [aria-label*="breadcrumb"], nav[aria-label*="breadcrumb"]',
+      );
 
       if (await breadcrumbs.isVisible()) {
         // Test breadcrumb links
@@ -86,7 +96,10 @@ test.describe('Navigation and User Flows Testing', () => {
           await expect(page.locator('h1, h2')).toBeVisible();
 
           // Take screenshot of breadcrumb navigation
-          await page.screenshot({ path: 'test-results/screenshots/breadcrumb-navigation.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/breadcrumb-navigation.png',
+            fullPage: true,
+          });
         }
       }
     }
@@ -102,7 +115,9 @@ test.describe('Navigation and User Flows Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Navigate to a specific calculator
-    const calculatorLink = page.locator('a[href*="/calculators/"], .calculator-card a, .tool-card a').first();
+    const calculatorLink = page
+      .locator('a[href*="/calculators/"], .calculator-card a, .tool-card a')
+      .first();
 
     if (await calculatorLink.isVisible()) {
       await calculatorLink.click();
@@ -116,7 +131,10 @@ test.describe('Navigation and User Flows Testing', () => {
       await expect(page).toHaveURL(/.*calculators.*$/);
 
       // Take screenshot of back navigation
-      await page.screenshot({ path: 'test-results/screenshots/back-navigation.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/back-navigation.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -128,7 +146,7 @@ test.describe('Navigation and User Flows Testing', () => {
       '/calculators/bsa',
       '/patients',
       '/results',
-      '/analytics'
+      '/analytics',
     ];
 
     for (const url of specificUrls) {
@@ -145,7 +163,7 @@ test.describe('Navigation and User Flows Testing', () => {
         const urlSlug = url.replace(/[^a-zA-Z0-9]/g, '-');
         await page.screenshot({
           path: `test-results/screenshots/deep-link${urlSlug}.png`,
-          fullPage: true
+          fullPage: true,
         });
       } catch (error) {
         console.log(`Deep link to ${url} failed: ${error}`);
@@ -158,10 +176,15 @@ test.describe('Navigation and User Flows Testing', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    await page.screenshot({ path: 'test-results/screenshots/journey-01-dashboard.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/journey-01-dashboard.png',
+      fullPage: true,
+    });
 
     // 2. Navigate to calculators
-    const calculatorsLink = page.locator('a:has-text("Calculators"), a[href*="calculators"], button:has-text("Calculators")');
+    const calculatorsLink = page.locator(
+      'a:has-text("Calculators"), a[href*="calculators"], button:has-text("Calculators")',
+    );
 
     if (await calculatorsLink.first().isVisible()) {
       await calculatorsLink.first().click();
@@ -170,16 +193,24 @@ test.describe('Navigation and User Flows Testing', () => {
     }
 
     await page.waitForLoadState('networkidle');
-    await page.screenshot({ path: 'test-results/screenshots/journey-02-calculators.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/journey-02-calculators.png',
+      fullPage: true,
+    });
 
     // 3. Select a calculator
-    const calculatorTool = page.locator('a[href*="/calculators/"], .calculator-card, .tool-card').first();
+    const calculatorTool = page
+      .locator('a[href*="/calculators/"], .calculator-card, .tool-card')
+      .first();
 
     if (await calculatorTool.isVisible()) {
       await calculatorTool.click();
       await page.waitForLoadState('networkidle');
 
-      await page.screenshot({ path: 'test-results/screenshots/journey-03-calculator.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/journey-03-calculator.png',
+        fullPage: true,
+      });
 
       // 4. Fill in calculator
       const inputs = page.locator('input[type="number"], input[type="range"], select');
@@ -191,21 +222,29 @@ test.describe('Navigation and User Flows Testing', () => {
 
         if (inputType === 'number' || inputType === 'range') {
           await input.fill('2');
-        } else if (await input.getAttribute('tagName') === 'SELECT') {
+        } else if ((await input.getAttribute('tagName')) === 'SELECT') {
           await input.selectOption({ index: 1 });
         }
       }
 
-      await page.screenshot({ path: 'test-results/screenshots/journey-04-filled.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/journey-04-filled.png',
+        fullPage: true,
+      });
 
       // 5. Calculate result
-      const calculateBtn = page.locator('button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]');
+      const calculateBtn = page.locator(
+        'button:has-text("Calculate"), button:has-text("Compute"), button[type="submit"]',
+      );
 
       if (await calculateBtn.isVisible()) {
         await calculateBtn.click();
         await page.waitForTimeout(2000);
 
-        await page.screenshot({ path: 'test-results/screenshots/journey-05-result.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/journey-05-result.png',
+          fullPage: true,
+        });
 
         // 6. Save result
         const saveBtn = page.locator('button:has-text("Save"), button:has-text("Save Result")');
@@ -214,7 +253,10 @@ test.describe('Navigation and User Flows Testing', () => {
           await saveBtn.click();
           await page.waitForTimeout(2000);
 
-          await page.screenshot({ path: 'test-results/screenshots/journey-06-saved.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/journey-06-saved.png',
+            fullPage: true,
+          });
         }
       }
     }
@@ -229,7 +271,10 @@ test.describe('Navigation and User Flows Testing', () => {
     }
 
     await page.waitForLoadState('networkidle');
-    await page.screenshot({ path: 'test-results/screenshots/journey-07-results.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/journey-07-results.png',
+      fullPage: true,
+    });
   });
 
   test('should test mobile navigation patterns', async ({ page }) => {
@@ -240,24 +285,32 @@ test.describe('Navigation and User Flows Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for mobile menu trigger (hamburger button)
-    const mobileMenuBtn = page.locator('button[aria-label*="menu"], .hamburger, .mobile-menu-btn, button:has([aria-hidden="true"])');
+    const mobileMenuBtn = page.locator(
+      'button[aria-label*="menu"], .hamburger, .mobile-menu-btn, button:has([aria-hidden="true"])',
+    );
 
     if (await mobileMenuBtn.isVisible()) {
       await mobileMenuBtn.click();
       await page.waitForTimeout(500);
 
       // Take screenshot of mobile menu
-      await page.screenshot({ path: 'test-results/screenshots/mobile-navigation.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/mobile-navigation.png',
+        fullPage: true,
+      });
 
       // Test navigation items in mobile menu
       const mobileNavItems = page.locator('.mobile-menu a, .drawer a, .sidebar a');
 
-      if (await mobileNavItems.count() > 0) {
+      if ((await mobileNavItems.count()) > 0) {
         await mobileNavItems.first().click();
         await page.waitForLoadState('networkidle');
 
         // Take screenshot of mobile navigation result
-        await page.screenshot({ path: 'test-results/screenshots/mobile-nav-result.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/mobile-nav-result.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -275,7 +328,10 @@ test.describe('Navigation and User Flows Testing', () => {
     await expect(focusedElement).toBeVisible();
 
     // Take screenshot of keyboard focus
-    await page.screenshot({ path: 'test-results/screenshots/keyboard-navigation.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/keyboard-navigation.png',
+      fullPage: true,
+    });
 
     // Navigate through several elements
     for (let i = 0; i < 5; i++) {
@@ -288,7 +344,10 @@ test.describe('Navigation and User Flows Testing', () => {
     await page.waitForTimeout(1000);
 
     // Take screenshot after Enter activation
-    await page.screenshot({ path: 'test-results/screenshots/keyboard-activation.png', fullPage: true });
+    await page.screenshot({
+      path: 'test-results/screenshots/keyboard-activation.png',
+      fullPage: true,
+    });
   });
 
   test('should test 404 and error page navigation', async ({ page }) => {
@@ -298,14 +357,19 @@ test.describe('Navigation and User Flows Testing', () => {
 
     // Should show 404 or redirect
     const pageContent = await page.locator('body').textContent();
-    const is404 = pageContent?.includes('404') || pageContent?.includes('Not Found') || pageContent?.includes('Page not found');
+    const is404 =
+      pageContent?.includes('404') ||
+      pageContent?.includes('Not Found') ||
+      pageContent?.includes('Page not found');
 
     if (is404) {
       console.log('404 page displayed correctly');
       await page.screenshot({ path: 'test-results/screenshots/404-page.png', fullPage: true });
 
       // Look for navigation back to home
-      const homeLink = page.locator('a:has-text("Home"), a:has-text("Dashboard"), button:has-text("Go Home")');
+      const homeLink = page.locator(
+        'a:has-text("Home"), a:has-text("Dashboard"), button:has-text("Go Home")',
+      );
 
       if (await homeLink.first().isVisible()) {
         await homeLink.first().click();

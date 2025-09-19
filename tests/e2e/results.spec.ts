@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_CREDENTIALS = {
   email: 'ramiefathy@gmail.com',
-  password: 'testing1'
+  password: 'testing1',
 };
 
 test.describe('Results Management Testing', () => {
@@ -17,7 +17,9 @@ test.describe('Results Management Testing', () => {
 
   test('should display results page', async ({ page }) => {
     // Navigate to results
-    const resultsLink = page.locator('a:has-text("Results"), a[href*="results"], nav a:has-text("History")');
+    const resultsLink = page.locator(
+      'a:has-text("Results"), a[href*="results"], nav a:has-text("History")',
+    );
 
     if (await resultsLink.first().isVisible()) {
       await resultsLink.first().click();
@@ -52,7 +54,10 @@ test.describe('Results Management Testing', () => {
       await page.waitForLoadState('networkidle');
 
       // Take screenshot of result details
-      await page.screenshot({ path: 'test-results/screenshots/result-details.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/result-details.png',
+        fullPage: true,
+      });
     } else {
       console.log('No results found - may need to create some test results first');
     }
@@ -81,7 +86,10 @@ test.describe('Results Management Testing', () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot of filtered results
-      await page.screenshot({ path: 'test-results/screenshots/results-date-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-date-filter.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -90,25 +98,35 @@ test.describe('Results Management Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for tool filter dropdown
-    const toolFilter = page.locator('select[name*="tool"], select[aria-label*="tool"], .tool-filter');
+    const toolFilter = page.locator(
+      'select[name*="tool"], select[aria-label*="tool"], .tool-filter',
+    );
 
     if (await toolFilter.isVisible()) {
       await toolFilter.selectOption({ index: 1 });
       await page.waitForTimeout(1000);
 
       // Take screenshot of tool-filtered results
-      await page.screenshot({ path: 'test-results/screenshots/results-tool-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-tool-filter.png',
+        fullPage: true,
+      });
     }
 
     // Look for tool filter buttons/chips
-    const toolButtons = page.locator('button:has-text("PASI"), button:has-text("DLQI"), button:has-text("BSA")');
+    const toolButtons = page.locator(
+      'button:has-text("PASI"), button:has-text("DLQI"), button:has-text("BSA")',
+    );
 
     if (await toolButtons.first().isVisible()) {
       await toolButtons.first().click();
       await page.waitForTimeout(1000);
 
       // Take screenshot of button-filtered results
-      await page.screenshot({ path: 'test-results/screenshots/results-button-filter.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-button-filter.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -117,14 +135,19 @@ test.describe('Results Management Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for search input
-    const searchInput = page.locator('input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]');
+    const searchInput = page.locator(
+      'input[placeholder*="search"], input[aria-label*="search"], input[name*="search"]',
+    );
 
     if (await searchInput.isVisible()) {
       await searchInput.fill('test');
       await page.waitForTimeout(1000);
 
       // Take screenshot of search results
-      await page.screenshot({ path: 'test-results/screenshots/results-search.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-search.png',
+        fullPage: true,
+      });
 
       // Clear search
       await searchInput.clear();
@@ -141,7 +164,9 @@ test.describe('Results Management Testing', () => {
 
     if (await resultItems.first().isVisible()) {
       // Look for export button on result item
-      const exportBtn = resultItems.first().locator('button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]');
+      const exportBtn = resultItems
+        .first()
+        .locator('button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]');
 
       if (await exportBtn.isVisible()) {
         const downloadPromise = page.waitForEvent('download');
@@ -153,7 +178,10 @@ test.describe('Results Management Testing', () => {
           console.log(`Result export started: ${download.suggestedFilename()}`);
 
           // Take screenshot of export action
-          await page.screenshot({ path: 'test-results/screenshots/result-export.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/result-export.png',
+            fullPage: true,
+          });
         } catch (error) {
           console.log('No download triggered for result export');
         }
@@ -162,7 +190,9 @@ test.describe('Results Management Testing', () => {
         await resultItems.first().click();
         await page.waitForLoadState('networkidle');
 
-        const detailExportBtn = page.locator('button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]');
+        const detailExportBtn = page.locator(
+          'button:has-text("Export"), a:has-text("Export"), [aria-label*="export"]',
+        );
 
         if (await detailExportBtn.isVisible()) {
           const downloadPromise = page.waitForEvent('download');
@@ -184,7 +214,9 @@ test.describe('Results Management Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for bulk export functionality
-    const bulkExportBtn = page.locator('button:has-text("Export All"), button:has-text("Bulk Export"), button:has-text("Download All")');
+    const bulkExportBtn = page.locator(
+      'button:has-text("Export All"), button:has-text("Bulk Export"), button:has-text("Download All")',
+    );
 
     if (await bulkExportBtn.isVisible()) {
       const downloadPromise = page.waitForEvent('download');
@@ -196,7 +228,10 @@ test.describe('Results Management Testing', () => {
         console.log(`Bulk export started: ${download.suggestedFilename()}`);
 
         // Take screenshot of bulk export
-        await page.screenshot({ path: 'test-results/screenshots/results-bulk-export.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/results-bulk-export.png',
+          fullPage: true,
+        });
       } catch (error) {
         console.log('No download triggered for bulk export');
       }
@@ -205,18 +240,23 @@ test.describe('Results Management Testing', () => {
     // Test selection-based export
     const checkboxes = page.locator('input[type="checkbox"]');
 
-    if (await checkboxes.count() > 1) {
+    if ((await checkboxes.count()) > 1) {
       // Select multiple results
       await checkboxes.nth(0).check();
       await checkboxes.nth(1).check();
 
-      const selectedExportBtn = page.locator('button:has-text("Export Selected"), button:has-text("Download Selected")');
+      const selectedExportBtn = page.locator(
+        'button:has-text("Export Selected"), button:has-text("Download Selected")',
+      );
 
       if (await selectedExportBtn.isVisible()) {
         await selectedExportBtn.click();
 
         // Take screenshot of selected export
-        await page.screenshot({ path: 'test-results/screenshots/results-selected-export.png', fullPage: true });
+        await page.screenshot({
+          path: 'test-results/screenshots/results-selected-export.png',
+          fullPage: true,
+        });
       }
     }
   });
@@ -233,19 +273,26 @@ test.describe('Results Management Testing', () => {
       await page.waitForLoadState('networkidle');
 
       // Look for share functionality
-      const shareBtn = page.locator('button:has-text("Share"), a:has-text("Share"), [aria-label*="share"]');
+      const shareBtn = page.locator(
+        'button:has-text("Share"), a:has-text("Share"), [aria-label*="share"]',
+      );
 
       if (await shareBtn.isVisible()) {
         await shareBtn.click();
 
         // Look for share options
-        const shareOptions = page.locator('button:has-text("Email"), button:has-text("Link"), button:has-text("Copy")');
+        const shareOptions = page.locator(
+          'button:has-text("Email"), button:has-text("Link"), button:has-text("Copy")',
+        );
 
         if (await shareOptions.first().isVisible()) {
           await shareOptions.first().click();
 
           // Take screenshot of share dialog
-          await page.screenshot({ path: 'test-results/screenshots/result-share.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/result-share.png',
+            fullPage: true,
+          });
         }
       }
     }
@@ -256,14 +303,19 @@ test.describe('Results Management Testing', () => {
     await page.waitForLoadState('networkidle');
 
     // Look for timeline or history view
-    const timelineBtn = page.locator('button:has-text("Timeline"), button:has-text("History"), [aria-label*="timeline"]');
+    const timelineBtn = page.locator(
+      'button:has-text("Timeline"), button:has-text("History"), [aria-label*="timeline"]',
+    );
 
     if (await timelineBtn.isVisible()) {
       await timelineBtn.click();
       await page.waitForLoadState('networkidle');
 
       // Take screenshot of timeline view
-      await page.screenshot({ path: 'test-results/screenshots/results-timeline.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-timeline.png',
+        fullPage: true,
+      });
     }
 
     // Look for patient-specific result history
@@ -271,7 +323,7 @@ test.describe('Results Management Testing', () => {
 
     if (await patientFilter.isVisible()) {
       // Select a patient if dropdown
-      if (await patientFilter.getAttribute('tagName') === 'SELECT') {
+      if ((await patientFilter.getAttribute('tagName')) === 'SELECT') {
         await patientFilter.selectOption({ index: 1 });
       } else {
         await patientFilter.fill('test');
@@ -280,7 +332,10 @@ test.describe('Results Management Testing', () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot of patient history
-      await page.screenshot({ path: 'test-results/screenshots/patient-result-history.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/patient-result-history.png',
+        fullPage: true,
+      });
     }
   });
 
@@ -293,22 +348,31 @@ test.describe('Results Management Testing', () => {
 
     if (await resultItems.first().isVisible()) {
       // Look for delete button
-      const deleteBtn = resultItems.first().locator('button:has-text("Delete"), [aria-label*="delete"], .delete-btn');
+      const deleteBtn = resultItems
+        .first()
+        .locator('button:has-text("Delete"), [aria-label*="delete"], .delete-btn');
 
       if (await deleteBtn.isVisible()) {
         await deleteBtn.click();
 
         // Handle confirmation dialog
-        const confirmBtn = page.locator('button:has-text("Confirm"), button:has-text("Delete"), button:has-text("Yes")');
+        const confirmBtn = page.locator(
+          'button:has-text("Confirm"), button:has-text("Delete"), button:has-text("Yes")',
+        );
 
         if (await confirmBtn.isVisible()) {
           await confirmBtn.click();
 
           // Should show success message
-          await expect(page.locator('text=/deleted|removed/i, [role="alert"]')).toBeVisible({ timeout: 5000 });
+          await expect(page.locator('text=/deleted|removed/i, [role="alert"]')).toBeVisible({
+            timeout: 5000,
+          });
 
           // Take screenshot of deletion confirmation
-          await page.screenshot({ path: 'test-results/screenshots/result-deleted.png', fullPage: true });
+          await page.screenshot({
+            path: 'test-results/screenshots/result-deleted.png',
+            fullPage: true,
+          });
         }
       }
     }
@@ -320,14 +384,19 @@ test.describe('Results Management Testing', () => {
 
     // Look for pagination controls
     const nextBtn = page.locator('button:has-text("Next"), [aria-label*="next"], .pagination-next');
-    const prevBtn = page.locator('button:has-text("Previous"), [aria-label*="previous"], .pagination-prev');
+    const prevBtn = page.locator(
+      'button:has-text("Previous"), [aria-label*="previous"], .pagination-prev',
+    );
 
     if (await nextBtn.isVisible()) {
       await nextBtn.click();
       await page.waitForTimeout(1000);
 
       // Take screenshot of next page
-      await page.screenshot({ path: 'test-results/screenshots/results-pagination.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-pagination.png',
+        fullPage: true,
+      });
 
       if (await prevBtn.isVisible()) {
         await prevBtn.click();
@@ -342,7 +411,10 @@ test.describe('Results Management Testing', () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot with different page size
-      await page.screenshot({ path: 'test-results/screenshots/results-page-size.png', fullPage: true });
+      await page.screenshot({
+        path: 'test-results/screenshots/results-page-size.png',
+        fullPage: true,
+      });
     }
   });
 });
