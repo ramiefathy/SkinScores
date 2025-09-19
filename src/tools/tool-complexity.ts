@@ -14,7 +14,7 @@ export const toolComplexityMap: Record<string, ToolComplexityData> = {
   dlqi: { complexity: 'basic', estimatedTime: 3 },
   poem: { complexity: 'basic', estimatedTime: 3 },
   'iga-acne': { complexity: 'basic', estimatedTime: 2 },
-  'iga-ad': { complexity: 'basic', estimatedTime: 2 },
+  'viga-ad': { complexity: 'basic', estimatedTime: 2 },
   'iga-rosacea': { complexity: 'basic', estimatedTime: 2 },
 
   // Intermediate tools (moderate inputs, some calculations)
@@ -22,8 +22,7 @@ export const toolComplexityMap: Record<string, ToolComplexityData> = {
   scorad: { complexity: 'intermediate', estimatedTime: 7 },
   easi: { complexity: 'intermediate', estimatedTime: 5 },
   cdlqi: { complexity: 'intermediate', estimatedTime: 4 },
-  'skindex-29': { complexity: 'intermediate', estimatedTime: 5 },
-  bsa: { complexity: 'intermediate', estimatedTime: 3 },
+  skindex29: { complexity: 'intermediate', estimatedTime: 5 },
   'hurley-staging-hs': { complexity: 'intermediate', estimatedTime: 3 },
 
   // Advanced tools (many inputs, complex calculations)

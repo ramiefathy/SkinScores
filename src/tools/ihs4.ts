@@ -22,13 +22,13 @@ export const ihs4Tool: Tool = {
   sourceType: 'Clinical Guideline',
   icon: SquarePen,
   rationale:
-    'The IHS4 was developed to provide a dynamic, quantitative, and reproducible measure of HS severity suitable for both clinical practice and research. Its rationale was to address the limitations of static, non-quantitative systems such as Hurley staging by focusing on the most clinically relevant lesion types—nodules, abscesses, and draining tunnels—thereby enabling sensitive tracking of disease activity and response to therapy over time. The IHS4 was established through a Delphi consensus process among members of the European Hidradenitis Suppurativa Foundation, followed by multicenter validation. The IHS4 is calculated as: (number of nodules) × 1 + (number of abscesses) × 2 + (number of draining tunnels) × 4. Severity is categorized as mild (IHS4 ≤ 3), moderate (IHS4 4–10), or severe (IHS4 ≥ 11). There are no formal subscores; the total is a weighted sum reflecting the relative clinical impact of each lesion type.',
+    'The IHS4 was developed to provide a dynamic, quantitative, and reproducible measure of HS severity suitable for both clinical practice and research.\n\n**Formula: IHS4 = (1 × N) + (2 × A) + (4 × DT)**\nWhere: N = Nodules (inflammatory), A = Abscesses, DT = Draining Tunnels/Fistulas\n\n**Lesion Definitions:**\n- **Nodules:** Deep-seated painful inflammatory nodules ("blind boils"), persist 7-15 days\n- **Abscesses:** Rounded purulent collections that may discharge\n- **Draining Tunnels:** Epithelialized sinus tracts/fistulas, whether actively draining or not\n\n**Severity Bands:** ≤ 3 = Mild HS, 4-10 = Moderate HS, ≥ 11 = Severe HS\n\n**IHS4 vs HiSCR:**\n- **IHS4:** Severity score (continuous 0-∞), includes draining tunnels (4× weight), for any patient\n- **HiSCR:** Binary response (yes/no), ≥50% reduction in AN count, requires baseline AN ≥ 3',
   clinicalPerformance:
     'The IHS4 has demonstrated good convergent validity with other severity measures, including Hurley staging, expert opinion, HS-PGA, and the modified Sartorius score, with Spearman’s rho values exceeding 0.6 for most comparisons. Its correlation with patient-reported quality of life, as measured by the Dermatology Life Quality Index (DLQI), is moderate (ρ = 0.36), reflecting the multifaceted impact of HS. The IHS4 has high intrarater reliability (intraclass correlation coefficient [ICC] > 0.75) and moderate interrater reliability, particularly among less experienced raters. However, interrater agreement can be limited by challenges in lesion identification and counting, especially in severe or confluent disease. The IHS4 is sensitive to change and has been validated as a dynamic measure of disease activity in both clinical trials and real-world practice. Recent studies have highlighted the potential for artificial intelligence–based automation (AIHS4) to further improve reproducibility and efficiency in lesion detection and scoring, with performance comparable to expert clinicians.',
   formSections: [
     {
       id: 'nodules',
-      label: 'Number of Inflammatory Nodules (N) (x1 point each)',
+      label: 'Number of Inflammatory Nodules (N) - Deep painful "blind boils" (x1 point each)',
       type: 'number',
       min: 0,
       defaultValue: 0,
@@ -36,7 +36,7 @@ export const ihs4Tool: Tool = {
     },
     {
       id: 'abscesses',
-      label: 'Number of Abscesses (A) (x2 points each)',
+      label: 'Number of Abscesses (A) - Rounded purulent lesions (x2 points each)',
       type: 'number',
       min: 0,
       defaultValue: 0,
@@ -44,7 +44,7 @@ export const ihs4Tool: Tool = {
     },
     {
       id: 'drainingTunnels',
-      label: 'Number of Draining Tunnels/Fistulas (DT) (x4 points each)',
+      label: 'Number of Draining Tunnels/Fistulas (DT) - Sinus tracts, draining or not (x4 points each)',
       type: 'number',
       min: 0,
       defaultValue: 0,
@@ -62,9 +62,16 @@ export const ihs4Tool: Tool = {
     else if (totalScore <= 10) severity = 'Moderate HS';
     else severity = 'Severe HS';
 
-    const interpretation = `IHS4 Score: ${totalScore}. Severity: ${severity} HS.
-Formula: (Nodules × 1) + (Abscesses × 2) + (Draining Tunnels × 4).
-Severity bands: ≤3 Mild; 4–10 Moderate; ≥11 Severe.`;
+    const interpretation = `IHS4 Score: ${totalScore}. Severity: ${severity}.
+Formula: (1 × N) + (2 × A) + (4 × DT).
+Severity bands: ≤3 Mild; 4–10 Moderate; ≥11 Severe.
+
+Example: Patient with 2 nodules, 1 abscess, 3 draining tunnels:
+IHS4 = (2×1) + (1×2) + (3×4) = 2 + 2 + 12 = 16 (Severe HS)
+
+**When to use IHS4 vs HiSCR:**
+Use IHS4 for: Severity assessment at any time, disease monitoring, mild disease, extensive tunneling.
+Use HiSCR for: Treatment response in trials, binary outcome needed, baseline AN ≥3.`;
     return {
       score: totalScore,
       interpretation,

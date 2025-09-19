@@ -16,6 +16,10 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     import(/* webpackChunkName: "tool-acne-qol" */ './acneQol').then((m) => ({
       default: m.acneQolTool,
     })),
+  aect: () =>
+    import(/* webpackChunkName: "tool-aect" */ './aect').then((m) => ({ default: m.aectTool })),
+  alden: () =>
+    import(/* webpackChunkName: "tool-alden" */ './alden').then((m) => ({ default: m.aldenTool })),
   alt70: () =>
     import(/* webpackChunkName: "tool-alt70" */ './alt70').then((m) => ({ default: m.alt70Tool })),
   behcet_criteria: () =>
@@ -62,6 +66,8 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     import(/* webpackChunkName: "tool-dasi" */ './dasi').then((m) => ({ default: m.dasiTool })),
   dlqi: () =>
     import(/* webpackChunkName: "tool-dlqi" */ './dlqi').then((m) => ({ default: m.dlqiTool })),
+  ebdasi: () =>
+    import(/* webpackChunkName: "tool-ebdasi" */ './ebdasi').then((m) => ({ default: m.ebdasiTool })),
   dssi: () =>
     import(/* webpackChunkName: "tool-dssi" */ './dssi').then((m) => ({ default: m.dssiTool })),
   easi: () =>
@@ -69,6 +75,10 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
   essdai_cutaneous: () =>
     import(/* webpackChunkName: "tool-essdai-cutaneous" */ './essdaiCutaneous').then((m) => ({
       default: m.essdaiCutaneousTool,
+    })),
+  ferriman_gallwey: () =>
+    import(/* webpackChunkName: "tool-ferriman-gallwey" */ './ferrimanGallwey').then((m) => ({
+      default: m.ferrimanGallweyTool,
     })),
   fitzpatrick_skin_type: () =>
     import(/* webpackChunkName: "tool-fitzpatrick-skin-type" */ './fitzpatrickSkinType').then(
@@ -80,6 +90,8 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     })),
   gags: () =>
     import(/* webpackChunkName: "tool-gags" */ './gags').then((m) => ({ default: m.gagsTool })),
+  hdss: () =>
+    import(/* webpackChunkName: "tool-hdss" */ './hdss').then((m) => ({ default: m.hdssTool })),
   hecsi: () =>
     import(/* webpackChunkName: "tool-hecsi" */ './hecsi').then((m) => ({ default: m.hecsiTool })),
   hiscr: () =>
@@ -142,6 +154,8 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     import(/* webpackChunkName: "tool-nrs-pruritus" */ './nrsPruritus').then((m) => ({
       default: m.nrsPruritusTool,
     })),
+  osi: () =>
+    import(/* webpackChunkName: "tool-osi" */ './osi').then((m) => ({ default: m.osiTool })),
   parkland_formula: () =>
     import(/* webpackChunkName: "tool-parkland-formula" */ './parklandFormula').then((m) => ({
       default: m.parklandFormulaTool,
@@ -160,6 +174,8 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     })),
   poem: () =>
     import(/* webpackChunkName: "tool-poem" */ './poem').then((m) => ({ default: m.poemTool })),
+  posas: () =>
+    import(/* webpackChunkName: "tool-posas" */ './posas').then((m) => ({ default: m.posasTool })),
   // prism: () => import(/* webpackChunkName: "tool-prism" */ './prism').then(m => ({ default: m.prismTool })),
   // pruritus_nrs: () => import(/* webpackChunkName: "tool-pruritus-nrs" */ './pruritusNrs').then(m => ({ default: m.pruritusNrsTool })),
   // psocovid: () => import(/* webpackChunkName: "tool-psocovid" */ './psocovid').then(m => ({ default: m.psocovidTool })),
@@ -203,6 +219,8 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     })),
   pg_su: () =>
     import(/* webpackChunkName: "tool-pg-su" */ './pgSu').then((m) => ({ default: m.pgSuTool })),
+  regiscar: () =>
+    import(/* webpackChunkName: "tool-regiscar" */ './regiscar').then((m) => ({ default: m.regiscarTool })),
   salt: () =>
     import(/* webpackChunkName: "tool-salt" */ './salt').then((m) => ({ default: m.saltTool })),
   sasi: () =>
