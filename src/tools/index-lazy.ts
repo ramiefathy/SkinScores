@@ -18,6 +18,7 @@ export { toolMetadata as toolData } from './tool-metadata';
 // List of all available tool IDs for reference
 export const AVAILABLE_TOOLS = [
   'aas',
+  'aas28',
   'abcdeMelanoma',
   'absis',
   'acneQol',
@@ -60,6 +61,7 @@ export const AVAILABLE_TOOLS = [
   'leedsRevised',
   'loscat',
   'masiMmasi',
+  'mdaPsa',
   'melasqol',
   'mfgScore',
   'mrss',

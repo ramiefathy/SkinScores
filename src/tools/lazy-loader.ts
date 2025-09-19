@@ -6,6 +6,8 @@ import { wrapToolCalculation } from './calculation-wrapper';
 export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
   aas: () =>
     import(/* webpackChunkName: "tool-aas" */ './aas').then((m) => ({ default: m.aasTool })),
+  aas28: () =>
+    import(/* webpackChunkName: "tool-aas28" */ './aas28').then((m) => ({ default: m.aas28Tool })),
   abcde_melanoma: () =>
     import(/* webpackChunkName: "tool-abcde-melanoma" */ './abcdeMelanoma').then((m) => ({
       default: m.abcdeMelanomaTool,
@@ -131,6 +133,10 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
   masi_mmasi: () =>
     import(/* webpackChunkName: "tool-masi-mmasi" */ './masiMmasi').then((m) => ({
       default: m.masiMmasiTool,
+    })),
+  mda_psa: () =>
+    import(/* webpackChunkName: "tool-mda-psa" */ './mdaPsa').then((m) => ({
+      default: m.mdaPsaTool,
     })),
   melasqol: () =>
     import(/* webpackChunkName: "tool-melasqol" */ './melasqol').then((m) => ({

@@ -24,6 +24,7 @@ const toolIdMap: Record<string, string> = {
   issVis: 'iss_vis',
   leedsRevised: 'leeds_revised',
   masiMmasi: 'masi_mmasi',
+  mdaPsa: 'mda_psa',
   mfgScore: 'mfg_score',
   mssHs: 'mss_hs',
   nappaClin: 'nappa_clin',

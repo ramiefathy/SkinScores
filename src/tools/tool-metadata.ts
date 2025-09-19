@@ -18,6 +18,12 @@ export const toolMetadata: ToolMetadata[] = [
     condition: 'Inflammatory Diseases',
   },
   {
+    id: 'aas28',
+    name: 'AAS28',
+    description: 'Angioedema Activity Score - 28 Day',
+    condition: 'Angioedema',
+  },
+  {
     id: 'abcdeMelanoma',
     name: 'ABCDE Melanoma',
     description: 'ABCDE criteria for melanoma detection',
@@ -265,6 +271,12 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'MASI/mMASI',
     description: 'Melasma Area and Severity Index',
     condition: 'Melasma',
+  },
+  {
+    id: 'mdaPsa',
+    name: 'MDA',
+    description: 'Minimal Disease Activity in Psoriatic Arthritis',
+    condition: 'Psoriatic Arthritis',
   },
   {
     id: 'melasqol',
