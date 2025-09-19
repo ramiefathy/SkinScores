@@ -120,6 +120,10 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     import(/* webpackChunkName: "tool-iss-vis" */ './issVis').then((m) => ({
       default: m.issVisTool,
     })),
+  leeds_revised: () =>
+    import(/* webpackChunkName: "tool-leeds-revised" */ './leedsRevised').then((m) => ({
+      default: m.leedsRevisedTool,
+    })),
   loscat: () =>
     import(/* webpackChunkName: "tool-loscat" */ './loscat').then((m) => ({
       default: m.loscatTool,
@@ -261,6 +265,10 @@ export const toolLoaders: Record<string, () => Promise<{ default: Tool }>> = {
     import(/* webpackChunkName: "tool-ut-wound-classification" */ './utWoundClassification').then(
       (m) => ({ default: m.utWoundClassificationTool }),
     ),
+  vancouver_scar: () =>
+    import(/* webpackChunkName: "tool-vancouver-scar" */ './vancouverScar').then((m) => ({
+      default: m.vancouverScarTool,
+    })),
   vas_pruritus: () =>
     import(/* webpackChunkName: "tool-vas-pruritus" */ './vasPruritus').then((m) => ({
       default: m.vasPruritusTool,

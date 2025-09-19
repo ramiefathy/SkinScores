@@ -241,6 +241,14 @@ export const toolMetadata: ToolMetadata[] = [
     condition: 'Dermatomyositis',
   },
   {
+    id: 'leedsRevised',
+    name: 'Leeds Revised',
+    acronym: 'LRAGS',
+    description: 'Leeds Revised Acne Grading System',
+    condition: 'Acne Vulgaris',
+    keywords: ['leeds', 'lrags', 'acne', 'photographic grading'],
+  },
+  {
     id: 'issVis',
     name: 'ISS-VIS',
     description: 'Itch Severity Scale - Visual',
@@ -461,6 +469,14 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'UT Wound',
     description: 'University of Texas Wound Classification',
     condition: 'Wounds',
+  },
+  {
+    id: 'vancouverScar',
+    name: 'VSS',
+    acronym: 'VSS',
+    description: 'Vancouver Scar Scale',
+    condition: 'Scar Assessment',
+    keywords: ['vancouver', 'vss', 'scar', 'burn scar', 'hypertrophic'],
   },
   { id: 'vasi', name: 'VASI', description: 'Vitiligo Area Scoring Index', condition: 'Vitiligo' },
   {
