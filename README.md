@@ -103,3 +103,4 @@ Firestore. Run `npm run test` to execute `firestore.rules.test.ts` against the e
 - [ ] Confirm Cloud Firestore indexes/rules are published
 - [ ] Smoke test the deployed environment (library, calculators, exports, analytics)
 # Trigger CI
+# Trigger rebuild with Firebase config

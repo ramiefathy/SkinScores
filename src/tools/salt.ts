@@ -62,12 +62,14 @@ export const saltTool: Tool = {
     const score = parseFloat(totalSaltScore.toFixed(1));
 
     let severityCategory = '';
-    if (score <= 20) severityCategory = 'S0/S1 - No or Limited Hair Loss (≤20%)';
-    else if (score <= 49) severityCategory = 'S2 - Moderate Hair Loss (21–49%)';
-    else if (score <= 94) severityCategory = 'S3 - Severe Hair Loss (50–94%)';
-    else severityCategory = 'S4 - Very Severe Hair Loss (95–100%)';
+    if (score === 0) severityCategory = 'S0 - No hair loss';
+    else if (score < 25) severityCategory = 'S1 - Limited hair loss (<25%)';
+    else if (score < 50) severityCategory = 'S2 - Moderate hair loss (25-49%)';
+    else if (score < 75) severityCategory = 'S3 - Severe hair loss (50-74%)';
+    else if (score < 100) severityCategory = 'S4 - Very severe hair loss (75-99%)';
+    else severityCategory = 'S5 - Complete hair loss (100%)';
 
-    const interpretation = `Total SALT Score: ${score} (Range: 0-100). Severity Category: ${severityCategory}.`;
+    const interpretation = `Total SALT Score: ${score} (Range: 0-100). Severity Category: ${severityCategory}.\nClinical note: SALT ≤20 is commonly used as a responder threshold in severe AA trials.`;
 
     return {
       score,

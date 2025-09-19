@@ -79,6 +79,10 @@ export const mswatTool: Tool = {
     'The modified Severity-Weighted Assessment Tool (mSWAT) is a validated, clinician-reported index for quantifying skin disease burden in mycosis fungoides and Sézary syndrome. The mSWAT divides the body into 12 regions (head, neck, anterior trunk, arms, forearms, hands, posterior trunk, buttocks, thighs, legs, feet, groin), each with a defined percentage of total body surface area (BSA). For each region, the percentage of BSA involved by patch, plaque, and tumor lesions is estimated separately. Each lesion type is assigned a weighting factor: patch ×1, plaque ×2, tumor ×4. The total mSWAT score is the sum of weighted scores for all lesion types and all regions.',
   sourceType: 'Clinical Guideline',
   icon: ShieldHalf,
+  rationale:
+    '**Formula: mSWAT = Σ (BSA × Weight)**\nWhere: Patch BSA × 1 + Plaque BSA × 2 + Tumor/Ulcer BSA × 4\n\n**Lesion Type Definitions:**\n- **Patch:** Flat, erythematous lesions (weight = 1)\n- **Plaque:** Elevated, infiltrated lesions >1cm (weight = 2)  \n- **Tumor/Ulcer:** Nodular lesions >1cm or ulcerated areas (weight = 4)\n\n**Body Regions (12 total):**\nHead (7%), Neck (2%), Anterior trunk (13%), Arms (8%), Forearms (6%), Hands (5%), Posterior trunk (13%), Buttocks (5%), Thighs (19%), Legs (14%), Feet (7%), Groin (1%)\n\n**Clinical Context:**\n- Developed for MF/SS by International Society for Cutaneous Lymphomas (ISCL)\n- Maximum theoretical score: 400 (100% BSA with tumors × 4)\n- Typical range in practice: 0-200\n- Response criteria: mSWAT-50 = ≥50% reduction from baseline\n\n**Example Calculation:**\nPatient with 10% patch on trunk, 5% plaque on arms, 2% tumor on leg:\nmSWAT = (10×1) + (5×2) + (2×4) = 10 + 10 + 8 = 28',
+  clinicalPerformance:
+    'The mSWAT demonstrates excellent inter-rater reliability (weighted κ = 0.82-0.89) and strong correlation with physician global assessment (r = 0.83), total skin score, and overall stage. It is more sensitive to change than simple BSA measurements and has been adopted as the standard outcome measure for MF/SS trials by ISCL/USCLC/EORTC consensus. The tool shows good responsiveness to treatment, with mSWAT-50 (≥50% reduction) established as a meaningful clinical response threshold. Studies report high concordance between experienced raters (ICC > 0.9) but lower agreement for patch vs plaque distinction among novice assessors. Training improves reliability significantly. The mSWAT correlates moderately with quality of life measures (Skindex-29, FACT-G) and strongly with other disease burden assessments. Limitations include subjectivity in lesion type classification and potential underestimation of erythrodermic involvement. Digital photography and standardized lighting improve reproducibility.',
   formSections: mswatFormSections,
   calculationLogic: (inputs) => {
     let totalPatchBSA = 0;
@@ -131,12 +135,13 @@ export const mswatTool: Tool = {
     const totalBSAInvolvedByLesions = totalPatchBSA + totalPlaqueBSA + totalTumorBSA;
 
     const interpretation =
-      `Total mSWAT Score: ${finalMSWATScore.toFixed(1)}. ` +
-      `Derived from: Total Patch BSA ${totalPatchBSA.toFixed(1)}% (x1) = ${weightedPatchScore.toFixed(1)}; ` +
-      `Total Plaque BSA ${totalPlaqueBSA.toFixed(1)}% (x2) = ${weightedPlaqueScore.toFixed(1)}; ` +
-      `Total Tumor/Ulcer BSA ${totalTumorBSA.toFixed(1)}% (x4) = ${weightedTumorScore.toFixed(1)}. ` +
-      `Total BSA involved by any lesion type: ${totalBSAInvolvedByLesions.toFixed(1)}%. ` +
-      `Higher score indicates greater skin tumor burden.`;
+      `Total mSWAT Score: ${finalMSWATScore.toFixed(1)} (Range: 0-400). ` +
+      `Breakdown: Patch BSA ${totalPatchBSA.toFixed(1)}% × 1 = ${weightedPatchScore.toFixed(1)}; ` +
+      `Plaque BSA ${totalPlaqueBSA.toFixed(1)}% × 2 = ${weightedPlaqueScore.toFixed(1)}; ` +
+      `Tumor/Ulcer BSA ${totalTumorBSA.toFixed(1)}% × 4 = ${weightedTumorScore.toFixed(1)}. ` +
+      `Total BSA involved: ${totalBSAInvolvedByLesions.toFixed(1)}%.\n\n` +
+      `**Response Criteria:** mSWAT-50 = ≥50% reduction from baseline (partial response in ISCL/EORTC criteria).\n` +
+      `**Clinical Context:** Higher scores indicate greater tumor burden and more advanced disease.`;
 
     return {
       score: parseFloat(finalMSWATScore.toFixed(1)),

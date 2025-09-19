@@ -29,9 +29,9 @@ export const scoradTool: Tool = {
   sourceType: 'Expert Consensus',
   icon: ScalingIcon,
   rationale:
-    "The SCORAD index was developed by the European Task Force on Atopic Dermatitis to provide a consensus method for assessing the severity of atopic dermatitis. It incorporates objective clinical signs (Extent - Part A; Intensity - Part B) and subjective patient symptoms (Part C). The formula is: SCORAD = A/5 + 7B/2 + C. An 'objective SCORAD' (oSCORAD) variant excludes subjective symptoms. The maximum possible score is 103.",
+    "The SCORAD index was developed by the European Task Force on Atopic Dermatitis to provide a consensus method for assessing the severity of atopic dermatitis. It incorporates objective clinical signs (Extent - Part A; Intensity - Part B) and subjective patient symptoms (Part C).\n\n**Formula: SCORAD = A/5 + 7B/2 + C**\nWhere: A = Extent (BSA 0-100%), B = Intensity (sum of 6 signs, each 0-3, total 0-18), C = Subjective symptoms (itch + sleep, each 0-10, total 0-20)\nMaximum score: 103 (A/5 max 20 + 7B/2 max 63 + C max 20)\n\nAn 'objective SCORAD' (oSCORAD) variant excludes subjective symptoms: oSCORAD = A/5 + 7B/2 (max 83).",
   clinicalPerformance:
-    'SCORAD is extensively validated. It shows strong correlation with other measures like POEM and IGA (kappa = 0.68) and good internal consistency. A version adapted for Black skin correlated well with physician-assessed SCORAD (r = 0.66). The minimal clinically important difference (MCID) is 8.7 points. Its inter-rater reliability is lower than EASI and SASSAD, particularly due to variability in the body surface area (BSA) component.',
+    'SCORAD is extensively validated. It shows strong correlation with other measures like POEM and IGA (kappa = 0.68) and good internal consistency. A version adapted for Black skin correlated well with physician-assessed SCORAD (r = 0.66). The minimal clinically important difference (MCID) is 8.7 points. Its inter-rater reliability is lower than EASI and SASSAD, particularly due to variability in the body surface area (BSA) component.\n\n**SCORAD vs EASI - When to Use Each:**\n- **Use SCORAD when:** Assessing patients with significant dry skin (xerosis) as EASI doesn’t capture this; subjective symptoms (itch, sleep) are clinically important; comprehensive assessment including patient-reported outcomes is needed; evaluating mild disease; better correlation with patient QoL measures is desired.\n- **Use EASI when:** Following HOME consensus recommendations for clinical trials; focusing purely on objective lesional severity; comparing treatment efficacy in research; training burden is a concern (EASI is simpler); consistency across international studies is required.\n- **Key difference:** SCORAD includes xerosis and subjective symptoms while EASI does not. Many experts recommend using both when feasible.',
   formSections: [
     {
       id: 'scorad_group_a',
@@ -156,7 +156,11 @@ export const scoradTool: Tool = {
 
     const interpretation = `SCORAD Score: ${score} (Range: 0-103). Severity: ${severityCategory}.
 Objective SCORAD (oSCORAD): ${objectiveScorad.toFixed(1)} (Range: 0-83).
-Formula: SCORAD = A/5 + (7*B)/2 + C.`;
+Formula: SCORAD = A/5 + (7*B)/2 + C.
+
+Example calculation: Patient with 40% BSA (A), intensity sum 11 (B), subjective 12 (C):
+SCORAD = 40/5 + 7(11)/2 + 12 = 8 + 38.5 + 12 = 58.5 (Severe AD)
+oSCORAD = 8 + 38.5 = 46.5`;
 
     return {
       score,

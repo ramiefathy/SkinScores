@@ -61,18 +61,16 @@ export const scortenTool: Tool = {
 
     const mortalityMap: Record<number, string> = {
       0: '3.2%',
-      1: '12.1%',
-      2: '35.3%',
-      3: '58.3%',
-      4: '58.3%+',
+      1: '3.2%',
+      2: '12.1%',
+      3: '35.3%',
+      4: '58.3%',
       5: '>90%',
       6: '>90%',
       7: '>90%',
     };
 
-    let mortalityPrediction = '>90%';
-    if (score <= 3) mortalityPrediction = mortalityMap[score];
-    else if (score === 4) mortalityPrediction = mortalityMap[4];
+    const mortalityPrediction = mortalityMap[score] || '>90%';
 
     const interpretation = `SCORTEN: ${score} (Range: 0-7). Predicted mortality risk (approximate): ${mortalityPrediction}. This score helps estimate prognosis in SJS/TEN.`;
     return { score, interpretation, details };

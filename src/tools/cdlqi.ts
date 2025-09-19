@@ -92,16 +92,18 @@ export const cdlqiTool: Tool = {
       score += numVal;
     }
     let interpretationText = '';
-    if (score <= 2) {
-      interpretationText = 'Small effect on quality of life';
-    } else if (score <= 8) {
-      interpretationText = 'Moderate effect on quality of life';
-    } else if (score <= 15) {
-      interpretationText = 'Very large effect on quality of life';
+    if (score <= 1) {
+      interpretationText = "No effect on child's life";
+    } else if (score <= 6) {
+      interpretationText = "Small effect on child's life";
+    } else if (score <= 12) {
+      interpretationText = "Moderate effect on child's life";
+    } else if (score <= 18) {
+      interpretationText = "Very large effect on child's life";
     } else {
-      interpretationText = 'Extremely large effect on quality of life';
+      interpretationText = "Extremely large effect on child's life";
     }
-    const interpretation = `CDLQI Score: ${score} (Range: 0-30). ${interpretationText}. Higher scores indicate greater impairment.`;
+    const interpretation = `CDLQI Score: ${score} (Range: 0-30). ${interpretationText}.\nSeverity Bands: 0-1 No effect; 2-6 Small effect; 7-12 Moderate effect; 13-18 Very large effect; 19-30 Extremely large effect.`;
     return { score, interpretation, details };
   },
   references: [

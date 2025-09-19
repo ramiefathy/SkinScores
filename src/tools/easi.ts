@@ -9,7 +9,7 @@ const areaOptionsEASI: InputOption[] = [
   { value: 3, label: '3 (30-49%)' },
   { value: 4, label: '4 (50-69%)' },
   { value: 5, label: '5 (70-89%)' },
-  { value: 6, label: '6 (90+%' },
+  { value: 6, label: '6 (90-100%)' },
 ];
 const severityOptionsEASI: InputOption[] = [
   { value: 0, label: '0-None' },
@@ -30,7 +30,7 @@ export const easiTool: Tool = {
   name: 'Eczema Area and Severity Index (EASI)',
   acronym: 'EASI',
   description:
-    'To quantify severity and extent of atopic dermatitis. It evaluates four body regions (head/neck, trunk, upper limbs, lower limbs) for erythema, induration/papulation, excoriation, and lichenification (each scored 0–3), and percentage of area involved (0–6). Each region is weighted by body surface area. The EASI is recommended by the American Academy of Allergy, Asthma, and Immunology and the American College of Allergy, Asthma and Immunology for atopic dermatitis severity assessment, and is extensively validated for both clinical trials and practice.',
+    'The EASI is the internationally recommended core instrument by the HOME (Harmonising Outcome Measures for Eczema) initiative for measuring clinical signs in all atopic dermatitis trials. It quantifies severity and extent of atopic dermatitis by evaluating four body regions (head/neck, trunk, upper limbs, lower limbs) for erythema, induration/papulation, excoriation, and lichenification (each scored 0–3), and percentage of area involved (0–6). Each region is weighted by body surface area. Regional weights: Adults/Children ≥8 years: H/N 0.1, UL 0.2, Trunk 0.3, LL 0.4; Children <8 years: H/N 0.2, UL 0.2, Trunk 0.3, LL 0.3 (reflects proportionally larger head size in younger children).',
   condition: 'Atopic Dermatitis / Eczema',
   keywords: ['easi', 'atopic dermatitis', 'ad', 'eczema', 'severity', 'area', 'HOME initiative'],
   sourceType: 'Clinical Guideline',
@@ -41,16 +41,16 @@ export const easiTool: Tool = {
       label: 'Age Group (determines regional weights)',
       type: 'select' as const,
       options: [
-        { value: 'adult', label: 'Adult/Child >7 years' },
-        { value: 'child', label: 'Child 0-7 years' },
+        { value: 'adult', label: 'Adult/Child ≥8 years' },
+        { value: 'child', label: 'Child <8 years' },
       ],
       defaultValue: 'adult',
       validation: getValidationSchema('select', [
-        { value: 'adult', label: 'Adult/Child >7 years' },
+        { value: 'adult', label: 'Adult/Child ≥8 years' },
       ]),
     },
     ...regionDataEASI.map((region) => {
-      const ageBasedWeight = `Adult Weight: ${region.adultWeight}, Child (0-7 yrs) Weight: ${region.childWeight}`;
+      const ageBasedWeight = `Adult Weight: ${region.adultWeight}, Child (<8 yrs) Weight: ${region.childWeight}`;
       return {
         id: `easi_group_${region.id}`,
         title: `${region.name} (${ageBasedWeight})`,
@@ -135,7 +135,10 @@ export const easiTool: Tool = {
     else severityInterpretationText = 'Very severe';
 
     const interpretation = `Total EASI Score: ${score} (Range: 0-72). Severity: ${severityInterpretationText} eczema.
-Interpretation Bands: 0 Clear; 0.1–1.0 Almost clear; 1.1–7.0 Mild; 7.1–21.0 Moderate; 21.1–50.0 Severe; 50.1–72.0 Very severe.`;
+Interpretation Bands: 0 Clear; 0.1–1.0 Almost clear; 1.1–7.0 Mild; 7.1–21.0 Moderate; 21.1–50.0 Severe; 50.1–72.0 Very severe.
+Responder Definitions (for clinical trials): EASI-50 ≥50% improvement from baseline; EASI-75 ≥75% improvement (common primary endpoint); EASI-90 ≥90% improvement.
+
+Example: Adult with moderate AD: H/N area 2 (10-29%), severity sum 4 → 0.8; UL area 3 (30-49%), severity sum 8 → 4.8; Trunk area 2 (10-29%), severity sum 3 → 1.8; LL area 4 (50-69%), severity sum 7 → 11.2. Total EASI = 18.6 (Moderate).`;
 
     return {
       score,

@@ -18,6 +18,12 @@ export const toolMetadata: ToolMetadata[] = [
     condition: 'Inflammatory Diseases',
   },
   {
+    id: 'aas28',
+    name: 'AAS28',
+    description: 'Angioedema Activity Score - 28 Day',
+    condition: 'Angioedema',
+  },
+  {
     id: 'abcdeMelanoma',
     name: 'ABCDE Melanoma',
     description: 'ABCDE criteria for melanoma detection',
@@ -34,6 +40,22 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'Acne-QoL',
     description: 'Acne Quality of Life',
     condition: 'Acne Vulgaris',
+  },
+  {
+    id: 'aect',
+    name: 'AECT',
+    acronym: 'AECT',
+    description: 'Angioedema Control Test',
+    condition: 'Recurrent Angioedema',
+    keywords: ['aect', 'angioedema', 'control test', 'hae', 'bradykinin'],
+  },
+  {
+    id: 'alden',
+    name: 'ALDEN',
+    acronym: 'ALDEN',
+    description: 'Algorithm of Drug Causality for Epidermal Necrolysis',
+    condition: 'Stevens-Johnson Syndrome / Toxic Epidermal Necrolysis',
+    keywords: ['alden', 'drug causality', 'sjs', 'ten', 'stevens-johnson syndrome', 'toxic epidermal necrolysis'],
   },
   {
     id: 'alt70',
@@ -132,12 +154,28 @@ export const toolMetadata: ToolMetadata[] = [
     condition: 'General Dermatology',
   },
   {
+    id: 'ebdasi',
+    name: 'EBDASI',
+    acronym: 'EBDASI',
+    description: 'Epidermolysis Bullosa Disease Activity and Scarring Index',
+    condition: 'Epidermolysis Bullosa',
+    keywords: ['ebdasi', 'epidermolysis bullosa', 'eb', 'blistering', 'disease activity', 'scarring index'],
+  },
+  {
     id: 'dssi',
     name: 'DSSI',
     description: 'Dermatology-Specific Symptom Intensity',
     condition: 'General Dermatology',
   },
   { id: 'easi', name: 'EASI', description: 'Eczema Area and Severity Index', condition: 'Eczema' },
+  {
+    id: 'ferrimanGallwey',
+    name: 'Ferriman-Gallwey Score',
+    acronym: 'mFG',
+    description: 'Modified Ferriman-Gallwey Score for hirsutism assessment',
+    condition: 'Hirsutism',
+    keywords: ['ferriman-gallwey', 'mfg', 'hirsutism', 'excess hair', 'hyperandrogenism', 'pcos'],
+  },
   {
     id: 'essdaiCutaneous',
     name: 'ESSDAI Cutaneous',
@@ -156,6 +194,14 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'GAGS',
     description: 'Global Acne Grading System',
     condition: 'Acne Vulgaris',
+  },
+  {
+    id: 'hdss',
+    name: 'HDSS',
+    acronym: 'HDSS',
+    description: 'Hyperhidrosis Disease Severity Scale',
+    condition: 'Hyperhidrosis',
+    keywords: ['hdss', 'hyperhidrosis', 'excessive sweating', 'severity scale'],
   },
   { id: 'hecsi', name: 'HECSI', description: 'Hand Eczema Severity Index', condition: 'Eczema' },
   {
@@ -201,6 +247,14 @@ export const toolMetadata: ToolMetadata[] = [
     condition: 'Dermatomyositis',
   },
   {
+    id: 'leedsRevised',
+    name: 'Leeds Revised',
+    acronym: 'LRAGS',
+    description: 'Leeds Revised Acne Grading System',
+    condition: 'Acne Vulgaris',
+    keywords: ['leeds', 'lrags', 'acne', 'photographic grading'],
+  },
+  {
     id: 'issVis',
     name: 'ISS-VIS',
     description: 'Itch Severity Scale - Visual',
@@ -217,6 +271,12 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'MASI/mMASI',
     description: 'Melasma Area and Severity Index',
     condition: 'Melasma',
+  },
+  {
+    id: 'mdaPsa',
+    name: 'MDA',
+    description: 'Minimal Disease Activity in Psoriatic Arthritis',
+    condition: 'Psoriatic Arthritis',
   },
   {
     id: 'melasqol',
@@ -255,6 +315,14 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'NAPSI',
     description: 'Nail Psoriasis Severity Index',
     condition: 'Psoriasis',
+  },
+  {
+    id: 'osi',
+    name: 'OSI',
+    acronym: 'OSI',
+    description: 'Onychomycosis Severity Index',
+    condition: 'Onychomycosis',
+    keywords: ['osi', 'onychomycosis', 'nail fungus', 'dermatophyte', 'tinea unguium'],
   },
   {
     id: 'nrsPruritus',
@@ -318,6 +386,14 @@ export const toolMetadata: ToolMetadata[] = [
   },
   { id: 'poem', name: 'POEM', description: 'Patient-Oriented Eczema Measure', condition: 'Eczema' },
   {
+    id: 'posas',
+    name: 'POSAS',
+    acronym: 'POSAS',
+    description: 'Patient and Observer Scar Assessment Scale v2.0',
+    condition: 'Scar Assessment',
+    keywords: ['posas', 'scar', 'scar assessment', 'burn scar', 'surgical scar', 'keloid'],
+  },
+  {
     id: 'pssi',
     name: 'PSSI',
     description: 'Psoriasis Scalp Severity Index',
@@ -328,6 +404,14 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'PUSH',
     description: 'Pressure Ulcer Scale for Healing',
     condition: 'Wounds',
+  },
+  {
+    id: 'regiscar',
+    name: 'RegiSCAR',
+    acronym: 'RegiSCAR',
+    description: 'RegiSCAR DRESS Validation Score',
+    condition: 'Drug Reaction with Eosinophilia and Systemic Symptoms (DRESS)',
+    keywords: ['regiscar', 'dress', 'drug reaction', 'eosinophilia', 'systemic symptoms', 'drug hypersensitivity'],
   },
   { id: 'salt', name: 'SALT', description: 'Severity of Alopecia Tool', condition: 'Alopecia' },
   {
@@ -397,6 +481,14 @@ export const toolMetadata: ToolMetadata[] = [
     name: 'UT Wound',
     description: 'University of Texas Wound Classification',
     condition: 'Wounds',
+  },
+  {
+    id: 'vancouverScar',
+    name: 'VSS',
+    acronym: 'VSS',
+    description: 'Vancouver Scar Scale',
+    condition: 'Scar Assessment',
+    keywords: ['vancouver', 'vss', 'scar', 'burn scar', 'hypertrophic'],
   },
   { id: 'vasi', name: 'VASI', description: 'Vitiligo Area Scoring Index', condition: 'Vitiligo' },
   {
