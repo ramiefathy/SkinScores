@@ -7,6 +7,11 @@ on:
       - main
       - master
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   preview-deploy:
     runs-on: ubuntu-latest
