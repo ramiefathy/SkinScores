@@ -262,8 +262,8 @@ test.describe('Error Handling and Edge Cases Testing', () => {
     // Test with JavaScript disabled (if possible)
     await page.context().addInitScript(() => {
       // Simulate older browser by removing modern features
-      delete (window as any).fetch;
-      delete (window as any).Promise;
+      delete (window as unknown as { fetch?: unknown }).fetch;
+      delete (window as unknown as { Promise?: unknown }).Promise;
     });
 
     await page.goto('/');

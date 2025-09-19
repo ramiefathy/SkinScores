@@ -144,6 +144,11 @@ test.describe('Calculator Tools Testing', () => {
         '.error, [role="alert"], .validation-error, text=/invalid|error/i',
       );
 
+      // Check if validation messages are displayed
+      if (await validationMessages.first().isVisible()) {
+        console.log('Validation messages displayed correctly');
+      }
+
       // Take screenshot of validation state
       await page.screenshot({
         path: 'test-results/screenshots/validation-error.png',

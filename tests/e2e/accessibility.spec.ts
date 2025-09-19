@@ -249,7 +249,6 @@ test.describe('Accessibility Testing', () => {
         if (focusableCount > 0) {
           // Test tab navigation within modal
           await page.keyboard.press('Tab');
-          const focusedElement = page.locator(':focus');
 
           // Focused element should be within modal
           const isWithinModal = (await modal.locator(':focus').count()) > 0;

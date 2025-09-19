@@ -92,11 +92,18 @@ test.describe('Performance Analysis Testing', () => {
 
     // Get initial memory
     const initialMemory = await page.evaluate(() => {
-      return (performance as any).memory
+      const perf = performance as unknown as {
+        memory?: {
+          usedJSHeapSize: number;
+          totalJSHeapSize: number;
+          jsHeapSizeLimit: number;
+        };
+      };
+      return perf.memory
         ? {
-            usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-            totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-            jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit,
+            usedJSHeapSize: perf.memory.usedJSHeapSize,
+            totalJSHeapSize: perf.memory.totalJSHeapSize,
+            jsHeapSizeLimit: perf.memory.jsHeapSizeLimit,
           }
         : null;
     });
@@ -116,11 +123,18 @@ test.describe('Performance Analysis Testing', () => {
 
     // Get final memory
     const finalMemory = await page.evaluate(() => {
-      return (performance as any).memory
+      const perf = performance as unknown as {
+        memory?: {
+          usedJSHeapSize: number;
+          totalJSHeapSize: number;
+          jsHeapSizeLimit: number;
+        };
+      };
+      return perf.memory
         ? {
-            usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
-            totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-            jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit,
+            usedJSHeapSize: perf.memory.usedJSHeapSize,
+            totalJSHeapSize: perf.memory.totalJSHeapSize,
+            jsHeapSizeLimit: perf.memory.jsHeapSizeLimit,
           }
         : null;
     });
