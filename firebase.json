@@ -1,7 +1,4 @@
 {
-  "projects": {
-    "default": "skinscore-afw5a"
-  },
   "hosting": {
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
