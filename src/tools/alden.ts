@@ -2,91 +2,103 @@ import type { Tool, InputConfig, InputOption, FormSectionConfig } from './types'
 import { AlertTriangle } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
 
+const timeDelayOptions: InputOption[] = [
+  { value: -3, label: 'Index day (same day): -3 points' },
+  { value: 1, label: '1-4 days: +1 point' },
+  { value: 3, label: '5-28 days: +3 points' },
+  { value: 2, label: '29-56 days: +2 points' },
+  { value: -1, label: '>56 days: -1 point' },
+  { value: 3, label: 'Rechallenge 1-4 days: +3 points' },
+  { value: 1, label: 'Rechallenge 5-56 days: +1 point' },
+];
+
+const drugPresentOptions: InputOption[] = [
+  { value: 0, label: 'Drug eliminated: 0 points' },
+  { value: 1, label: 'Drug possibly present: +1 point' },
+  { value: 2, label: 'Drug definitely present: +2 points' },
+];
+
+const prechallengeOptions: InputOption[] = [
+  { value: -2, label: 'Previous tolerance to same drug: -2 points' },
+  { value: -1, label: 'Previous reaction uncertain: -1 point' },
+  { value: 0, label: 'No known previous exposure: 0 points' },
+  { value: 1, label: 'Previous reaction to same drug: +1 point' },
+  { value: 2, label: 'Positive rechallenge (same reaction): +2 points' },
+];
+
+const dechallengeOptions: InputOption[] = [
+  { value: -2, label: 'Drug continued, no progression: -2 points' },
+  { value: 0, label: 'Drug stopped, uncertain timing: 0 points' },
+  { value: 2, label: 'Drug stopped appropriately: +2 points' },
+];
+
+const drugNotorietyOptions: InputOption[] = [
+  { value: 3, label: 'Strongly associated (high-risk): +3 points' },
+  { value: 2, label: 'Associated (definite risk): +2 points' },
+  { value: 1, label: 'Possible association: +1 point' },
+  { value: 0, label: 'Unknown association: 0 points' },
+  { value: -1, label: 'Drug not known to cause SJS/TEN: -1 point' },
+];
+
+const otherCausesOptions: InputOption[] = [
+  { value: -1, label: 'Other cause highly probable: -1 point' },
+  { value: 0, label: 'Other cause possible: 0 points' },
+  { value: 1, label: 'Other causes excluded: +1 point' },
+];
+
 const aldenFormSections: FormSectionConfig[] = [
   {
     id: 'time_delay',
     label: '1. Time Delay from Initial Drug Intake to Onset',
     type: 'select',
-    options: [
-      { value: -3, label: 'Index day (same day): -3 points' },
-      { value: 1, label: '1-4 days: +1 point' },
-      { value: 3, label: '5-28 days: +3 points' },
-      { value: 2, label: '29-56 days: +2 points' },
-      { value: -1, label: '>56 days: -1 point' },
-      { value: 3, label: 'Rechallenge 1-4 days: +3 points' },
-      { value: 1, label: 'Rechallenge 5-56 days: +1 point' },
-    ],
+    options: timeDelayOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', timeDelayOptions),
     description: 'Select the time interval from drug initiation to symptom onset. For rechallenge, use the rechallenge-specific options.',
   } as InputConfig,
   {
     id: 'drug_present',
     label: '2. Drug Present in Body (Based on Half-life)',
     type: 'select',
-    options: [
-      { value: 0, label: 'Drug eliminated: 0 points' },
-      { value: 1, label: 'Drug possibly present: +1 point' },
-      { value: 2, label: 'Drug definitely present: +2 points' },
-    ],
+    options: drugPresentOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', drugPresentOptions),
     description: 'Assess drug presence on index day based on half-life, kidney/liver function, and pharmacokinetics.',
   } as InputConfig,
   {
     id: 'prechallenge',
     label: '3. Prechallenge/Rechallenge',
     type: 'select',
-    options: [
-      { value: -2, label: 'Previous tolerance to same drug: -2 points' },
-      { value: -1, label: 'Previous reaction uncertain: -1 point' },
-      { value: 0, label: 'No known previous exposure: 0 points' },
-      { value: 1, label: 'Previous reaction to same drug: +1 point' },
-      { value: 2, label: 'Positive rechallenge (same reaction): +2 points' },
-    ],
+    options: prechallengeOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', prechallengeOptions),
     description: 'Previous exposure history to the same drug.',
   } as InputConfig,
   {
     id: 'dechallenge',
     label: '4. Dechallenge',
     type: 'select',
-    options: [
-      { value: -2, label: 'Drug continued, no progression: -2 points' },
-      { value: 0, label: 'Drug stopped, uncertain timing: 0 points' },
-      { value: 2, label: 'Drug stopped appropriately: +2 points' },
-    ],
+    options: dechallengeOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', dechallengeOptions),
     description: 'Whether drug was stopped and timing relative to symptom progression.',
   } as InputConfig,
   {
     id: 'drug_notoriety',
     label: '5. Drug Notoriety (Based on EuroSCAR Data)',
     type: 'select',
-    options: [
-      { value: 3, label: 'Strongly associated (high-risk): +3 points' },
-      { value: 2, label: 'Associated (definite risk): +2 points' },
-      { value: 1, label: 'Possible association: +1 point' },
-      { value: 0, label: 'Unknown association: 0 points' },
-      { value: -1, label: 'Drug not known to cause SJS/TEN: -1 point' },
-    ],
+    options: drugNotorietyOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', drugNotorietyOptions),
     description: 'Drug association with SJS/TEN from epidemiological studies. High-risk drugs include allopurinol, carbamazepine, phenytoin, lamotrigine, sulfamethoxazole, nevirapine.',
   } as InputConfig,
   {
     id: 'other_causes',
     label: '6. Other Etiologic Causes',
     type: 'select',
-    options: [
-      { value: -1, label: 'Other cause highly probable: -1 point' },
-      { value: 0, label: 'Other cause possible: 0 points' },
-      { value: 1, label: 'Other causes excluded: +1 point' },
-    ],
+    options: otherCausesOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', otherCausesOptions),
     description: 'Assessment of alternative explanations (infections, other drugs, underlying conditions).',
   } as InputConfig,
 ];

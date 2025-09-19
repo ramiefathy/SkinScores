@@ -1,6 +1,41 @@
-import type { Tool, InputConfig, FormSectionConfig } from './types';
+import type { Tool, InputConfig, FormSectionConfig, InputOption } from './types';
 import { Calendar } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+
+const activityOptions: InputOption[] = [
+  { value: 0, label: '0 - None' },
+  { value: 1, label: '1 - Mild (present but not bothersome)' },
+  { value: 2, label: '2 - Moderate (bothersome but not disabling)' },
+  { value: 3, label: '3 - Severe (disabling, unable to perform activities)' },
+];
+
+const performanceOptions: InputOption[] = [
+  { value: 0, label: '0 - None' },
+  { value: 1, label: '1 - Mild impairment' },
+  { value: 2, label: '2 - Moderate impairment' },
+  { value: 3, label: '3 - Severe impairment' },
+];
+
+const discomfortOptions: InputOption[] = [
+  { value: 0, label: '0 - None' },
+  { value: 1, label: '1 - Mild' },
+  { value: 2, label: '2 - Moderate' },
+  { value: 3, label: '3 - Severe' },
+];
+
+const disfigurementOptions: InputOption[] = [
+  { value: 0, label: '0 - None' },
+  { value: 1, label: '1 - Mild (only self-noticed)' },
+  { value: 2, label: '2 - Moderate (noticed by others)' },
+  { value: 3, label: '3 - Severe (very obvious to others)' },
+];
+
+const durationOptions: InputOption[] = [
+  { value: 0, label: '0 - No swelling' },
+  { value: 1, label: '1 - <6 hours' },
+  { value: 2, label: '2 - 6-24 hours' },
+  { value: 3, label: '3 - >24 hours' },
+];
 
 // Generate form sections for 28 days of daily assessments
 const generateDailyFormSections = (): FormSectionConfig[] => {
@@ -22,14 +57,9 @@ const generateDailyFormSections = (): FormSectionConfig[] => {
       id: `${dayPrefix}_activity`,
       label: `Day ${day}: Interference with Daily Activities`,
       type: 'select',
-      options: [
-        { value: 0, label: '0 - None' },
-        { value: 1, label: '1 - Mild (present but not bothersome)' },
-        { value: 2, label: '2 - Moderate (bothersome but not disabling)' },
-        { value: 3, label: '3 - Severe (disabling, unable to perform activities)' },
-      ],
+      options: activityOptions,
       defaultValue: 0,
-      validation: getValidationSchema('select'),
+      validation: getValidationSchema('select', activityOptions),
       description: day === 1 ? 'How much did angioedema interfere with daily activities?' : undefined,
     } as InputConfig);
 
@@ -37,14 +67,9 @@ const generateDailyFormSections = (): FormSectionConfig[] => {
       id: `${dayPrefix}_performance`,
       label: `Day ${day}: Physical Performance`,
       type: 'select',
-      options: [
-        { value: 0, label: '0 - None' },
-        { value: 1, label: '1 - Mild impairment' },
-        { value: 2, label: '2 - Moderate impairment' },
-        { value: 3, label: '3 - Severe impairment' },
-      ],
+      options: performanceOptions,
       defaultValue: 0,
-      validation: getValidationSchema('select'),
+      validation: getValidationSchema('select', performanceOptions),
       description: day === 1 ? 'Impact on physical tasks (walking, gripping, swallowing)' : undefined,
     } as InputConfig);
 
@@ -52,14 +77,9 @@ const generateDailyFormSections = (): FormSectionConfig[] => {
       id: `${dayPrefix}_discomfort`,
       label: `Day ${day}: Discomfort/Pain`,
       type: 'select',
-      options: [
-        { value: 0, label: '0 - None' },
-        { value: 1, label: '1 - Mild' },
-        { value: 2, label: '2 - Moderate' },
-        { value: 3, label: '3 - Severe' },
-      ],
+      options: discomfortOptions,
       defaultValue: 0,
-      validation: getValidationSchema('select'),
+      validation: getValidationSchema('select', discomfortOptions),
       description: day === 1 ? 'Severity of discomfort or pain from swelling' : undefined,
     } as InputConfig);
 
@@ -67,14 +87,9 @@ const generateDailyFormSections = (): FormSectionConfig[] => {
       id: `${dayPrefix}_disfigurement`,
       label: `Day ${day}: Disfigurement`,
       type: 'select',
-      options: [
-        { value: 0, label: '0 - None' },
-        { value: 1, label: '1 - Mild (only self-noticed)' },
-        { value: 2, label: '2 - Moderate (noticed by others)' },
-        { value: 3, label: '3 - Severe (very obvious to others)' },
-      ],
+      options: disfigurementOptions,
       defaultValue: 0,
-      validation: getValidationSchema('select'),
+      validation: getValidationSchema('select', disfigurementOptions),
       description: day === 1 ? 'Visibility of swelling to others' : undefined,
     } as InputConfig);
 
@@ -82,14 +97,9 @@ const generateDailyFormSections = (): FormSectionConfig[] => {
       id: `${dayPrefix}_duration`,
       label: `Day ${day}: Duration`,
       type: 'select',
-      options: [
-        { value: 0, label: '0 - No swelling' },
-        { value: 1, label: '1 - <6 hours' },
-        { value: 2, label: '2 - 6-24 hours' },
-        { value: 3, label: '3 - >24 hours' },
-      ],
+      options: durationOptions,
       defaultValue: 0,
-      validation: getValidationSchema('select'),
+      validation: getValidationSchema('select', durationOptions),
       description: day === 1 ? 'Duration of angioedema episode' : undefined,
     } as InputConfig);
   }

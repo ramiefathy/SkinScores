@@ -1,37 +1,41 @@
-import type { Tool, InputConfig, FormSectionConfig } from './types';
+import type { Tool, InputConfig, FormSectionConfig, InputOption } from './types';
 import { FileSearch } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+
+const areaInvolvementOptions: InputOption[] = [
+  { value: 0, label: '0 - No involvement (0%)' },
+  { value: 1, label: '1 - Minimal involvement (1-10%)' },
+  { value: 2, label: '2 - Mild involvement (11-25%)' },
+  { value: 3, label: '3 - Moderate involvement (26-50%)' },
+  { value: 4, label: '4 - Significant involvement (51-75%)' },
+  { value: 5, label: '5 - Extensive involvement (>75%)' },
+];
+
+const proximityMatrixOptions: InputOption[] = [
+  { value: 1, label: '1 - Distal involvement only (>2/3 from matrix)' },
+  { value: 2, label: '2 - Distal to mid-nail (1/2 to 2/3 from matrix)' },
+  { value: 3, label: '3 - Mid-nail involvement (1/3 to 1/2 from matrix)' },
+  { value: 4, label: '4 - Proximal involvement (1/4 to 1/3 from matrix)' },
+  { value: 5, label: '5 - Very close to matrix (<1/4 from matrix)' },
+];
 
 const osiFormSections: FormSectionConfig[] = [
   {
     id: 'area_involvement',
     label: 'Area of Nail Plate Involvement',
     type: 'select',
-    options: [
-      { value: 0, label: '0 - No involvement (0%)' },
-      { value: 1, label: '1 - Minimal involvement (1-10%)' },
-      { value: 2, label: '2 - Mild involvement (11-25%)' },
-      { value: 3, label: '3 - Moderate involvement (26-50%)' },
-      { value: 4, label: '4 - Significant involvement (51-75%)' },
-      { value: 5, label: '5 - Extensive involvement (>75%)' },
-    ],
+    options: areaInvolvementOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', areaInvolvementOptions),
     description: 'Percentage of nail plate affected by onychomycosis.',
   } as InputConfig,
   {
     id: 'proximity_matrix',
     label: 'Proximity to Nail Matrix',
     type: 'select',
-    options: [
-      { value: 1, label: '1 - Distal involvement only (>2/3 from matrix)' },
-      { value: 2, label: '2 - Distal to mid-nail (1/2 to 2/3 from matrix)' },
-      { value: 3, label: '3 - Mid-nail involvement (1/3 to 1/2 from matrix)' },
-      { value: 4, label: '4 - Proximal involvement (1/4 to 1/3 from matrix)' },
-      { value: 5, label: '5 - Very close to matrix (<1/4 from matrix)' },
-    ],
+    options: proximityMatrixOptions,
     defaultValue: 1,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', proximityMatrixOptions),
     description: 'How close the infection extends toward the proximal nail fold/matrix.',
   } as InputConfig,
   {

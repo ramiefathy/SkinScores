@@ -1,31 +1,33 @@
-import type { Tool, InputConfig, FormSectionConfig } from './types';
+import type { Tool, InputConfig, FormSectionConfig, InputOption } from './types';
 import { Droplets } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+
+const hdssSeverityOptions: InputOption[] = [
+  {
+    value: 1,
+    label: '1 - My sweating is never noticeable and never interferes with my daily activities'
+  },
+  {
+    value: 2,
+    label: '2 - My sweating is tolerable but sometimes interferes with my daily activities'
+  },
+  {
+    value: 3,
+    label: '3 - My sweating is barely tolerable and frequently interferes with my daily activities'
+  },
+  {
+    value: 4,
+    label: '4 - My sweating is intolerable and always interferes with my daily activities'
+  },
+];
 
 const hdssFormSection: FormSectionConfig = {
   id: 'hdss_severity',
   label: 'How would you rate the severity of your hyperhidrosis?',
   type: 'select',
-  options: [
-    {
-      value: 1,
-      label: '1 - My sweating is never noticeable and never interferes with my daily activities'
-    },
-    {
-      value: 2,
-      label: '2 - My sweating is tolerable but sometimes interferes with my daily activities'
-    },
-    {
-      value: 3,
-      label: '3 - My sweating is barely tolerable and frequently interferes with my daily activities'
-    },
-    {
-      value: 4,
-      label: '4 - My sweating is intolerable and always interferes with my daily activities'
-    },
-  ],
+  options: hdssSeverityOptions,
   defaultValue: 2,
-  validation: getValidationSchema('select'),
+  validation: getValidationSchema('select', hdssSeverityOptions),
   description: 'Single-item assessment of hyperhidrosis severity based on functional impact on daily activities.',
 } as InputConfig;
 

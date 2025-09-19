@@ -10,20 +10,38 @@ const aectResponseOptions: InputOption[] = [
   { value: 4, label: 'Very much/Completely' },
 ];
 
+const frequencyOptions: InputOption[] = [
+  { value: 4, label: 'Never' },
+  { value: 3, label: 'Rarely' },
+  { value: 2, label: 'Sometimes' },
+  { value: 1, label: 'Often' },
+  { value: 0, label: 'Very often' },
+];
+
+const unpredictabilityOptions: InputOption[] = [
+  { value: 4, label: 'Not unpredictable at all' },
+  { value: 3, label: 'A little unpredictable' },
+  { value: 2, label: 'Somewhat unpredictable' },
+  { value: 1, label: 'Very unpredictable' },
+  { value: 0, label: 'Extremely unpredictable' },
+];
+
+const controlOptions: InputOption[] = [
+  { value: 0, label: 'Not controlled at all' },
+  { value: 1, label: 'Poorly controlled' },
+  { value: 2, label: 'Somewhat controlled' },
+  { value: 3, label: 'Well controlled' },
+  { value: 4, label: 'Completely controlled' },
+];
+
 const aectFormSections: FormSectionConfig[] = [
   {
     id: 'aect_q1',
     label: 'Q1: Over the past 4 weeks, how often have you had angioedema attacks?',
     type: 'select',
-    options: [
-      { value: 4, label: 'Never' },
-      { value: 3, label: 'Rarely' },
-      { value: 2, label: 'Sometimes' },
-      { value: 1, label: 'Often' },
-      { value: 0, label: 'Very often' },
-    ],
+    options: frequencyOptions,
     defaultValue: 2,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', frequencyOptions),
     description: 'Frequency of angioedema episodes in the past 4 weeks.',
   } as InputConfig,
   {
@@ -32,37 +50,25 @@ const aectFormSections: FormSectionConfig[] = [
     type: 'select',
     options: aectResponseOptions,
     defaultValue: 2,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', aectResponseOptions),
     description: 'Impact on daily activities and overall quality of life.',
   } as InputConfig,
   {
     id: 'aect_q3',
     label: 'Q3: Over the past 4 weeks, how unpredictable have your angioedema attacks been?',
     type: 'select',
-    options: [
-      { value: 4, label: 'Not unpredictable at all' },
-      { value: 3, label: 'A little unpredictable' },
-      { value: 2, label: 'Somewhat unpredictable' },
-      { value: 1, label: 'Very unpredictable' },
-      { value: 0, label: 'Extremely unpredictable' },
-    ],
+    options: unpredictabilityOptions,
     defaultValue: 2,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', unpredictabilityOptions),
     description: 'Predictability of when attacks will occur.',
   } as InputConfig,
   {
     id: 'aect_q4',
     label: 'Q4: Over the past 4 weeks, how well has your angioedema been controlled by your therapy?',
     type: 'select',
-    options: [
-      { value: 0, label: 'Not controlled at all' },
-      { value: 1, label: 'Poorly controlled' },
-      { value: 2, label: 'Somewhat controlled' },
-      { value: 3, label: 'Well controlled' },
-      { value: 4, label: 'Completely controlled' },
-    ],
+    options: controlOptions,
     defaultValue: 2,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', controlOptions),
     description: 'Effectiveness of current treatment in controlling symptoms.',
   } as InputConfig,
 ];

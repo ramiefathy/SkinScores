@@ -1,63 +1,71 @@
-import type { Tool, InputConfig, FormSectionConfig } from './types';
+import type { Tool, InputConfig, FormSectionConfig, InputOption } from './types';
 import { Stethoscope } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+
+const pigmentationOptions: InputOption[] = [
+  { value: 0, label: '0 - Normal (color closely resembles skin color over rest of body)' },
+  { value: 1, label: '1 - Hypopigmentation' },
+  { value: 2, label: '2 - Hyperpigmentation' },
+];
+
+const vascularityOptions: InputOption[] = [
+  { value: 0, label: '0 - Normal (color closely resembles skin over rest of body)' },
+  { value: 1, label: '1 - Pink' },
+  { value: 2, label: '2 - Red' },
+  { value: 3, label: '3 - Purple' },
+];
+
+const pliabilityOptions: InputOption[] = [
+  { value: 0, label: '0 - Normal (skin moves easily, no resistance)' },
+  { value: 1, label: '1 - Supple (minimal resistance)' },
+  { value: 2, label: '2 - Yielding (moderate resistance)' },
+  { value: 3, label: '3 - Firm (marked resistance, moves as a solid unit)' },
+  { value: 4, label: '4 - Banding (rope-like tissue, blanches with extension)' },
+  { value: 5, label: '5 - Contracture (permanent shortening causing deformity)' },
+];
+
+const heightOptions: InputOption[] = [
+  { value: 0, label: '0 - Flat (normal height)' },
+  { value: 1, label: '1 - <2mm' },
+  { value: 2, label: '2 - 2-5mm' },
+  { value: 3, label: '3 - >5mm' },
+];
 
 const vssFormSections: FormSectionConfig[] = [
   {
     id: 'vss_pigmentation',
     label: 'Pigmentation',
     type: 'select',
-    options: [
-      { value: 0, label: '0 - Normal (color closely resembles skin color over rest of body)' },
-      { value: 1, label: '1 - Hypopigmentation' },
-      { value: 2, label: '2 - Hyperpigmentation' },
-    ],
+    options: pigmentationOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', pigmentationOptions),
     description: 'Assessment of scar color compared to normal skin.',
   } as InputConfig,
   {
     id: 'vss_vascularity',
     label: 'Vascularity',
     type: 'select',
-    options: [
-      { value: 0, label: '0 - Normal (color closely resembles skin over rest of body)' },
-      { value: 1, label: '1 - Pink' },
-      { value: 2, label: '2 - Red' },
-      { value: 3, label: '3 - Purple' },
-    ],
+    options: vascularityOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', vascularityOptions),
     description: 'Presence of blood vessels causing color changes (test with pressure).',
   } as InputConfig,
   {
     id: 'vss_pliability',
     label: 'Pliability',
     type: 'select',
-    options: [
-      { value: 0, label: '0 - Normal (skin moves easily, no resistance)' },
-      { value: 1, label: '1 - Supple (minimal resistance)' },
-      { value: 2, label: '2 - Yielding (moderate resistance)' },
-      { value: 3, label: '3 - Firm (marked resistance, moves as a solid unit)' },
-      { value: 4, label: '4 - Banding (rope-like tissue, blanches with extension)' },
-      { value: 5, label: '5 - Contracture (permanent shortening causing deformity)' },
-    ],
+    options: pliabilityOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', pliabilityOptions),
     description: 'Flexibility/stiffness of scar tissue when moved or stretched.',
   } as InputConfig,
   {
     id: 'vss_height',
     label: 'Height (Thickness)',
     type: 'select',
-    options: [
-      { value: 0, label: '0 - Flat (normal height)' },
-      { value: 1, label: '1 - <2mm' },
-      { value: 2, label: '2 - 2-5mm' },
-      { value: 3, label: '3 - >5mm' },
-    ],
+    options: heightOptions,
     defaultValue: 0,
-    validation: getValidationSchema('select'),
+    validation: getValidationSchema('select', heightOptions),
     description: 'Elevation/thickness of scar above surrounding skin.',
   } as InputConfig,
 ];
