@@ -1,61 +1,69 @@
 import type { Tool, InputConfig, InputOption, FormSectionConfig } from './types';
 import { AlertOctagon } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+import { regiscarCompute, type RegiscarInput } from './regiscar.full';
 
 // Define option arrays first so they can be referenced
 const feverOptions: InputOption[] = [
-  { value: -1, label: 'No: -1 point' },
-  { value: 0, label: 'Yes: 0 points' },
+  { value: 'yes', label: 'Yes (≥38.5°C): 0 points' },
+  { value: 'no', label: 'No: -1 point' },
+  { value: 'unknown', label: 'Unknown: -1 point' },
 ];
 
 const lymphNodeOptions: InputOption[] = [
-  { value: 0, label: 'No: 0 points' },
-  { value: 1, label: 'Yes: +1 point' },
+  { value: 'yes', label: 'Yes (≥2 sites, >1cm): +1 point' },
+  { value: 'no', label: 'No: 0 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const eosinophiliaOptions: InputOption[] = [
-  { value: 0, label: 'No eosinophilia: 0 points' },
-  { value: 1, label: '0.7-1.5×10⁹/L OR 10-19.9% if WBC <4×10⁹/L: +1 point' },
-  { value: 2, label: '>1.5×10⁹/L OR ≥20% if WBC <4×10⁹/L: +2 points' },
+  { value: 'none', label: 'No eosinophilia: 0 points' },
+  { value: 'mild', label: '0.7-1.5×10⁹/L OR 10-19.9% if WBC <4×10⁹/L: +1 point' },
+  { value: 'marked', label: '>1.5×10⁹/L OR ≥20% if WBC <4×10⁹/L: +2 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const atypicalLymphOptions: InputOption[] = [
-  { value: 0, label: 'No: 0 points' },
-  { value: 1, label: 'Yes: +1 point' },
+  { value: 'yes', label: 'Yes: +1 point' },
+  { value: 'no', label: 'No: 0 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
-const skinInvolvementOptions: InputOption[] = [
-  { value: -2, label: 'No rash: -2 points' },
-  { value: -1, label: 'Rash of unknown extent: -1 point' },
-  { value: 0, label: 'Rash covering <50% BSA: 0 points' },
-  { value: 1, label: 'Rash covering ≥50% BSA: +1 point' },
+const skinExtentOptions: InputOption[] = [
+  { value: 'yes', label: 'Yes (≥50% BSA): +1 point' },
+  { value: 'no', label: 'No (<50% BSA): 0 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
-const skinRashOptions: InputOption[] = [
-  { value: -1, label: 'Pustular: -1 point' },
-  { value: 0, label: 'Other: 0 points' },
-  { value: 1, label: 'At least 2 of: purpuric, infiltrative, facial edema, desquamation: +1 point' },
+const skinFeaturesOptions: InputOption[] = [
+  { value: 'yes', label: 'Yes (≥2 features): +1 point' },
+  { value: 'no', label: 'No (<2 features): -1 point' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const biopsyOptions: InputOption[] = [
-  { value: -1, label: 'None or other diagnosis: -1 point' },
-  { value: 1, label: 'Suggestive of DRESS: +1 point' },
+  { value: 'yes', label: 'Suggestive of DRESS: 0 points' },
+  { value: 'no', label: 'Not suggestive/Not done: -1 point' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const organOptions: InputOption[] = [
-  { value: 0, label: 'No: 0 points' },
-  { value: 0, label: 'One organ: 0 points' },
-  { value: 1, label: 'Two or more organs: +1 point' },
+  { value: 'none', label: 'No organ involvement: 0 points' },
+  { value: 'one', label: 'One organ involved: +1 point' },
+  { value: 'two_or_more', label: 'Two or more organs: +2 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const resolutionOptions: InputOption[] = [
-  { value: -1, label: '<15 days: -1 point' },
-  { value: 0, label: '≥15 days or unknown: 0 points' },
+  { value: 'yes', label: 'Yes (≥15 days): 0 points' },
+  { value: 'no', label: 'No (<15 days): -1 point' },
+  { value: 'unknown', label: 'Unknown: -1 point' },
 ];
 
-const exclusionOptions: InputOption[] = [
-  { value: -1, label: 'At least one: ALT/AST 3× decrease, eosinophilia 2× decrease, creatinine 1.5× decrease in 3 days: -1 point' },
-  { value: 0, label: 'Other patterns or unknown: 0 points' },
+const altDxOptions: InputOption[] = [
+  { value: 'yes', label: 'Yes (excluded): +1 point' },
+  { value: 'no', label: 'No (not excluded): 0 points' },
+  { value: 'unknown', label: 'Unknown: 0 points' },
 ];
 
 const regiscarFormSections: FormSectionConfig[] = [
@@ -64,90 +72,90 @@ const regiscarFormSections: FormSectionConfig[] = [
     label: '1. Fever ≥38.5°C',
     type: 'select',
     options: feverOptions,
-    defaultValue: -1,
+    defaultValue: 'no',
     validation: getValidationSchema('select', feverOptions),
     description: 'Documented fever ≥38.5°C (101.3°F) during the reaction.',
   } as InputConfig,
   {
-    id: 'lymph_nodes',
+    id: 'lymphadenopathy',
     label: '2. Enlarged Lymph Nodes (≥2 sites, >1cm)',
     type: 'select',
     options: lymphNodeOptions,
-    defaultValue: 0,
+    defaultValue: 'no',
     validation: getValidationSchema('select', lymphNodeOptions),
     description: 'Enlarged lymph nodes at ≥2 sites with size >1cm.',
   } as InputConfig,
   {
-    id: 'eosinophilia',
-    label: '3. Eosinophilia',
-    type: 'select',
-    options: eosinophiliaOptions,
-    defaultValue: 0,
-    validation: getValidationSchema('select', eosinophiliaOptions),
-    description: 'Eosinophil count (use percentage if leukopenia present).',
-  } as InputConfig,
-  {
-    id: 'atypical_lymphocytes',
-    label: '4. Atypical Lymphocytes',
+    id: 'atypicalLymphocytes',
+    label: '3. Atypical Lymphocytes',
     type: 'select',
     options: atypicalLymphOptions,
-    defaultValue: 0,
+    defaultValue: 'no',
     validation: getValidationSchema('select', atypicalLymphOptions),
     description: 'Presence of atypical lymphocytes on blood smear.',
   } as InputConfig,
   {
-    id: 'skin_involvement',
-    label: '5. Skin Involvement - Extent of Rash',
+    id: 'eosinophilia',
+    label: '4. Eosinophilia',
     type: 'select',
-    options: skinInvolvementOptions,
-    defaultValue: 0,
-    validation: getValidationSchema('select', skinInvolvementOptions),
+    options: eosinophiliaOptions,
+    defaultValue: 'none',
+    validation: getValidationSchema('select', eosinophiliaOptions),
+    description: 'Eosinophil count (use percentage if leukopenia present).',
+  } as InputConfig,
+  {
+    id: 'skinExtent50',
+    label: '5a. Skin Involvement - Extent >50% BSA',
+    type: 'select',
+    options: skinExtentOptions,
+    defaultValue: 'no',
+    validation: getValidationSchema('select', skinExtentOptions),
     description: 'Extent of skin rash as percentage of body surface area.',
   } as InputConfig,
   {
-    id: 'skin_rash',
-    label: '6. Skin Rash Morphology',
+    id: 'skinFeatures2of4',
+    label: '5b. Skin Features - At least 2 of 4',
     type: 'select',
-    options: skinRashOptions,
-    defaultValue: 0,
-    validation: getValidationSchema('select', skinRashOptions),
-    description: 'Morphological characteristics of the rash.',
+    options: skinFeaturesOptions,
+    defaultValue: 'no',
+    validation: getValidationSchema('select', skinFeaturesOptions),
+    description: 'At least 2 of: facial edema, infiltration, purpura, scaling.',
   } as InputConfig,
   {
-    id: 'biopsy',
-    label: '7. Biopsy Suggesting DRESS',
+    id: 'biopsySuggestive',
+    label: '5c. Biopsy Suggesting DRESS',
     type: 'select',
     options: biopsyOptions,
-    defaultValue: -1,
+    defaultValue: 'no',
     validation: getValidationSchema('select', biopsyOptions),
     description: 'Skin biopsy findings consistent with DRESS.',
   } as InputConfig,
   {
-    id: 'organ_involvement',
-    label: '8. Organ Involvement',
+    id: 'organInvolvement',
+    label: '6. Organ Involvement',
     type: 'select',
     options: organOptions,
-    defaultValue: 0,
+    defaultValue: 'none',
     validation: getValidationSchema('select', organOptions),
     description: 'Number of internal organs involved (liver, kidney, lung, muscle, heart, pancreas, other).',
   } as InputConfig,
   {
-    id: 'resolution',
-    label: '9. Resolution ≥15 Days',
+    id: 'resolutionGT15d',
+    label: '7. Resolution ≥15 Days',
     type: 'select',
     options: resolutionOptions,
-    defaultValue: 0,
+    defaultValue: 'unknown',
     validation: getValidationSchema('select', resolutionOptions),
     description: 'Time to resolution after drug withdrawal.',
   } as InputConfig,
   {
-    id: 'exclusions',
-    label: '10. Exclusion of Other Causes',
+    id: 'altDxExcluded',
+    label: '8. Alternative Diagnoses Excluded',
     type: 'select',
-    options: exclusionOptions,
-    defaultValue: 0,
-    validation: getValidationSchema('select', exclusionOptions),
-    description: 'Rapid improvement suggesting acute viral infection rather than DRESS.',
+    options: altDxOptions,
+    defaultValue: 'no',
+    validation: getValidationSchema('select', altDxOptions),
+    description: 'Alternative causes excluded (ANA, blood culture, PCR/serology for HCV, HBV, HHV-6, etc.).',
   } as InputConfig,
 ];
 
@@ -175,21 +183,23 @@ export const regiscarTool: Tool = {
     'The RegiSCAR scoring system has been validated in multiple cohorts with high diagnostic accuracy. In the original validation study, scores ≥6 had 85% sensitivity and 95% specificity for definite DRESS. The scoring system correlates well with expert consensus diagnosis (κ=0.87). Key strengths include systematic evaluation of clinical and laboratory features, accounting for incomplete presentations, and differentiation from other drug reactions. The tool has been adopted internationally and endorsed by dermatology and allergy societies for DRESS diagnosis.',
   formSections: regiscarFormSections,
   calculationLogic: (inputs) => {
-    const fever = Number(inputs.fever) || 0;
-    const lymphNodes = Number(inputs.lymph_nodes) || 0;
-    const eosinophilia = Number(inputs.eosinophilia) || 0;
-    const atypicalLymphocytes = Number(inputs.atypical_lymphocytes) || 0;
-    const skinInvolvement = Number(inputs.skin_involvement) || 0;
-    const skinRash = Number(inputs.skin_rash) || 0;
-    const biopsy = Number(inputs.biopsy) || 0;
-    const organInvolvement = Number(inputs.organ_involvement) || 0;
-    const resolution = Number(inputs.resolution) || 0;
-    const exclusions = Number(inputs.exclusions) || 0;
+    // Map inputs to RegiscarInput type
+    const regiscarInput: RegiscarInput = {
+      fever: inputs.fever as RegiscarInput['fever'],
+      lymphadenopathy: inputs.lymphadenopathy as RegiscarInput['lymphadenopathy'],
+      atypicalLymphocytes: inputs.atypicalLymphocytes as RegiscarInput['atypicalLymphocytes'],
+      eosinophilia: inputs.eosinophilia as RegiscarInput['eosinophilia'],
+      skinExtent50: inputs.skinExtent50 as RegiscarInput['skinExtent50'],
+      skinFeatures2of4: inputs.skinFeatures2of4 as RegiscarInput['skinFeatures2of4'],
+      biopsySuggestive: inputs.biopsySuggestive as RegiscarInput['biopsySuggestive'],
+      organInvolvement: inputs.organInvolvement as RegiscarInput['organInvolvement'],
+      resolutionGT15d: inputs.resolutionGT15d as RegiscarInput['resolutionGT15d'],
+      altDxExcluded: inputs.altDxExcluded as RegiscarInput['altDxExcluded'],
+    };
 
-    const totalScore =
-      fever + lymphNodes + eosinophilia + atypicalLymphocytes +
-      skinInvolvement + skinRash + biopsy + organInvolvement +
-      resolution + exclusions;
+    // Use the regiscarCompute function from the full implementation
+    const result = regiscarCompute(regiscarInput);
+    const totalScore = result.score;
 
     let diagnosisCategory = '';
     let clinicalGuidance = '';
@@ -213,18 +223,19 @@ export const regiscarTool: Tool = {
       managementRecommendation = 'Urgent management required: Immediate drug withdrawal, systemic corticosteroids (1-2 mg/kg/day), intensive monitoring. Consider pulse steroids or additional immunosuppression if severe organ involvement.';
     }
 
-    // Generate detailed component summary
+    // Generate detailed component summary from the result
     const componentDetails = [];
-    if (fever !== 0) componentDetails.push(`Fever: ${fever} points`);
-    if (lymphNodes !== 0) componentDetails.push(`Lymph nodes: +${lymphNodes}`);
-    if (eosinophilia !== 0) componentDetails.push(`Eosinophilia: +${eosinophilia}`);
-    if (atypicalLymphocytes !== 0) componentDetails.push(`Atypical lymphocytes: +${atypicalLymphocytes}`);
-    if (skinInvolvement !== 0) componentDetails.push(`Skin extent: ${skinInvolvement}`);
-    if (skinRash !== 0) componentDetails.push(`Rash morphology: ${skinRash}`);
-    if (biopsy !== 0) componentDetails.push(`Biopsy: ${biopsy}`);
-    if (organInvolvement !== 0) componentDetails.push(`Organ involvement: +${organInvolvement}`);
-    if (resolution !== 0) componentDetails.push(`Resolution time: ${resolution}`);
-    if (exclusions !== 0) componentDetails.push(`Exclusion criteria: ${exclusions}`);
+    const d = result.details;
+    if (d.fever !== 0) componentDetails.push(`Fever: ${d.fever} points`);
+    if (d.lymphadenopathy !== 0) componentDetails.push(`Lymphadenopathy: ${d.lymphadenopathy > 0 ? '+' : ''}${d.lymphadenopathy}`);
+    if (d.atypical_lymphocytes !== 0) componentDetails.push(`Atypical lymphocytes: ${d.atypical_lymphocytes > 0 ? '+' : ''}${d.atypical_lymphocytes}`);
+    if (d.eosinophilia !== 0) componentDetails.push(`Eosinophilia: ${d.eosinophilia > 0 ? '+' : ''}${d.eosinophilia}`);
+    if (d.skin_extent_50 !== 0) componentDetails.push(`Skin extent >50%: ${d.skin_extent_50 > 0 ? '+' : ''}${d.skin_extent_50}`);
+    if (d.skin_features_2of4 !== 0) componentDetails.push(`Skin features (2 of 4): ${d.skin_features_2of4 > 0 ? '+' : ''}${d.skin_features_2of4}`);
+    if (d.biopsy !== 0) componentDetails.push(`Biopsy: ${d.biopsy > 0 ? '+' : ''}${d.biopsy}`);
+    if (d.organ_involvement !== 0) componentDetails.push(`Organ involvement: ${d.organ_involvement > 0 ? '+' : ''}${d.organ_involvement}`);
+    if (d.resolution_gt_15d !== 0) componentDetails.push(`Resolution >15 days: ${d.resolution_gt_15d > 0 ? '+' : ''}${d.resolution_gt_15d}`);
+    if (d.alt_dx_excluded !== 0) componentDetails.push(`Alt diagnoses excluded: ${d.alt_dx_excluded > 0 ? '+' : ''}${d.alt_dx_excluded}`);
 
     const interpretation = `**RegiSCAR Score: ${totalScore} points**
 **Diagnosis: ${diagnosisCategory}**
@@ -258,16 +269,16 @@ ${managementRecommendation}
       details: {
         'Total_Score': totalScore,
         'Diagnosis_Category': diagnosisCategory,
-        'Fever': fever,
-        'Lymph_Nodes': lymphNodes,
-        'Eosinophilia': eosinophilia,
-        'Atypical_Lymphocytes': atypicalLymphocytes,
-        'Skin_Involvement': skinInvolvement,
-        'Skin_Rash': skinRash,
-        'Biopsy': biopsy,
-        'Organ_Involvement': organInvolvement,
-        'Resolution': resolution,
-        'Exclusions': exclusions,
+        'Fever': d.fever,
+        'Lymphadenopathy': d.lymphadenopathy,
+        'Atypical_Lymphocytes': d.atypical_lymphocytes,
+        'Eosinophilia': d.eosinophilia,
+        'Skin_Extent_>50%': d.skin_extent_50,
+        'Skin_Features_2of4': d.skin_features_2of4,
+        'Biopsy': d.biopsy,
+        'Organ_Involvement': d.organ_involvement,
+        'Resolution_>15d': d.resolution_gt_15d,
+        'Alt_Dx_Excluded': d.alt_dx_excluded,
       },
     };
   },

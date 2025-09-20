@@ -1,67 +1,65 @@
 import type { Tool, InputConfig, InputOption, FormSectionConfig } from './types';
 import { AlertTriangle } from 'lucide-react';
 import { getValidationSchema } from './toolValidation';
+import { aldenCompute, type AldenInput } from './alden.full';
 
 const timeDelayOptions: InputOption[] = [
-  { value: -3, label: 'Index day (same day): -3 points' },
-  { value: 1, label: '1-4 days: +1 point' },
-  { value: 3, label: '5-28 days: +3 points' },
-  { value: 2, label: '29-56 days: +2 points' },
-  { value: -1, label: '>56 days: -1 point' },
-  { value: 3, label: 'Rechallenge 1-4 days: +3 points' },
-  { value: 1, label: 'Rechallenge 5-56 days: +1 point' },
+  { value: 'excluded', label: 'Index day or after (Excluded): -3 points' },
+  { value: 'unlikely', label: '>56 days (Unlikely): -1 point' },
+  { value: 'likely', label: '1-4 days (Likely): +1 point' },
+  { value: 'compatible', label: '29-56 days (Compatible): +2 points' },
+  { value: 'suggestive', label: '5-28 days (Suggestive): +3 points' },
 ];
 
 const drugPresentOptions: InputOption[] = [
-  { value: 0, label: 'Drug eliminated: 0 points' },
-  { value: 1, label: 'Drug possibly present: +1 point' },
-  { value: 2, label: 'Drug definitely present: +2 points' },
+  { value: 'definite', label: 'Definite (drug present at index): 0 points' },
+  { value: 'doubtful', label: 'Doubtful: -1 point' },
+  { value: 'excluded', label: 'Excluded (drug stopped before index): -3 points' },
 ];
 
 const prechallengeOptions: InputOption[] = [
-  { value: -2, label: 'Previous tolerance to same drug: -2 points' },
-  { value: -1, label: 'Previous reaction uncertain: -1 point' },
-  { value: 0, label: 'No known previous exposure: 0 points' },
-  { value: 1, label: 'Previous reaction to same drug: +1 point' },
-  { value: 2, label: 'Positive rechallenge (same reaction): +2 points' },
+  { value: 'negative', label: 'Previous exposure without reaction: -2 points' },
+  { value: 'none_unknown', label: 'No known previous exposure: 0 points' },
+  { value: 'pos_unspecific', label: 'Other reaction after similar drug: +1 point' },
+  { value: 'pos_specific_drug', label: 'SJS/TEN after similar drug OR other reaction after same drug: +2 points' },
+  { value: 'pos_specific_drug_disease', label: 'SJS/TEN after same drug: +4 points' },
 ];
 
 const dechallengeOptions: InputOption[] = [
-  { value: -2, label: 'Drug continued, no progression: -2 points' },
-  { value: 0, label: 'Drug stopped, uncertain timing: 0 points' },
-  { value: 2, label: 'Drug stopped appropriately: +2 points' },
+  { value: 'drug_stopped', label: 'Drug stopped (at index or before progression): 0 points' },
+  { value: 'continued_or_unknown', label: 'Drug continued or unknown: -2 points' },
 ];
 
 const drugNotorietyOptions: InputOption[] = [
-  { value: 3, label: 'Strongly associated (high-risk): +3 points' },
-  { value: 2, label: 'Associated (definite risk): +2 points' },
-  { value: 1, label: 'Possible association: +1 point' },
-  { value: 0, label: 'Unknown association: 0 points' },
-  { value: -1, label: 'Drug not known to cause SJS/TEN: -1 point' },
+  { value: 'strongly_associated', label: 'Strongly associated (high-risk): +3 points' },
+  { value: 'associated', label: 'Associated (definite risk): +2 points' },
+  { value: 'suspected', label: 'Suspected association: +1 point' },
+  { value: 'unknown', label: 'Unknown association: 0 points' },
+  { value: 'not_suspected', label: 'Drug not known to cause SJS/TEN: -1 point' },
+  { value: 'intermediate', label: 'Intermediate (based on other scores): -1 to +1 point' },
 ];
 
 const otherCausesOptions: InputOption[] = [
-  { value: -1, label: 'Other cause highly probable: -1 point' },
-  { value: 0, label: 'Other cause possible: 0 points' },
-  { value: 1, label: 'Other causes excluded: +1 point' },
+  { value: 'none', label: 'Other causes excluded: 0 points' },
+  { value: 'present_intermediate_or_higher', label: 'Other cause present (probable/definite): -1 point' },
 ];
 
 const aldenFormSections: FormSectionConfig[] = [
   {
-    id: 'time_delay',
+    id: 'delayCategory',
     label: '1. Time Delay from Initial Drug Intake to Onset',
     type: 'select',
     options: timeDelayOptions,
-    defaultValue: 0,
+    defaultValue: 'unknown',
     validation: getValidationSchema('select', timeDelayOptions),
-    description: 'Select the time interval from drug initiation to symptom onset. For rechallenge, use the rechallenge-specific options.',
+    description: 'Select the time interval from drug initiation to symptom onset.',
   } as InputConfig,
   {
-    id: 'drug_present',
+    id: 'drugPresent',
     label: '2. Drug Present in Body (Based on Half-life)',
     type: 'select',
     options: drugPresentOptions,
-    defaultValue: 0,
+    defaultValue: 'definite',
     validation: getValidationSchema('select', drugPresentOptions),
     description: 'Assess drug presence on index day based on half-life, kidney/liver function, and pharmacokinetics.',
   } as InputConfig,
@@ -70,7 +68,7 @@ const aldenFormSections: FormSectionConfig[] = [
     label: '3. Prechallenge/Rechallenge',
     type: 'select',
     options: prechallengeOptions,
-    defaultValue: 0,
+    defaultValue: 'none_unknown',
     validation: getValidationSchema('select', prechallengeOptions),
     description: 'Previous exposure history to the same drug.',
   } as InputConfig,
@@ -79,25 +77,25 @@ const aldenFormSections: FormSectionConfig[] = [
     label: '4. Dechallenge',
     type: 'select',
     options: dechallengeOptions,
-    defaultValue: 0,
+    defaultValue: 'drug_stopped',
     validation: getValidationSchema('select', dechallengeOptions),
     description: 'Whether drug was stopped and timing relative to symptom progression.',
   } as InputConfig,
   {
-    id: 'drug_notoriety',
+    id: 'notoriety',
     label: '5. Drug Notoriety (Based on EuroSCAR Data)',
     type: 'select',
     options: drugNotorietyOptions,
-    defaultValue: 0,
+    defaultValue: 'unknown',
     validation: getValidationSchema('select', drugNotorietyOptions),
     description: 'Drug association with SJS/TEN from epidemiological studies. High-risk drugs include allopurinol, carbamazepine, phenytoin, lamotrigine, sulfamethoxazole, nevirapine.',
   } as InputConfig,
   {
-    id: 'other_causes',
+    id: 'otherCauses',
     label: '6. Other Etiologic Causes',
     type: 'select',
     options: otherCausesOptions,
-    defaultValue: 0,
+    defaultValue: 'none',
     validation: getValidationSchema('select', otherCausesOptions),
     description: 'Assessment of alternative explanations (infections, other drugs, underlying conditions).',
   } as InputConfig,
@@ -128,25 +126,23 @@ export const aldenTool: Tool = {
     'The ALDEN score demonstrates strong correlation with epidemiological case-control studies (r = 0.90, P < 0.0001). In validation studies, ALDEN identified probable/very probable causality in 69% of cases vs. 23% with general pharmacovigilance methods (P < 0.001). It showed superior performance (AUC = 0.65) compared to Naranjo scale (AUC = 0.54) and Liverpool ADR tool (AUC = 0.55). Inter-rater reliability remains a limitation (κ = 0.22). When used as gold standard, lymphocyte transformation test showed 86.4% sensitivity and 73.5% specificity for drug identification. ALDEN excludes unlikely drugs more definitively, scoring 64% of medications as "very unlikely" vs. 0% with general methods.',
   formSections: aldenFormSections,
   calculationLogic: (inputs) => {
-    const scores = {
-      timeDelay: Number(inputs.time_delay) || 0,
-      drugPresent: Number(inputs.drug_present) || 0,
-      prechallenge: Number(inputs.prechallenge) || 0,
-      dechallenge: Number(inputs.dechallenge) || 0,
-      drugNotoriety: Number(inputs.drug_notoriety) || 0,
-      otherCauses: Number(inputs.other_causes) || 0,
+    // Map inputs to AldenInput type
+    const aldenInput: AldenInput = {
+      delayCategory: inputs.delayCategory as AldenInput['delayCategory'],
+      delayPrevReaction: inputs.delayPrevReaction === 'true' || inputs.delayPrevReaction === true,
+      drugPresent: inputs.drugPresent as AldenInput['drugPresent'],
+      prechallenge: inputs.prechallenge as AldenInput['prechallenge'],
+      dechallenge: inputs.dechallenge as AldenInput['dechallenge'],
+      notoriety: inputs.notoriety as AldenInput['notoriety'],
+      otherCauses: inputs.otherCauses as AldenInput['otherCauses'],
     };
 
-    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+    // Use the aldenCompute function from the full implementation
+    const result = aldenCompute(aldenInput);
 
-    let causalityLevel = '';
-    if (totalScore >= 6) causalityLevel = 'Very Probable';
-    else if (totalScore >= 4) causalityLevel = 'Probable';
-    else if (totalScore >= 2) causalityLevel = 'Possible';
-    else if (totalScore >= 0) causalityLevel = 'Unlikely';
-    else causalityLevel = 'Very Unlikely';
+    const causalityLevel = result.category.charAt(0).toUpperCase() + result.category.slice(1);
 
-    const interpretation = `ALDEN Score: ${totalScore} (Range: -12 to +10). Drug Causality: ${causalityLevel}.
+    const interpretation = `ALDEN Score: ${result.score} (Range: -12 to +10). Drug Causality: ${causalityLevel}.
 
 **Interpretation:**
 - ≥6: Very Probable - Strong causal relationship
@@ -163,16 +159,16 @@ export const aldenTool: Tool = {
 **Note:** For polypharmacy, calculate ALDEN for each suspect drug and rank by score.`;
 
     return {
-      score: totalScore,
+      score: result.score,
       interpretation,
       details: {
-        'Time Delay': scores.timeDelay,
-        'Drug Present': scores.drugPresent,
-        'Prechallenge': scores.prechallenge,
-        'Dechallenge': scores.dechallenge,
-        'Drug Notoriety': scores.drugNotoriety,
-        'Other Causes': scores.otherCauses,
-        'Total ALDEN Score': totalScore,
+        'Time Delay': result.details.delay,
+        'Drug Present': result.details.drug_present,
+        'Prechallenge': result.details.prechallenge,
+        'Dechallenge': result.details.dechallenge,
+        'Drug Notoriety': result.details.notoriety,
+        'Other Causes': result.details.other_causes,
+        'Total ALDEN Score': result.score,
         'Causality Level': causalityLevel,
       },
     };
